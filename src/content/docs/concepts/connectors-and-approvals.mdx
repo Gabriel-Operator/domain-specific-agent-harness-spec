@@ -1,0 +1,22 @@
+---
+title: Connectors and approvals
+description: The boundary between declared operations, granted accounts, and approved effects.
+---
+
+A playbook declares which outside operations it needs. The workspace resolves each requirement to an authorized connection. An approval governs a particular action within a run. These are three separate decisions.
+
+## An operation and its account
+
+| Layer | Lane example |
+| --- | --- |
+| **Requirement** | The research playbook needs an Exa search. The outreach playbook needs Gmail send. |
+| **Connection** | The workspace uses the appropriate authorized account to satisfy that requirement. A personal requirement resolves to the acting person’s account. A shared app destination is set up separately. |
+| **Approval** | A person reviews the actual recipient and message before the configured send step runs. |
+
+A connector step can read, write, or start a process whose result arrives later. A read can contribute evidence to a goal. A write can have an external effect, such as sending an email. When a required operation lacks a valid connection, the runtime holds the affected work.
+
+## How it appears in Studio
+
+**Connectors** helps the team see which operations it needs and resolve missing setup. **Vault** handles account credentials and sensitive settings. **Approvals** presents the decisions that a run is waiting for. An approved action is tied to the reviewed details of that action. Editing the draft or changing the account can require another decision.
+
+See the [connector requirement fields](../../apps/#2-connector-requirements-), [step types and effects](../../apps/#3-steps-that-use-a-connector-), and [runtime capability report](../../specification/#71-capability-report-). The [skill catalogue](../../skills/#persona-authoring-and-operations) covers persona integrations and team setup.

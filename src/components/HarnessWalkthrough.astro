@@ -1,0 +1,185 @@
+---
+import HarnessScene from './HarnessScene.astro';
+import '../styles/harness-walkthrough.css';
+
+const chapters = [
+  {
+    id: 'the-first-run',
+    phase: 'The problem',
+    label: 'The first run',
+    title: 'A draft is only the first step',
+    scene: 'draft',
+    body: [
+      'Ask an agent to research Northwind and write a follow-up. With a model, a prompt, and a search tool, it can produce a useful draft in one session.',
+      'Now give the same job to a team. The researcher needs to know what counts as a qualified prospect. The outreach agent needs the research and the right account. The person approving the message needs to see exactly what will be sent.',
+    ],
+  },
+  {
+    id: 'where-the-work-breaks',
+    phase: 'Why it gets harder',
+    label: 'Scattered state',
+    title: 'The work gets scattered across tools',
+    scene: 'fragments',
+    body: [
+      'Suppose the researcher calls Northwind qualified in chat, the prospect list still says Identified, and the draft lives in someone’s inbox. When the draft changes, the next agent has to work out whether the earlier approval still applies.',
+      'Adding a connector gives the team another place to read or write. The team still needs agreement on where the prospect’s state lives, which action can change it, and how a new workspace gets the same rules.',
+    ],
+  },
+  {
+    id: 'how-it-works',
+    phase: 'The solution',
+    label: 'Define the domain',
+    title: 'Give the harness a domain',
+    scene: 'persona',
+    legacy: 'how-does-a-persona-work',
+    body: [
+      'Create a persona for the work. Lane defines what a prospect is, how introductions and pilots work, and what the team can do. The Prospect to pilot team gives the researcher and outreach agent distinct roles.',
+      'Keep those definitions in Git. A compatible runtime loads the persona and uses the chosen harness for agent execution. The workspace supplies accounts, permissions, and live records.',
+    ],
+  },
+  {
+    id: 'goal-to-playbook',
+    phase: 'Inside the solution',
+    label: 'Plan the goal',
+    title: 'Turn a goal into repeatable work',
+    scene: 'plan',
+    body: [
+      'Give the team an outcome: qualify Northwind with evidence and prepare a follow-up. The team can plan with registered playbooks. If a step is missing, an author can draft a playbook from the goal and register it after review.',
+      'The research playbook declares Exa search. The outreach playbook declares the Gmail operation and requires approval before sending. The plan tells the runtime which playbooks to run and what each can do.',
+    ],
+    link: { href: './apps/#from-goals-to-playbooks', text: 'Goals and playbooks' },
+  },
+  {
+    id: 'from-git-to-a-running-workspace',
+    phase: 'Inside the solution',
+    label: 'Bind and run',
+    title: 'Make the checks part of the run',
+    scene: 'runtime',
+    body: [
+      'On import, the runtime checks the linked definitions against their pinned revisions and fingerprints. The workspace binds authorized connector accounts. Before a run, the runtime reports which steps it can execute and blocks unavailable ones.',
+      'At a gated send step, work pauses until a person reviews the recipient and exact message. The playbook publishes only the fields it declares, so a shared record can carry the result without exposing the whole private source.',
+    ],
+    link: { href: './specification/#7-runtime-rules', text: 'Runtime rules' },
+  },
+  {
+    id: 'worked-example',
+    phase: 'Worked example',
+    label: 'Publish to the app',
+    title: 'Follow Northwind into the team’s app',
+    scene: 'app',
+    body: [
+      'The researcher reads company data from Exa and records the evidence. The outreach agent drafts the follow-up. Once the send is approved and completes, the playbook publishes the mapped connector data and the agent’s updates to the prospects list.',
+      'Pilot prospects displays the same record as Contacted. A runtime with live sync updates open views when the record changes. A configured stage transition can start the next authorized playbook.',
+    ],
+    link: { href: './examples/#one-prospect-end-to-end', text: 'Follow the full Lane example' },
+  },
+] as const;
+---
+
+<div class="hs-story not-content" data-harness-story>
+  <div class="hs-chapters">
+    {chapters.map((chapter) => (
+      <article class="hs-chapter" id={chapter.id} data-hs-chapter>
+        {'legacy' in chapter && <span id={chapter.legacy} class="hs-anchor"></span>}
+        <div class="hs-copy">
+          <p class="hs-phase">{chapter.phase}</p>
+          <h3>{chapter.title}</h3>
+          {chapter.body.map((paragraph) => <p>{paragraph}</p>)}
+          {'link' in chapter && <a href={chapter.link.href}>{chapter.link.text} →</a>}
+        </div>
+        <div class="hs-inline" data-hs-source>
+          <HarnessScene scene={chapter.scene} />
+        </div>
+      </article>
+    ))}
+  </div>
+
+  <aside class="hs-sticky" aria-label="Walkthrough diagrams" data-hs-sticky hidden>
+    <div class="hs-stage">
+      <div class="hs-stage-bar" aria-hidden="true">
+        <span data-hs-label>{chapters[0].label}</span>
+        <span data-hs-count>1 / {chapters.length}</span>
+      </div>
+      <div class="hs-stage-panels" data-hs-stage aria-hidden="true"></div>
+      <nav class="hs-progress" aria-label="Story chapters">
+        {chapters.map((chapter, index) => (
+          <a href={`#${chapter.id}`} aria-label={chapter.label} title={chapter.label} data-hs-jump>
+            {index + 1}
+          </a>
+        ))}
+      </nav>
+    </div>
+  </aside>
+</div>
+
+<script>
+  for (const story of document.querySelectorAll<HTMLElement>('[data-harness-story]')) {
+    const chapters = [...story.querySelectorAll<HTMLElement>('[data-hs-chapter]')];
+    const sticky = story.querySelector<HTMLElement>('[data-hs-sticky]');
+    const stage = story.querySelector<HTMLElement>('[data-hs-stage]');
+    const label = story.querySelector<HTMLElement>('[data-hs-label]');
+    const count = story.querySelector<HTMLElement>('[data-hs-count]');
+    const links = [...story.querySelectorAll<HTMLAnchorElement>('[data-hs-jump]')];
+    if (!sticky || !stage || !label || !count || !chapters.length) continue;
+
+    const panels = chapters.map((chapter) => {
+      const panel = document.createElement('div');
+      panel.className = 'hs-stage-panel';
+      const visual = chapter.querySelector('[data-hs-source]')?.firstElementChild;
+      if (visual) panel.append(visual.cloneNode(true));
+      return panel;
+    });
+    stage.replaceChildren(...panels);
+
+    const wide = matchMedia('(min-width: 54rem) and (min-height: 36rem)');
+    let active = -1;
+    let frame = 0;
+
+    const show = (index: number) => {
+      if (active === index) return;
+      active = index;
+      panels.forEach((panel, i) => panel.classList.toggle('is-active', i === index));
+      links.forEach((link, i) => {
+        if (i === index) link.setAttribute('aria-current', 'step');
+        else link.removeAttribute('aria-current');
+      });
+      label.textContent = links[index]?.getAttribute('aria-label') ?? '';
+      count.textContent = `${index + 1} / ${chapters.length}`;
+    };
+
+    const measure = () => {
+      const eyeLine = innerHeight * 0.54;
+      let nearest = 0;
+      let distance = Infinity;
+      for (const [index, chapter] of chapters.entries()) {
+        const { top, bottom } = chapter.getBoundingClientRect();
+        const gap = Math.max(top - eyeLine, eyeLine - bottom, 0);
+        if (gap < distance) {
+          nearest = index;
+          distance = gap;
+        }
+      }
+      show(nearest);
+    };
+
+    const schedule = () => {
+      if (!wide.matches || frame) return;
+      frame = requestAnimationFrame(() => {
+        frame = 0;
+        measure();
+      });
+    };
+
+    const updateLayout = () => {
+      story.toggleAttribute('data-hs-ready', wide.matches);
+      sticky.hidden = !wide.matches;
+      if (wide.matches) measure();
+    };
+
+    updateLayout();
+    wide.addEventListener('change', updateLayout);
+    addEventListener('scroll', schedule, { passive: true });
+    addEventListener('resize', schedule);
+    addEventListener('pageshow', schedule);
+  }
+</script>

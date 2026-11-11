@@ -6,17 +6,16 @@ const { siteTitle } = Astro.locals.starlightRoute;
 
 <div class="ap-hero">
   <h1 id="_top" data-page-title>{siteTitle}</h1>
-  <p>A specification for runtimes that load personas and coordinate work through your agent harness.</p>
+  <p>Give agent teams a shared definition of the work, the tools they can use, and the records they leave behind.</p>
   <button type="button" class="ap-search" data-hero-search hidden aria-haspopup="dialog">
     <Icon name="magnifier" />
     <span>Search documentation…</span>
     <kbd aria-hidden="true"></kbd>
   </button>
-  <nav class="ap-topics" aria-label="Popular topics">
-    <span>Popular topics</span>
-    <a href="./specification/#1-folder-structure-">Folder structure</a>
-    <a href="./specification/#5-registry-">Registry</a>
-    <a href="./standards/#vocabulary">Glossary</a>
+  <nav class="ap-topics" aria-label="Start here">
+    <a href="#why-a-domain-specific-harness">Read the story <Icon name="down-arrow" /></a>
+    <a href="#worked-example">Worked example</a>
+    <a href="#explore-the-specification">Explore the spec</a>
   </nav>
 </div>
 

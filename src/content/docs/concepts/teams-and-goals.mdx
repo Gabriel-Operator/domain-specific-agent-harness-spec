@@ -1,0 +1,24 @@
+---
+title: Teams, goals, and playbooks
+description: How a persona's team turns an outcome into a plan and runs registered playbooks.
+---
+
+A **team** owns the agents and shared resources that do a particular job. A **goal** describes an outcome and what counts as done. A **playbook** defines reusable work, including its inputs, required connector operations, and permitted outputs. A **run** is one attempt to carry out that work.
+
+## From an outcome to a plan
+
+In Lane, a person gives Prospect to pilot a goal to qualify Northwind and prepare a follow-up. Research fit and Follow up are two reusable playbooks. A plan can use both and give each agent the evidence it needs for the next step. A team author can also draft a playbook from an outcome and register it after review.
+
+Gabriel distinguishes **Build from steps**, where the author specifies a sequence or graph of steps, from **Plan from a goal**, where the author supplies an objective, completion criteria, permitted capabilities, and limits for planning. Registration saves the definition. Starting work is a separate action that checks the selected plan and current access.
+
+## Canvas and Work
+
+| Surface | What you find there |
+| --- | --- |
+| **Canvas** | Team agents, handoffs, context, and the registered playbook library. An agent placement references a playbook. |
+| **Work** | Goals, their plans and tasks, execution settings, and progress from planning to completion. |
+| **Active tasks** | Running or waiting work, with links back to the goal and any approval it needs. |
+
+The draft covers [team resources](../../apps/#1-the-parts-), [goal authoring in Gabriel](../../apps/#from-goals-to-playbooks), and [connector steps](../../apps/#3-steps-that-use-a-connector-). Full team orchestration remains [planned](../../specification/#8-not-yet-specified-).
+
+Use [`persona-team-manager`](../../skills/#persona-authoring-and-operations) to author a Studio team and register playbooks. [`team-agents`](../../skills/#team-graph-nodes) documents the separate Page Builder orchestration graph and its node references.

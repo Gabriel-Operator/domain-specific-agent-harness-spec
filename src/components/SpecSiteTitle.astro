@@ -3,7 +3,8 @@ const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
 const mark = import.meta.env.BASE_URL.replace(/\/$/, '') + '/favicon.svg';
 ---
 
-<a href={siteTitleHref} class="ap-brand" translate="no">
+<a href={siteTitleHref} class="ap-brand" translate="no" aria-label={siteTitle}>
   <img src={mark} width="30" height="30" alt="" />
-  <span>{siteTitle}</span>
+  <span class="ap-brand-full" aria-hidden="true">{siteTitle}</span>
+  <span class="ap-brand-short" aria-hidden="true">Agent Harness Spec</span>
 </a>

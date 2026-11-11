@@ -1,0 +1,23 @@
+---
+title: Runs and collaboration
+description: How Studio exposes run state, context, conversations, outputs, and audit evidence.
+---
+
+A runtime loads the persona, checks available capabilities, and coordinates work through the selected harness. The harness handles agent reasoning and tool use. The workspace owns the run state, accounts, permissions, and shared history. The way a runtime connects to a harness is implementation-specific in this draft.
+
+## What Studio shows
+
+| Surface | Role in a run |
+| --- | --- |
+| **Context** | Shared pages, organization context, and available team knowledge. The team can work from a brief alongside the goal. |
+| **Conversations** | Team discussions and threads that people and authorized agents can participate in. |
+| **Outputs** | Shared results and artifacts produced by work, such as a brief or an accepted record update. |
+| **Activity** | The history of runs, decisions, and accepted outputs, including links back to relevant records and evidence. |
+
+For example, a teammate can open Lane’s accepted outreach result, follow the link to the producing goal, and inspect the approval for that send. A result and its evidence are workspace data. The persona describes the steps and fields that can produce them.
+
+## Live data and presence
+
+Live sync delivers resource changes to open views. Presence describes who is online and where they are working. In Gabriel’s Studio, following another member can change which view you see. Actions still require your own permissions. Presence is a proposed profile in this draft.
+
+See [capability reporting and binding](../../specification/#7-runtime-rules), [live sync](../../apps/#7-live-sync-), and [presence and following](../../apps/#8-presence-and-following-).

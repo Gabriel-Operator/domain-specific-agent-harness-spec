@@ -1,0 +1,186 @@
+---
+title: Gabriel Operator skills
+description: A catalogue of Gabriel Operator authoring and operating skills, including individual action, node, and Page Builder references.
+---
+
+This catalogue maps **119 skill files** in Gabriel Operator’s `server/skills/` to the work they support. It lists 38 top-level skills and 81 child or example skills. A skill gives an agent instructions for authoring or operating a feature. Availability depends on the installed skill pack and workspace permissions. The [specification](../specification/) defines the portable contracts.
+
+- [Persona authoring and operations](#persona-authoring-and-operations)
+- [Apps and surfaces](#apps-and-surfaces)
+- [Media and localization](#media-and-localization)
+- [Workflow actions](#workflow-actions)
+- [Team graph nodes](#team-graph-nodes)
+- [Page Builder components](#page-builder-components)
+- [Page Builder structure](#page-builder-structure)
+- [Example skill](#example-skill)
+
+## Persona authoring and operations
+
+| Skill | What it covers |
+| --- | --- |
+| `gabriel-operator` | Discover the Gabriel workspace, tools, and persona operations available to the current agent. |
+| `persona-builder` | Create a persona from a reviewed definition. |
+| `digital-twin-page` | Maintain persona presentation, chat configuration, and release evals. |
+| `digital-twin-runner-workspace` | Maintain a runner-owned Git workspace and durable persona memory. |
+| `persona-workspaces` | Create and maintain isolated installations and adopt published persona updates. |
+| `persona-ontology` | Define domain entities, attributes, and relationships. |
+| `persona-domain-catalog` | Maintain the catalogue of persona domains and templates. |
+| `persona-organization-map` | Connect business units to teams and views in an organization map. |
+| `persona-team-manager` | Author Studio teams and register structured or goal playbooks. |
+| `persona-playbooks` | Connect playbooks to domain data, signals, reviewed persistence, and outcomes. |
+| `persona-integrations` | Configure persona chat, voice, and connector bindings. |
+| `persona-data-feeds` | Define versioned feeds, source workflows, and ontology mappings. |
+| `persona-signals` | Define conditions that can propose playbook work from observations. |
+| `persona-framework` | Assemble the operating loop across ontology, feeds, signals, playbooks, and outcomes. |
+| `persona-roi` | Measure outcomes and costs using accepted evidence. |
+| `list-builder` | Author and validate Git-backed list definitions. |
+| `pipeline-builder` | Author and validate record states, transitions, and guards. |
+| `todo-builder` | Define personal goals, boards, and tasks. |
+| `workflow-builder` | Build and validate workflows using the action references below. |
+| `team-agents` | Author the Page Builder orchestration graph using the node references below. |
+| `persona-sdk` | Connect applications to a persona through its authenticated API or MCP. |
+| `portable-persona-runtime` | Package a published persona and deploy it to a supported self-hosted runtime. |
+
+See [Personas and workspaces](../concepts/personas-and-workspaces/), [Teams and goals](../concepts/teams-and-goals/), and [Signals and evals](../concepts/signals-and-evals/).
+
+## Apps and surfaces
+
+| Skill | What it covers |
+| --- | --- |
+| `application` | Author Git-backed Gabriel applications and their interactive views. |
+| `chat-app-builder` | Define authenticated persona pages, navigation, components, and data points. |
+| `connector-app-builder` | Build and install a custom Studio interface with scoped connectors or team lists. |
+| `digital-twin-embed` | Configure the appearance of the persona embed. |
+| `landing-page-builder` | Author and validate a persona marketing page. |
+| `landing-page-markets` | Retired whole-page country variants. Current authoring uses per-section regions. |
+| `landing-page-regions` | Author per-section regional content for a landing page. |
+| `landing-page-translations` | Generate and validate language variants pinned to the source revision. |
+| `mobile-app-builder` | Configure and test a fixed-persona Flutter app. |
+| `page-builder` | Assemble a Page Builder configuration using the structure and component references below. |
+
+See [Records, pipelines, and apps](../concepts/records-and-apps/).
+
+## Media and localization
+
+| Skill | What it covers |
+| --- | --- |
+| `asset-library` | Maintain a generated asset library and movie manifests. |
+| `course-video-generation` | Generate and save persona course explainer films. |
+| `course-video-translations` | Generate translated course narration. |
+| `hyperframes-product-explainer` | Author product explainer films in Hyperframes. |
+| `media-execution` | Edit, caption, mix, and render existing media. |
+| `product-explainer-hardening` | Validate capture, provenance, and repeatable rendering for product explainers. |
+
+## Workflow actions
+
+These child references live under `workflow-builder/actions/`. Each describes one step type.
+
+| Skill | Step |
+| --- | --- |
+| `action-agent-card` | Attach an approved simulated purchase to a checkout and reconcile its order. |
+| `action-api-call` | Make a legacy HTTP request. |
+| `action-api-output` | Map prior step results into named workflow outputs. |
+| `action-blank-step` | Open an empty browser page as a starting point. |
+| `action-click` | Click a browser element. |
+| `action-coding-agent` | Run a coding agent in a sandbox. |
+| `action-computer-use-agent` | Run an agent in a desktop environment. |
+| `action-confirmation` | Pause for a human confirmation. |
+| `action-continuous-screenshots` | Capture browser frames on an interval. |
+| `action-data-feed` | Read a pinned persona data feed and return validated data. |
+| `action-data-source-read` | Read structured data from a configured source. |
+| `action-data-source-write` | Write structured data to a configured destination. |
+| `action-download` | Capture a file download triggered in the browser. |
+| `action-fill` | Replace the contents of a form field. |
+| `action-generate-media` | Generate an image, video, or audio asset. |
+| `action-goal` | Give a browser agent a goal and a step limit. |
+| `action-hover` | Move the pointer over a browser element. |
+| `action-image-response` | Capture page images as workflow outputs. |
+| `action-keyboard-type` | Type characters through the keyboard. |
+| `action-keypress` | Press a named key or submit a shortcut. |
+| `action-list-mapping` | Map step results to fields on a list. |
+| `action-llm-command` | Turn model interpretation of a page into browser commands. |
+| `action-llm-rest-api` | Call a model provider through its HTTP API. |
+| `action-llm` | Use model reasoning to inspect or act on a page. |
+| `action-manual-extract` | Extract structured data from the current page. |
+| `action-manual-scroll` | Scroll the page in a direction. |
+| `action-mcp-tool` | Call a tool exposed by an MCP server. |
+| `action-navigate` | Open a URL and optionally verify login state. |
+| `action-notification` | Route a workflow notification to a configured channel. |
+| `action-pdf-response` | Capture the page as a PDF output. |
+| `action-persona-capability` | Delegate a step to an existing persona capability. |
+| `action-rest-api` | Make a configured REST request with headers, authentication, and body. |
+| `action-screenshot` | Capture the current browser view. |
+| `action-scroll` | Scroll to a target element or offset. |
+| `action-select` | Choose an option from a select control. |
+| `action-stitch-videos` | Combine clips into a video output. |
+| `action-switch-tab` | Switch the active browser tab. |
+| `action-take-control` | Hand browser control to a person. |
+| `action-type` | Type text into a target element using keystroke events. |
+| `action-upload` | Attach a file to a browser upload control. |
+| `action-wait` | Wait for a configured duration. |
+
+## Team graph nodes
+
+These child references live under `team-agents/nodes/`. The graph is used by Page Builder orchestration. Several entries document older graphs or schema-only nodes.
+
+| Skill | Node |
+| --- | --- |
+| `node-agent` | Call a native browser or MCP connector. |
+| `node-agent-approval` | Run an agent whose external tool call requires approval. |
+| `node-aggregate` | Combine variables into an object or array in a legacy graph. |
+| `node-condition` | Branch on a value or model decision. |
+| `node-control-flow` | Configure iteration or a conditional loop. |
+| `node-council` | Delegate and review work with a supervisor, judge, or synthesizer. |
+| `node-database` | Describe the schema-only database node. |
+| `node-delay` | Wait in a legacy graph. |
+| `node-end` | Finish a run and shape its response or persisted output. |
+| `node-endpoint` | Call another orchestration endpoint as a sub-workflow. |
+| `node-fork` | Split a legacy graph into parallel paths. |
+| `node-generate-media` | Generate media from workflow variables. |
+| `node-human-choice` | Pause for a person to choose from explicit options. |
+| `node-join` | Synchronize paths from a legacy fork. |
+| `node-knowledge-base` | Describe the schema-only knowledge capture node. |
+| `node-llm-agent` | Configure an agent with tools and input or output processors. |
+| `node-loop` | Describe iteration in a legacy graph. |
+| `node-memory` | Describe memory in a legacy graph. |
+| `node-start` | Define the entry point and input schema. |
+| `node-structured-output` | Produce JSON that conforms to declared fields or a schema. |
+| `node-suspend-resume` | Wait for human input or resume at a scheduled time. |
+
+## Page Builder components
+
+These child references live under `page-builder/components/`.
+
+| Skill | Components |
+| --- | --- |
+| `component-actions-ui` | Buttons, links, action cards, dialogs, and form groups. |
+| `component-ai-analytics` | AI monitoring, summaries, insights, and brand analytics. |
+| `component-auth-forms` | Login, signup, recovery, and onboarding forms. |
+| `component-charts` | Charts and key metric cards. |
+| `component-content` | Text, article lists, editors, and data lists. |
+| `component-health-audit` | Site health, performance, and audit issues. |
+| `component-integrations` | Integration setup and account connection controls. |
+| `component-landing` | Landing page sections and navigation. |
+| `component-nav-layout` | Sidebars, dashboard headers, and filters. |
+| `component-tables` | Tables for records, rankings, pages, and tracked queries. |
+| `component-topics` | Tracked topics and platform performance. |
+
+## Page Builder structure
+
+These child references live under `page-builder/structural/`.
+
+| Skill | Configuration |
+| --- | --- |
+| `app-config` | App settings for billing, monitoring, authentication, and models. |
+| `collections-endpoints` | Data collections and endpoints. |
+| `data-binding` | Live data bindings for component properties. |
+| `event-system` | Component events and actions. |
+| `page-structure` | Pages, routes, navigation, and grids. |
+| `template-assembly` | Template assembly, seed data, and collection links. |
+| `theme-config` | Colors, typography, and appearance. |
+
+## Example skill
+
+| Skill | Example |
+| --- | --- |
+| `funding-news-preview` | A bundled Workflow Builder example for previewing funding news. |

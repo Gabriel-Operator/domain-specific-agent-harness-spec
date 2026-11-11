@@ -44,6 +44,14 @@ One distinction runs through this page. A **connector** is an operation contract
 
 This section is extracted from one persona that uses teams and from the published [team definition schema](https://github.com/Gabriel-Operator/persona-team-manager/blob/main/references/studio-teams.schema.json).
 
+### From goals to playbooks
+
+In Gabriel Operator, a person gives a team a **goal** with an outcome and completion criteria. The team can plan with playbooks it already has. An author can also draft a playbook from a goal and register it for reuse after review. The plan can then run within the workspace’s connector grants and execution limits.
+
+Playbooks declare the operations they need. During a run, authorized connector results and agent outputs can be mapped to named fields on a team list. Apps read that list or use their own declared connector operations. A pipeline transition can start another playbook within its configured limits.
+
+[Follow the homepage walkthrough](../#how-it-works) for Lane’s example.
+
 ## 2. Connector requirements <Badge text="Extracted" variant="success" />
 
 A playbook declares each service it needs as a requirement.
@@ -174,7 +182,7 @@ Rules:
 
 One round of the loop:
 
-1. A agent's playbook reads from a service through a connector requirement.
+1. An agent's playbook reads from a service through a connector requirement.
 2. The agent works on what it read and prepares a result.
 3. A step that needs approval waits for a person's decision.
 4. A publish step writes the accepted fields to the team list.

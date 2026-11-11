@@ -1,0 +1,20 @@
+---
+title: Records, pipelines, and apps
+description: How connectors and agents publish shared data and how a team app displays it.
+---
+
+Connector results and agent outputs become shared work when a playbook publishes selected fields into a list. A **list** defines records and fields. A **pipeline** defines the stages and transitions of a record. An **app** renders those records for the team and can let a person act on them.
+
+## Follow one record
+
+1. The research playbook reads evidence about Northwind from a connector and maps approved fields for publication.
+2. The outreach playbook sends the reviewed message and publishes the outcome. The prospect record moves to Contacted.
+3. Pilot prospects displays the record from the same list. With live sync, open views receive the change. A configured stage transition can start another permitted playbook.
+
+A publish step declares which fields may leave the private run. A pipeline transition governs a change of state, while a connector operation governs an external effect. Both can affect what a person sees in the app.
+
+## Built-in views and custom apps
+
+A list-backed grid or board is a declarative view. Its definition names the list, fields, and optional pipeline. A custom app package has its own manifest and interface. A workspace installation binds the package to permitted resources and connector accounts. The package can be versioned independently of the team that installs it.
+
+See [lists, pipelines, and apps](../../apps/#4-lists-pipelines-and-apps-), [custom app packages](../../apps/#6-custom-app-packages-), and [live sync](../../apps/#7-live-sync-). [`list-builder`, `pipeline-builder`, and `connector-app-builder`](../../skills/) cover authoring the corresponding resources.

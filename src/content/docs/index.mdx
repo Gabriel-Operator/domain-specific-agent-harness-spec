@@ -1,14 +1,25 @@
 ---
-title: Persona Runtime Spec
-description: An open specification for runtimes that load personas and coordinate work through an agent harness.
+title: Domain-Specific Agent Harness Spec
+description: An open specification for defining a domain, turning team goals into playbooks, and running them with an agent harness.
 template: splash
 hero: {}
 ---
 
 import CopyPrompt from '../../components/CopyPrompt.astro';
 import DocCategories from '../../components/DocCategories.astro';
+import HarnessWalkthrough from '../../components/HarnessWalkthrough.astro';
 
-## Explore the documentation
+## Why a domain-specific harness?
+
+An agent can research a prospect and draft an email. A team needs to agree on what makes the prospect qualified, who can approve the email, and where the result goes. Follow Lane’s prospecting workflow to see how those rules become part of the harness.
+
+<HarnessWalkthrough />
+
+<span id="explore-the-documentation"></span>
+
+## Explore the specification
+
+Start with the definitions, follow a run, or look up the Gabriel Operator skills that author and operate these resources.
 
 <DocCategories />
 
@@ -30,12 +41,6 @@ See [Terms and standards](./standards/) for the glossary and how Agent Skills, M
 ## Inside a persona
 
 [**`SKILL.md`**](./specification/#2-skillmd-) provides instructions. [**Definition files**](./specification/#6-definition-files-) describe the data and workflows. The [**registry**](./specification/#5-registry-) pins the Git revision and fingerprint of each linked definition.
-
-<span id="how-does-a-persona-work"></span>
-
-## From Git to a running workspace
-
-A runtime [verifies a persona on import](./specification/#5-registry-), binds workspace resources, and [reports which steps it can execute](./specification/#71-capability-report-). It can use an agent harness for work that requires model reasoning or tool use. The harness integration depends on the runtime.
 
 Draft 0.1 comes from personas running on **Gabriel Operator**. The [Portable Persona Runtime installer](https://github.com/Gabriel-Operator/portable-persona-runtime) deploys published personas to a self-hosted runtime appliance.
 

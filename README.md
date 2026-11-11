@@ -1,12 +1,21 @@
-# Persona Runtime Spec
+# Domain-Specific Agent Harness Spec
 
-**A runtime contract for agents and teams that run on an existing harness.**
+**A specification for giving an agent harness a domain, a team, and a way to carry out its goals.**
 
 A **persona** is a versioned Git definition of a role or team, including its instructions, playbooks, data definitions, approval requirements, and evals. The **runtime** verifies those definitions, binds workspace resources, and coordinates work with an **agent harness**. The harness runs the agent loop and coordinates model calls and tool use.
 
 [Read the draft](https://gabriel-operator.github.io/persona-spec/) · [Specification](src/content/docs/specification.mdx) · [Examples](src/content/docs/examples.mdx) · [Terms and standards](src/content/docs/standards.mdx)
 
 > **Status: draft 0.1.** The format comes from running Gabriel Operator installations and can still change.
+
+## How it works
+
+1. **Define a persona.** Describe the domain, its data, instructions, and rules. Create a team with roles for its agents.
+2. **Give the team a goal.** State the outcome and completion criteria. Draft a playbook from the goal or build a plan from registered playbooks.
+3. **Bind and run.** The workspace supplies the harness and authorized connector accounts. Agents run the playbooks and wait at steps that require approval.
+4. **Publish results.** Connector data and accepted agent changes become shared records that apps can display. A pipeline transition can start the next authorized playbook.
+
+[Read the illustrated story](https://gabriel-operator.github.io/persona-spec/#why-a-domain-specific-harness) to see where a single agent run falls short and how a team shares its rules and results.
 
 ## Persona, runtime, harness
 
@@ -49,6 +58,8 @@ The draft marks features **Extracted** (used in Gabriel today), **Proposed** (ne
 | --- | --- |
 | [Specification](src/content/docs/specification.mdx) | Folder layout, stable keys, registry, definition files, and runtime rules |
 | [Apps and connectors](src/content/docs/apps.mdx) | Connector operations, shared records, app packages, and live sync |
+| [Concept reference](src/content/docs/concepts/index.mdx) | Personas, teams, goals, connectors, apps, and runtime behavior |
+| [Skill catalogue](src/content/docs/skills.mdx) | Gabriel Operator authoring skills and individual action, node, and component references |
 | [Examples](src/content/docs/examples.mdx) | A tour of the Lane team and its prospect workflow |
 | [Terms and standards](src/content/docs/standards.mdx) | Vocabulary and how Agent Skills, MCP, A2A, and Standard Agents fit |
 

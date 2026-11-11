@@ -1,10 +1,13 @@
-# Persona Runtime Spec
+# Domain-Specific Agent Harness Spec
 
-> Draft 0.1 of a runtime contract for loading personas and coordinating work through an agent harness. A persona is the versioned definition of a role or team. The runtime loads it and binds workspace resources. The harness runs the agent loop.
+> Draft 0.1 of a specification for giving an agent harness domain definitions and a team. A goal can lead to a new playbook or use registered playbooks. The runtime binds the harness and connector accounts. Selected connector data and agent updates reach apps through shared records.
 
 - [Overview](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/README.md): How personas, runtimes, and harnesses fit together.
+- [Homepage story](https://gabriel-operator.github.io/persona-spec/#why-a-domain-specific-harness): Why a team needs shared rules and how a domain-specific harness carries a goal from plan to published records.
 - [Specification](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/specification.mdx): Folder structure, SKILL.md, definitions-only rule, resource keys, registry, and runtime rules.
 - [Apps and connectors](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/apps.mdx): Connector requirements, steps, lists, pipelines, app packages, live sync, and presence.
+- [Concept reference](https://gabriel-operator.github.io/persona-spec/concepts/): Topic pages that map Gabriel Operator concepts and Studio views to the draft.
+- [Skill catalogue](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/skills.mdx): Individual Gabriel Operator skills and child references.
 - [Examples](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/examples.mdx): Studio tour and a prospect workflow from research to onboarding.
 - [Terms and standards](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/standards.mdx): Terminology, Agent Skills, MCP, A2A, and the Standard Agent Specification.
 

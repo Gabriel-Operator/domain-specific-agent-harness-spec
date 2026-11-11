@@ -1,6 +1,6 @@
-# Contributing to the Persona Runtime Spec
+# Contributing to the Domain-Specific Agent Harness Spec
 
-Thank you for your interest in the Persona Runtime Spec. This guide explains how to take part and where each kind of feedback belongs.
+Thank you for your interest in the Domain-Specific Agent Harness Spec. This guide explains how to take part and where each kind of feedback belongs.
 
 ## Kinds of contribution
 

@@ -1,41 +1,50 @@
 ---
 import { Icon } from '@astrojs/starlight/components';
+
+const groups = [
+  {
+    title: 'Define a persona',
+    icon: 'open-book',
+    links: [
+      { text: 'Personas and workspaces', href: './concepts/personas-and-workspaces/' },
+      { text: 'Folder structure', href: './specification/#1-folder-structure-' },
+      { text: 'Registry and pinned revisions', href: './specification/#5-registry-' },
+      { text: 'Definitions and root skill', href: './specification/#2-skillmd-' },
+    ],
+  },
+  {
+    title: 'Run a team',
+    icon: 'rocket',
+    links: [
+      { text: 'Teams, goals, and playbooks', href: './concepts/teams-and-goals/' },
+      { text: 'Connectors and approvals', href: './concepts/connectors-and-approvals/' },
+      { text: 'Runtime rules', href: './specification/#7-runtime-rules' },
+      { text: 'Runs and collaboration', href: './concepts/runs-and-collaboration/' },
+    ],
+  },
+  {
+    title: 'Publish and extend',
+    icon: 'window',
+    links: [
+      { text: 'Records, pipelines, and apps', href: './concepts/records-and-apps/' },
+      { text: 'Live sync', href: './apps/#7-live-sync-' },
+      { text: 'Gabriel Operator skills', href: './skills/' },
+      { text: 'Signals, evidence, and evals', href: './concepts/signals-and-evals/' },
+      { text: 'Worked examples', href: './examples/' },
+    ],
+  },
+] as const;
 ---
 
-<div class="ap-categories not-content">
-  <a class="ap-category" href="./specification/">
-    <div class="ap-category-preview" aria-hidden="true">
-      <div class="ap-mini ap-mini-tree">
-        <span><Icon name="seti:folder" /> persona-lane/</span>
-        <span><Icon name="seti:markdown" /> SKILL.md</span>
-        <span><Icon name="seti:json" /> registry.json</span>
-      </div>
-    </div>
-    <strong>Specification <Icon name="right-arrow" /></strong>
-    <p>Persona definitions, import checks, and runtime requirements.</p>
-  </a>
-  <a class="ap-category" href="./apps/">
-    <div class="ap-category-preview" aria-hidden="true">
-      <div class="ap-mini-flow">
-        <div><Icon name="puzzle" /> Connector</div>
-        <span></span>
-        <div><Icon name="rocket" /> Agent</div>
-        <span></span>
-        <div><Icon name="document" /> List</div>
-      </div>
-    </div>
-    <strong>Apps and connectors <Icon name="right-arrow" /></strong>
-    <p>Connect services to playbooks and share records through apps.</p>
-  </a>
-  <a class="ap-category" href="./examples/">
-    <div class="ap-category-preview" aria-hidden="true">
-      <div class="ap-mini ap-mini-run">
-        <span><Icon name="approve-check-circle" /> Research prospect</span>
-        <span><Icon name="approve-check-circle" /> Draft outreach</span>
-        <span><Icon name="warning" /> Await approval</span>
-      </div>
-    </div>
-    <strong>Examples <Icon name="right-arrow" /></strong>
-    <p>Follow a team of agents through a real prospecting workflow.</p>
-  </a>
-</div>
+<nav class="ap-reference-menu not-content" aria-label="Specification topics">
+  {groups.map((group) => (
+    <section class="ap-reference-group">
+      <h3><Icon name={group.icon} /> {group.title}</h3>
+      <ul>
+        {group.links.map(({ text, href }) => (
+          <li><a href={href}>{text}<Icon name="right-arrow" /></a></li>
+        ))}
+      </ul>
+    </section>
+  ))}
+</nav>
