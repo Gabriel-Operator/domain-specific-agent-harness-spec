@@ -1,0 +1,145 @@
+---
+// Agents, connectors and apps working on the same list. The diagram walks through one round of the loop: each step
+// lights the parts it involves. Without scripts it is a static picture with a numbered list.
+const nodes = [
+	{
+		id: 'connector',
+		title: 'Connector',
+		text: 'An operation contract',
+		where: 'requirements',
+		icon: '<path d="M9 3v5M15 3v5M7 8h10v3a5 5 0 0 1-10 0zM12 16v5"/>',
+	},
+	{
+		id: 'agent',
+		title: 'Agent',
+		text: 'A bot with a playbook',
+		where: 'bots',
+		icon: '<rect x="5" y="8" width="14" height="11" rx="2.5"/><path d="M12 8V4M9.5 13v1.5M14.5 13v1.5M3 13.5h2M19 13.5h2"/>',
+	},
+	{
+		id: 'list',
+		title: 'List',
+		text: 'Shared records',
+		where: 'resources · list',
+		icon: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M9 5v14"/>',
+	},
+	{
+		id: 'app',
+		title: 'App',
+		text: 'The view people use',
+		where: 'resources · app',
+		icon: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/>',
+	},
+];
+
+// `links` are the gaps between neighbouring parts, counted from the left.
+const steps = [
+	{ nodes: 'connector agent', links: '0', text: 'A bot’s playbook reads from a service through a connector requirement.' },
+	{ nodes: 'agent', links: '', text: 'The bot works on what it read and prepares a result.' },
+	{ nodes: 'agent', links: '', wait: true, text: 'A step that needs approval waits for a person’s decision.' },
+	{ nodes: 'agent list', links: '1', text: 'A publish step writes the accepted fields to the team list.' },
+	{ nodes: 'list app', links: '2', text: 'The runtime announces the change, and every open view of the list updates.' },
+	{
+		nodes: 'app list agent',
+		links: '2 1',
+		back: true,
+		text: 'A person moves the record on in the app. The transition can start the next playbook.',
+	},
+];
+---
+
+<div class="ps-loop not-content">
+	<div class="ps-loop-row">
+		{
+			nodes.map((node, index) => (
+				<>
+					{index > 0 && <span class="ps-loop-link" data-link={index - 1} aria-hidden="true" />}
+					<div class="ps-loop-node" data-node={node.id}>
+						<svg viewBox="0 0 24 24" aria-hidden="true" set:html={node.icon} />
+						<strong>{node.title}</strong>
+						<span>{node.text}</span>
+						<code>{node.where}</code>
+					</div>
+				</>
+			))
+		}
+	</div>
+	<ol class="ps-loop-steps">
+		{
+			steps.map((step, index) => (
+				<li data-nodes={step.nodes} data-links={step.links} data-wait={step.wait ? '' : undefined} data-back={step.back ? '' : undefined}>
+					<span class="n">{index + 1}</span>
+					<span>{step.text}</span>
+				</li>
+			))
+		}
+	</ol>
+</div>
+
+<script>
+	const stepMs = 2800;
+	const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+	for (const loop of document.querySelectorAll<HTMLElement>('.ps-loop')) {
+		const steps = [...loop.querySelectorAll<HTMLElement>('.ps-loop-steps li')];
+		const nodes = [...loop.querySelectorAll<HTMLElement>('.ps-loop-node')];
+		const links = [...loop.querySelectorAll<HTMLElement>('.ps-loop-link')];
+		let current = -1;
+		let timer = 0;
+		let held = false;
+
+		const show = (index: number) => {
+			current = index;
+			const step = steps[index];
+			const active = (step?.dataset.nodes ?? '').split(' ');
+			const lit = (step?.dataset.links ?? '').split(' ');
+			const waiting = step ? 'wait' in step.dataset : false;
+			const back = step ? 'back' in step.dataset : false;
+			steps.forEach((item, at) => item.classList.toggle('is-active', at === index));
+			for (const node of nodes) {
+				const on = active.includes(node.dataset.node ?? '');
+				node.classList.toggle('is-active', on && !waiting);
+				node.classList.toggle('is-waiting', on && waiting);
+			}
+			for (const link of links) {
+				const on = lit.includes(link.dataset.link ?? '');
+				link.classList.toggle('is-active', on);
+				link.classList.toggle('is-back', on && back);
+			}
+		};
+
+		const stop = () => {
+			window.clearInterval(timer);
+			timer = 0;
+		};
+
+		const start = () => {
+			if (timer || held || calm.matches) return;
+			if (current < 0) show(0);
+			timer = window.setInterval(() => show((current + 1) % steps.length), stepMs);
+		};
+
+		// Pointing at a step holds the diagram on it.
+		steps.forEach((step, index) => {
+			step.addEventListener('mouseenter', () => {
+				held = true;
+				stop();
+				show(index);
+			});
+			step.addEventListener('mouseleave', () => {
+				held = false;
+				start();
+			});
+		});
+
+		new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) start();
+					else stop();
+				}
+			},
+			{ threshold: 0.3 },
+		).observe(loop);
+	}
+</script>

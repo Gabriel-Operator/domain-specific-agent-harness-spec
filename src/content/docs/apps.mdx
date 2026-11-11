@@ -1,0 +1,314 @@
+---
+title: Apps and connectors
+description: How a persona packages agents, connectors and apps so they work on the same data, and how a runtime keeps every view current.
+---
+
+import { Aside, Badge } from '@astrojs/starlight/components';
+import Loop from '../../components/Loop.astro';
+
+<Aside type="caution" title="Draft 0.1">
+  This page is a profile. A persona does not have to use it, and a runtime does not have to support it. Sections carry the same labels as the [Specification](../specification/): <Badge text="Extracted" variant="success" />, <Badge text="Proposed" variant="caution" /> and <Badge text="Planned" variant="note" />.
+</Aside>
+
+A persona can carry three parts that work on the same data.
+
+- **Agents** carry out playbooks.
+- **Connectors** are the operations a playbook may call on an outside service.
+- **Apps** are the views people use to see the result and move it on.
+
+A runtime keeps them in step. When an agent or a person changes a record, every open view of it updates.
+
+<Loop />
+
+## 1. The parts <Badge text="Extracted" variant="success" />
+
+All of these are declared in one definition file, `assets/studio-teams.json`.
+
+| Part | What it is | Where it is declared |
+| --- | --- | --- |
+| Agent | A team member that carries out one playbook | `teams[].bots` |
+| Connector requirement | An operation contract: which service, and which operations | `playbooks[].requirements` |
+| List | Shared records | `resources[]`, kind `list` |
+| Pipeline | The stages a record moves through | `resources[]`, kind `pipeline` |
+| App | A view over a list | `resources[]`, kind `app` |
+| Connection | A private, authenticated account | Never in a definition. The workspace holds it. |
+
+One distinction runs through this page. A **connector** is an operation contract. A **connection** is a private authenticated account. A definition holds the first and never the second.
+
+This section is extracted from one persona that uses teams and from the published [team definition schema](https://github.com/Gabriel-Operator/persona-team-manager/blob/main/references/studio-teams.schema.json).
+
+## 2. Connector requirements <Badge text="Extracted" variant="success" />
+
+A playbook declares each service it needs as a requirement.
+
+```json
+{
+  "id": "calendar",
+  "label": "Google Calendar",
+  "context": "personal",
+  "providers": ["googlecalendar"],
+  "operations": ["upcoming"],
+  "optional": false
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `id` | The name steps and apps use to refer to this requirement. |
+| `label` | A name for people. |
+| `context` | `personal`: the account of the person the run acts for. `app`: a shared destination set up for one of the team's apps, named in `appId`. |
+| `providers` | The services that can satisfy the requirement. |
+| `operations` | The named operations the playbook may call. |
+| `optional` | Whether the playbook can run without it. |
+
+Rules:
+
+- A requirement MUST NOT contain a credential, an account identifier or a connection identifier.
+- A runtime resolves each requirement to a connection that the person or the team has granted. A requirement that is not optional and has no connection holds the step that needs it.
+- A playbook MUST declare every operation it calls. A step refers to a requirement by `id` and to one of its declared operations.
+
+## 3. Steps that use a connector <Badge text="Extracted" variant="success" />
+
+A step of type `connector_operation` calls one declared operation.
+
+```json
+{
+  "id": "upcoming",
+  "title": "Discover accepted upcoming occurrences",
+  "type": "connector_operation",
+  "dependsOn": [],
+  "operation": {
+    "requirementId": "calendar",
+    "operationId": "upcoming",
+    "values": { "from": "/input/from", "until": "/input/until" },
+    "effect": "read"
+  },
+  "outputFields": { "meetings": "/meetings" },
+  "requiresApproval": false
+}
+```
+
+| Step type | What it does |
+| --- | --- |
+| `connector_operation` | Calls one operation of one requirement. |
+| `reason` | A model works on what earlier steps produced. |
+| `publish_list` | Writes named fields to a team list. |
+| `publish_page` | Writes a page. |
+
+An operation states its `effect`:
+
+| Effect | Meaning |
+| --- | --- |
+| `read` | Fetches from the service and changes nothing there. |
+| `write` | Changes data in the service. |
+| `process` | Starts work in the service that finishes later. |
+
+Rules:
+
+- `values` and `outputFields` are JSON Pointers into the run's input and into what earlier steps observed. They are not expressions, and a runtime MUST NOT evaluate them as code.
+- A step with `"requiresApproval": true` waits for a person's decision before it runs.
+- A step MAY name a `completion`: a status operation the runtime checks until the work succeeds, fails or reaches a deadline.
+- A `publish_list` step names each field it writes. Nothing else from the run reaches the list.
+
+```json
+{
+  "id": "cycle",
+  "type": "publish_list",
+  "publication": {
+    "target": "meeting-cycles",
+    "fields": {
+      "cycle_id": "/input/occurrence",
+      "status": "/input/status",
+      "summary": "/input/summary",
+      "next_action": "/input/nextAction"
+    }
+  }
+}
+```
+
+## 4. Lists, pipelines and apps <Badge text="Extracted" variant="success" />
+
+Lists, pipelines and apps are team resources. Each has the same envelope.
+
+```json
+{
+  "key": "app.lane.meeting-cycles",
+  "teamId": "lane-meeting-follow-through",
+  "revision": 1,
+  "archived": false,
+  "kind": "app",
+  "definition": {
+    "name": "Meeting follow-through",
+    "description": "Shared meeting outcomes, evidence and next actions.",
+    "listRef": "list.lane.meeting-cycles",
+    "view": "board",
+    "fields": ["cycle_id", "attendee_email", "start_at", "status", "summary", "next_action"],
+    "pipelineRef": "pipeline.lane.meeting-cycles",
+    "requirements": ["calendar", "mail", "briefing", "capture", "contacts"]
+  }
+}
+```
+
+| Field of an app | Description |
+| --- | --- |
+| `listRef` | The list the app shows. |
+| `view` | `grid` or `board`. |
+| `fields` | The columns of the list the app shows, in order. |
+| `pipelineRef` | Optional. The pipeline whose stages the board uses. |
+| `requirements` | The connector requirements the app depends on. |
+
+Rules:
+
+- An app of this kind is a view. It contains no code.
+- `key` is a [resource key](../specification/#4-resource-keys-). Resources refer to each other by key.
+- A pipeline transition MAY name a playbook to start. It states the most credits and model calls that one start may use, and which fields the result may share.
+
+## 5. How the parts stay in step <Badge text="Proposed" variant="caution" />
+
+One round of the loop:
+
+1. A bot's playbook reads from a service through a connector requirement.
+2. The bot works on what it read and prepares a result.
+3. A step that needs approval waits for a person's decision.
+4. A publish step writes the accepted fields to the team list.
+5. The runtime announces the change, and every open view of the list updates.
+6. A person moves the record to the next stage in the app. The transition can start the next playbook.
+
+Steps 1 to 4 and step 6 describe how the extracted parts already work together. Step 5 is the guarantee this draft proposes:
+
+- When a record in a list changes, a runtime that supports [live sync](#7-live-sync-) SHOULD announce it, so an open view updates without a reload.
+- An agent and a person change records through the same definitions. Neither has a private path that skips validation, approval or the list's own rules.
+- Only the fields a step or a binding names leave their private source.
+
+## 6. Custom app packages <Badge text="Extracted" variant="success" />
+
+When a grid or a board is not enough, an app can bring its own interface. It is a package: a manifest, the compiled files of the interface, and optional sample data for previews.
+
+```json
+{
+  "manifest": {
+    "schemaVersion": 1,
+    "kind": "studio-connector-app",
+    "name": "Follow-up board",
+    "description": "Shows meeting outcomes and drafts a follow-up on request.",
+    "source": {},
+    "view": "board",
+    "entities": [],
+    "actions": [],
+    "ui": { "kind": "bundle", "entrypoint": "mcp-app.html" },
+    "monitoring": [],
+    "state": true,
+    "playbooks": [
+      {
+        "key": "draft-follow-up",
+        "label": "Draft a follow-up",
+        "inputFields": ["contact"],
+        "maxCredits": 2,
+        "maxModelCalls": 8
+      }
+    ]
+  },
+  "files": { "mcp-app.html": "…" }
+}
+```
+
+| Manifest field | Description |
+| --- | --- |
+| `source`, `connectors` | The services the app needs. Each is named by a key. No account is named. |
+| `entities` | The things the app shows, each with a read operation and an optional write. |
+| `actions` | Other operations the interface may call. |
+| `ui` | `generated`: the runtime draws the entities. `bundle`: the package's own interface. `mcp-resource`: an interface the service itself provides. |
+| `state` | Whether the app may save one JSON document of its own. |
+| `playbooks` | The playbooks the interface may start, each with a cap for one start. |
+| `monitoring` | Events in the service that the owner may turn into rules. |
+
+The interface reaches data only through calls the manifest declares. A runtime MUST reject any other call.
+
+| Call | Allowed when |
+| --- | --- |
+| `gabriel_connector_read`, `gabriel_connector_write`, `gabriel_connector_action` | The entity or action is declared. |
+| `gabriel_app_list_read`, `gabriel_app_list_write` | An entity is bound to a list. Writing needs a binding in the `outbound` or `both` direction. |
+| `gabriel_app_state_read`, `gabriel_app_state_write` | `state` is true. The document is one JSON object of at most 256 KB. |
+| `gabriel_app_playbook_start`, `gabriel_app_playbook_status` | The playbook key is declared. |
+
+Rules:
+
+- A package is at most 4 MB and 100 files.
+- The interface runs in a sandbox: scripts only, no network access, no frames and no credential. Code in a package runs in that sandbox and nowhere else. It cannot define what the runtime does.
+- Each operation pins the tool it calls with a fingerprint of the tool's schema. If the schema changes, the runtime holds the work.
+- In an operation's arguments, only values written as `$`-prefixed JSON Pointers can vary. Everything else is fixed, including which remote resource is used.
+- A write carries the revision it expects and a request identifier. A runtime MUST refuse a write against a stale revision, and MUST NOT repeat a write whose outcome is uncertain.
+- One playbook start costs at most its declared cap. The owner sets the remaining allowance, and the interface cannot raise it.
+
+The full format is the published [package schema](https://github.com/Gabriel-Operator/connector-app-builder/blob/main/skills/connector-app-builder/references/connector-package.schema.json).
+
+### Where a package lives
+
+The [definitions-only rule](../specification/#3-definitions-only-) still holds: a persona's definition files contain no scripts. A package is a separate artifact.
+
+Today a package belongs to the person who created it and is installed into a team. It is not part of the persona folder and does not appear in the registry.
+
+Carrying a package inside a persona, pinned by fingerprint like any linked definition, is <Badge text="Proposed" variant="caution" />.
+
+## 7. Live sync <Badge text="Extracted" variant="success" />
+
+A runtime tells clients what changed through a stream of events.
+
+```json
+{
+  "event_id": "evt_3f9c…",
+  "type": "gabriel.resource.updated",
+  "created_at": 1794264496,
+  "scope": { "type": "workspace", "id": "…" },
+  "data": {}
+}
+```
+
+| Transport | Use |
+| --- | --- |
+| Server-sent events, `GET /api/v1/events` | One-way stream that resumes after a disconnect. |
+| WebSocket, `/api/v1/realtime` | Two-way. The client subscribes by sending a message. |
+
+A client chooses what it receives by topic, and says where to resume:
+
+```json
+{ "type": "gabriel.subscription.create", "topics": ["gabriel.resource.*"], "after": "evt_3f9c…" }
+```
+
+Rules:
+
+- A runtime MUST limit a subscription to the topics the client's credential allows.
+- `after` is the identifier of the last event the client handled. The runtime replays what followed it.
+- When the runtime can no longer replay from that point, it sends `gabriel.replay.reset_required`. The client MUST reload its state. It MUST NOT assume it missed nothing.
+- A browser MUST NOT hold a long-lived credential. It connects with a short-lived, single-use secret that a server mints for it.
+
+This section is extracted from the published [persona SDK](https://github.com/Gabriel-Operator/persona-sdk). Which events a runtime must send for lists, runs and connections is <Badge text="Planned" variant="note" />.
+
+## 8. Presence and following <Badge text="Proposed" variant="caution" />
+
+Presence tells each person who else is working in the same team, and where. Following shows one person exactly what another sees. Both are separate from live sync: presence describes people, not data, and is never stored.
+
+Each participant shares a small state with the others:
+
+| Field | Description |
+| --- | --- |
+| `user` | Who they are. |
+| `tab` | The part of the team they have open. |
+| `pointer` | Where their pointer is, in canvas or panel coordinates, or nothing. |
+| `click` | Their latest press, with a counter so it is shown once and never replayed. |
+| `view` | What they see: which item is open, which side panels are open, the canvas position and zoom, and how far they have scrolled. |
+
+Rules:
+
+- Following shows. It never acts. A follower MUST NOT apply anything that starts something, such as joining a call or adding a playbook.
+- A follower's own access still applies. Following cannot open a place the follower may not open.
+- A client MUST check a received view before applying it, and drop anything malformed or oversized.
+- Presence MUST NOT be written into a definition, a record or a run.
+
+This section describes one client. In it, presence travels as shared awareness state on the collaboration connection, and the keys inside `view` belong to that client. A shape that other clients can share is not yet proposed.
+
+## 9. Open questions
+
+- **Names.** The interface calls and the events carry the `gabriel` prefix of the runtime they were extracted from. Neutral names are undecided.
+- **Packaging.** Team definitions live in one file that the registry does not pin. Whether teams, and custom app packages, become linked definitions is undecided.
+- **Agents in presence.** Whether a running agent appears to people as a participant is not specified.

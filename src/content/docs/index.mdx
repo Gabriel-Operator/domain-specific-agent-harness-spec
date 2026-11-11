@@ -12,6 +12,7 @@ import CopyPrompt from '../../components/CopyPrompt.astro';
 import Faq from '../../components/Faq.astro';
 import Flow from '../../components/Flow.astro';
 import Layers from '../../components/Layers.astro';
+import Loop from '../../components/Loop.astro';
 import Principles from '../../components/Principles.astro';
 import Story from '../../components/Story.astro';
 
@@ -65,6 +66,14 @@ Each part has a section in the specification. The label shows how settled it is.
 
 <Flow />
 
+## Agents, connectors and apps
+
+<p class="ps-lead">A persona can carry the agents that do the work, the connectors they may call and the apps people use to see the result. A runtime keeps all three in step.</p>
+
+<div class="ps-wide"><Loop /></div>
+
+[Apps and connectors](./apps/) specifies each part, the package format for a custom interface, the event stream that keeps every view current, and presence.
+
 ## Built on Agent Skills
 
 A persona folder is an [Agent Skill](https://agentskills.io). Its `SKILL.md` follows the Agent Skills format, so any skills-compatible agent can already discover a persona and read its instructions.
@@ -93,6 +102,7 @@ A runtime does not need to support every part of a persona. It must say which pa
 
 <CardGrid>
   <LinkCard title="Specification" description="The draft format: folder layout, registry, definitions and runtime rules." href="./specification/" />
+  <LinkCard title="Apps and connectors" description="Agents, connectors and apps on the same data, with live sync and presence." href="./apps/" />
   <LinkCard title="Examples" description="Each concept shown through a persona that uses it." href="./examples/" />
   <LinkCard title="Other standards" description="Agent Skills, the Model Context Protocol and the Standard Agent Specification." href="./standards/" />
   <LinkCard title="Contribute on GitHub" description="Report a problem or propose a change to the specification." href="https://github.com/Gabriel-Operator/persona-spec" />

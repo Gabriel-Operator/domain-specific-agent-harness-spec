@@ -1261,6 +1261,148 @@ html:not(.ps-js) .ps-registry-check span {
 	color: var(--ps-muted);
 }
 
+/* ---------- Agents, connectors and apps: one round of the loop ---------- */
+
+.ps-loop {
+	margin-top: 1.5rem;
+	padding: 1.1rem;
+	border: 1px solid var(--ps-line);
+	border-radius: 14px;
+	background-color: color-mix(in srgb, var(--ps-surface) 45%, var(--ps-panel));
+	background-image: radial-gradient(circle, var(--ps-line) 0.9px, transparent 1.2px);
+	background-size: 14px 14px;
+}
+
+.ps-loop-row {
+	display: grid;
+	grid-template-columns: 1fr 2rem 1fr 2rem 1fr 2rem 1fr;
+	align-items: stretch;
+}
+
+.ps-loop-node {
+	min-width: 0;
+	padding: 0.8rem 0.85rem 0.85rem;
+	border: 1px solid var(--ps-line-strong);
+	border-radius: 10px;
+	background: var(--ps-panel);
+	transition:
+		border-color 0.3s ease,
+		background-color 0.3s ease,
+		transform 0.3s ease;
+}
+
+.ps-loop-node.is-active {
+	border-color: var(--ps-accent);
+	background: var(--ps-accent-soft);
+	transform: translateY(-2px);
+}
+
+.ps-loop-node.is-waiting {
+	border-color: var(--ps-warn);
+	border-style: dashed;
+	background: var(--ps-warn-soft);
+}
+
+.ps-loop-node svg {
+	display: block;
+	width: 1.25rem;
+	height: 1.25rem;
+	margin-bottom: 0.45rem;
+	fill: none;
+	stroke: var(--ps-muted);
+	stroke-width: 1.6;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	transition: stroke 0.3s ease;
+}
+
+.ps-loop-node.is-active svg {
+	stroke: var(--ps-accent);
+}
+
+.ps-loop-node.is-waiting svg {
+	stroke: var(--ps-warn);
+}
+
+.ps-loop-node strong {
+	display: block;
+	color: var(--sl-color-white);
+}
+
+.ps-loop-node span {
+	display: block;
+	font-size: var(--sl-text-sm);
+	line-height: 1.4;
+	color: var(--sl-color-gray-2);
+}
+
+.ps-loop-node code {
+	display: block;
+	margin-top: 0.4rem;
+	font-family: var(--ps-mono);
+	font-size: 0.68rem;
+	color: var(--ps-muted);
+	overflow-wrap: anywhere;
+}
+
+.ps-loop-link {
+	align-self: center;
+	height: 2px;
+	background-color: var(--ps-line-strong);
+}
+
+.ps-loop-link.is-active {
+	background-color: transparent;
+	background-image: linear-gradient(90deg, var(--ps-accent) 50%, transparent 50%);
+	background-size: 10px 2px;
+	animation: ps-dash 0.7s linear infinite;
+}
+
+.ps-loop-link.is-active.is-back {
+	animation-direction: reverse;
+}
+
+.ps-loop-steps {
+	display: grid;
+	gap: 0.25rem;
+	margin: 1rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.ps-loop-steps li {
+	display: grid;
+	grid-template-columns: 1.2rem 1fr;
+	gap: 0.6rem;
+	align-items: baseline;
+	padding: 0.45rem 0.65rem;
+	border: 1px solid transparent;
+	border-radius: 8px;
+	font-size: var(--sl-text-sm);
+	line-height: 1.5;
+	color: var(--sl-color-gray-2);
+	transition:
+		background-color 0.3s ease,
+		border-color 0.3s ease,
+		color 0.3s ease;
+}
+
+.ps-loop-steps li.is-active {
+	border-color: var(--ps-line-strong);
+	background: var(--ps-panel);
+	color: var(--sl-color-white);
+}
+
+.ps-loop-steps .n {
+	font-family: var(--ps-mono);
+	font-size: 0.72rem;
+	color: var(--ps-muted);
+}
+
+.ps-loop-steps li.is-active .n {
+	color: var(--ps-accent);
+}
+
 /* ---------- Questions ---------- */
 
 .ps-faq {
@@ -1446,6 +1588,22 @@ html:not(.ps-js) .ps-registry-check span {
 		gap: 0.3rem;
 	}
 
+	.ps-loop-row {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.ps-loop-link {
+		justify-self: center;
+		width: 2px;
+		height: 1.3rem;
+	}
+
+	.ps-loop-link.is-active {
+		background-image: linear-gradient(180deg, var(--ps-accent) 50%, transparent 50%);
+		background-size: 2px 10px;
+		animation-name: ps-dash-down;
+	}
+
 	.ps-registry-head {
 		display: none;
 	}
@@ -1493,6 +1651,7 @@ html:not(.ps-js) .ps-registry-check span {
 	}
 
 	.ps-story *,
+	.ps-loop *,
 	.ps-flow *,
 	.ps-layers *,
 	.ps-registry *,

@@ -23,6 +23,7 @@ A persona folder is an [Agent Skill](https://agentskills.io). This specification
 
 - [Overview](src/content/docs/index.mdx)
 - [Specification](src/content/docs/specification.mdx)
+- [Apps and connectors](src/content/docs/apps.mdx)
 - [Examples](src/content/docs/examples.mdx)
 - [Other standards](src/content/docs/standards.mdx)
 

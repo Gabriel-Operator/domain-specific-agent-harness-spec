@@ -18,9 +18,20 @@ const icons: Record<string, string> = {
 	team: '<circle cx="9" cy="8" r="3"/><path d="M3 20c.6-3.5 2.9-5 6-5s5.4 1.5 6 5"/><circle cx="17.5" cy="9" r="2.3"/><path d="M17.5 14c2.2 0 3.4 1.3 3.8 4"/>',
 	gate: '<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
 	signal: '<path d="M13 3L5 13h6l-1 8 8-10h-6z"/>',
+	box: '<path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z"/><path d="M4 7.5l8 4.5 8-4.5M12 12v9"/>',
+	pulse: '<path d="M3 12h4l2.5-6 4 12 2.5-6h5"/>',
+	cursor: '<path d="M5 4l13 6-5.5 2L10.5 18z"/>',
 };
 
-type Card = { icon: string; title: string; text: string; anchor: string; status: 'Extracted' | 'Proposed' | 'Planned' };
+type Card = {
+	icon: string;
+	title: string;
+	text: string;
+	anchor: string;
+	status: 'Extracted' | 'Proposed' | 'Planned';
+	/** The page the section is on. Defaults to the specification. */
+	page?: string;
+};
 
 const groups: { title: string; cards: Card[] }[] = [
 	{
@@ -46,6 +57,16 @@ const groups: { title: string; cards: Card[] }[] = [
 		],
 	},
 	{
+		title: 'Apps and collaboration',
+		cards: [
+			{ icon: 'plug', title: 'Connector requirements', text: 'The services a playbook may call, and the operations it may use.', anchor: '2-connector-requirements-', status: 'Extracted', page: 'apps' },
+			{ icon: 'app', title: 'Apps', text: 'Views over a list that people use to see and move the work.', anchor: '4-lists-pipelines-and-apps-', status: 'Extracted', page: 'apps' },
+			{ icon: 'box', title: 'App packages', text: 'A custom interface in a sandbox, limited to the calls it declares.', anchor: '6-custom-app-packages-', status: 'Extracted', page: 'apps' },
+			{ icon: 'pulse', title: 'Live sync', text: 'A resumable event stream that keeps every open view current.', anchor: '7-live-sync-', status: 'Extracted', page: 'apps' },
+			{ icon: 'cursor', title: 'Presence and following', text: 'Who else is here, where they are, and following what they see.', anchor: '8-presence-and-following-', status: 'Proposed', page: 'apps' },
+		],
+	},
+	{
 		title: 'Runtime',
 		cards: [
 			{ icon: 'gauge', title: 'Capability report', text: 'A runtime states which steps it can execute and blocks the rest.', anchor: '71-capability-report-', status: 'Extracted' },
@@ -65,7 +86,7 @@ const groups: { title: string; cards: Card[] }[] = [
 				<h3>{group.title}</h3>
 				<div class="ps-cards">
 					{group.cards.map((card, index) => (
-						<a class="ps-card" href={`./specification/#${card.anchor}`} data-reveal style={`--i:${index % 3}`}>
+						<a class="ps-card" href={`./${card.page ?? 'specification'}/#${card.anchor}`} data-reveal style={`--i:${index % 3}`}>
 							<span class="ps-card-head">
 								<svg viewBox="0 0 24 24" aria-hidden="true" set:html={icons[card.icon]} />
 								<span class="ps-card-title">{card.title}</span>

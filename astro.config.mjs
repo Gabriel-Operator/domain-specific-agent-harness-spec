@@ -28,6 +28,7 @@ export default defineConfig({
 			sidebar: [
 				{ label: 'Overview', link: '/' },
 				{ label: 'Specification', slug: 'specification' },
+				{ label: 'Apps and connectors', slug: 'apps' },
 				{ label: 'Examples', slug: 'examples' },
 				{ label: 'Other standards', slug: 'standards' },
 			],
