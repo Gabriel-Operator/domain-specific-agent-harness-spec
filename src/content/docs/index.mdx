@@ -1,6 +1,6 @@
 ---
 title: Domain-Specific Agent Harness Spec
-description: An open specification for defining a domain, turning team goals into playbooks, and running them with an agent harness.
+description: An open specification for composing playbooks into domain teams and running them through goals, connectors, apps, and expert review.
 template: splash
 hero: {}
 ---
@@ -11,7 +11,7 @@ import HarnessWalkthrough from '../../components/HarnessWalkthrough.astro';
 
 ## Why a domain-specific harness?
 
-The domain specialist knows what the data means and what to do when it disagrees. The harness brings the right evidence to the specialist and applies reviewed rules across the team. Follow Lane from an inventory of the apps people use, through an ontology and a team goal, to a decision that improves the next run.
+<p class="harness-intro">Start with how teams wire agent skills and tools together today. Then see where the spec begins: standard playbooks that teams can share, compose into personas, and run against goals. The walkthrough follows the work through connectors, custom apps, and expert review.</p>
 
 <HarnessWalkthrough />
 
@@ -27,7 +27,9 @@ Start with the definitions, follow a run, or look up the Gabriel Operator skills
 
 ## Persona, runtime, and harness
 
-- **Persona.** The versioned definition of a role or team, including its instructions, workflows, and data.
+- **Playbook.** Reusable work that can be discovered in a marketplace and referenced by teams.
+- **Persona.** The versioned composition of a domain model, teams, and their playbooks.
+- **Goal.** An outcome that selects and invokes the team’s playbooks, or creates a missing playbook for the plan.
 - **Runtime.** The layer that loads a persona, connects it to workspace resources, and coordinates execution.
 - **Agent harness.** The system that runs the agent loop and coordinates model calls and tool use.
 - **Workspace.** An installation that holds accounts, records, permissions, and run history.

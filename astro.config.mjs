@@ -21,12 +21,20 @@ export default defineConfig({
 			social: [{ icon: 'github', label: 'GitHub', href: REPOSITORY }],
 			editLink: { baseUrl: `${REPOSITORY}/edit/main/` },
 			lastUpdated: true,
+			expressiveCode: {
+				shiki: false,
+				styleOverrides: {
+					codeBackground: 'var(--ap-surface)',
+					codeForeground: 'var(--ap-ink)',
+				},
+			},
 			customCss: ['./src/styles/site.css', './src/styles/docs.css'],
 			components: {
 				Header: './src/components/SpecHeader.astro',
 				Hero: './src/components/PackageHero.astro',
 				PageTitle: './src/components/SpecPageTitle.astro',
 				SiteTitle: './src/components/SpecSiteTitle.astro',
+				ThemeSelect: './src/components/ThemeToggle.astro',
 			},
 			// Lets the styles hide animated parts before they scroll into view, and only when scripts run.
 			head: [{ tag: 'script', content: "document.documentElement.classList.add('ps-js')" }],

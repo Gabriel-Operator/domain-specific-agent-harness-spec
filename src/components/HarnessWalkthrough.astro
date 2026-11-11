@@ -1,222 +1,276 @@
 ---
-import HarnessScene from './HarnessScene.astro';
+import HarnessStage from './HarnessStage.astro';
+import { phaseFor, type Scene } from '../scripts/harness-storyboard';
 import '../styles/harness-walkthrough.css';
 
-const chapters = [
+interface Chapter {
+  id: string;
+  scene: Scene;
+  label: string;
+  title: string;
+  body: string[];
+  aliases?: string[];
+  link?: { href: string; text: string };
+}
+
+const chapters: Chapter[] = [
   {
-    id: 'the-first-run',
-    phase: 'The problem',
-    label: 'The first run',
-    title: 'A draft is only the first step',
-    scene: 'draft',
+    id: 'compose-a-domain-specific-harness',
+    scene: 'basics', label: 'Agent skills',
+    title: 'Start with an agent skill.',
+    aliases: ['the-first-run'],
     body: [
-      'Ask an agent to research Northwind and write a follow-up. With a model, a prompt, and a search tool, it can produce a useful draft in one session.',
-      'Now give the same job to a team. Someone who knows the domain has to decide what counts as a qualified prospect, which record the team should trust, and what to do when the evidence disagrees.',
+      'Teams today can give an agent a skill: reusable instructions for a task, sometimes bundled with scripts or reference files.',
+      'A skill helps the agent do its part. A larger process still needs someone to decide how skills work together, which tools they can call, and when a person needs to review the result.',
     ],
   },
   {
     id: 'where-the-work-breaks',
-    phase: 'Why it gets harder',
-    label: 'Scattered state',
-    title: 'The work gets scattered across tools',
-    scene: 'fragments',
+    scene: 'tangled', label: 'Custom wiring',
+    title: 'Then wire the pieces together.',
     body: [
-      'The researcher calls Northwind qualified in chat. The CRM has two records with similar names. The outreach draft is in someone’s inbox. A second agent can see more data and still choose the wrong company.',
-      'The team needs a shared understanding of what these records mean, where to read and update them, and which decisions need someone with domain expertise.',
+      'When teams stitch skills and tools together with custom scripts, handoffs depend on local conventions. One skill’s result may need reshaping before the next can use it.',
+      'Moving the workflow to a new team can mean rebuilding those handoffs and access rules. An expert’s correction can be lost before the next run.',
     ],
+  },
+  {
+    id: 'inside-a-playbook',
+    scene: 'contract', label: 'The playbook contract',
+    title: 'The spec starts with standard playbooks.',
+    aliases: ['composed-architecture', 'where-the-spec-starts'],
+    body: [
+      'The Domain-Specific Agent Harness Spec proposes a shared way to define and compose workflows. Gabriel calls the reusable unit a playbook. It declares its inputs, steps, outputs, connector operations, and approval rules.',
+      'A playbook can use existing agent skills for instructions and domain knowledge. Its contract lets a team pass results between compatible playbooks and reuse their definitions in another workspace.',
+    ],
+    link: { href: './concepts/teams-and-goals/', text: 'The playbook contract' },
+  },
+  {
+    id: 'teams-inside-a-persona',
+    scene: 'persona', label: 'Standard composition',
+    title: 'Compose teams into a persona.',
+    aliases: ['map-the-ontology'],
+    body: [
+      'A persona brings together teams. Each team contains its goals and the playbooks they use. The domain ontology maps the organization’s apps and data into shared concepts, so those teams agree on what the work means.',
+      'The persona defines the composition. Its workspace supplies the accounts, data, and history used when it runs.',
+    ],
+    link: { href: './concepts/personas-and-workspaces/', text: 'Personas and workspaces' },
   },
   {
     id: 'how-it-works',
-    phase: 'Map the domain',
-    label: 'Inventory the apps',
-    title: 'Start with the apps people use',
-    scene: 'landscape',
-    legacy: 'how-does-a-persona-work',
+    scene: 'goals', label: 'Goals invoke playbooks',
+    title: 'The goal chooses the work.',
+    aliases: ['how-does-a-persona-work', 'goal-to-playbook'],
     body: [
-      'Work with a domain specialist to list the apps the organization uses. For each one, record who uses it, what data it owns, what the team can read or update, and how to connect it. The inventory shows how many apps are involved and where the work crosses between them.',
-      'For Lane’s prospecting work, start with Notion for prospect records, Gmail for outreach, and Google Calendar for meetings. The specialist confirms which app is authoritative for each record.',
+      'Create a goal inside a team. The goal selects and invokes the playbooks that belong to that team, in the order the outcome and their dependencies require.',
+      'A goal can use one playbook or several. Agents execute the selected work inside the harness, with inputs, outputs, and progress tied back to the goal.',
     ],
-    link: { href: './concepts/personas-and-workspaces/#map-the-organizations-apps', text: 'Map the organization’s apps' },
+    link: { href: './concepts/teams-and-goals/#from-an-outcome-to-a-plan', text: 'From a goal to a plan' },
   },
   {
-    id: 'map-the-ontology',
-    phase: 'Map the domain',
-    label: 'Define the ontology',
-    title: 'Give the apps a shared vocabulary',
-    scene: 'persona',
+    id: 'create-a-missing-playbook',
+    scene: 'missing', label: 'Create a missing playbook',
+    title: 'Missing a playbook? Create it.',
     body: [
-      'Use the inventory to define the ontology. A prospect can have outreach messages and meetings. The ontology gives those entities stable names, fields, and relationships. Source mappings document how CRM rows, email threads, and calendar events become those entities.',
-      'Keep the ontology and its referenced mappings in the persona’s versioned definitions. The workspace supplies authorized connections to the actual accounts and data.',
+      'A goal can also create a playbook when the team lacks a needed capability. The new definition declares its inputs, steps, outputs, and connector requirements.',
+      'Add it to the team’s plan with the applicable review and permissions. It can then become reusable work for later goals.',
     ],
-    link: { href: './specification/#61-ontology', text: 'Ontology definition' },
+  },
+  {
+    id: 'connect-the-work',
+    scene: 'connectors', label: 'Connectors and data',
+    title: 'Connect playbooks to real data.',
+    aliases: ['from-git-to-a-running-workspace'],
+    body: [
+      'During execution, playbooks use connectors to retrieve data, update records, and share results with external services.',
+      'The harness resolves each required operation to an authorized connection. The same domain mappings make the data understandable across the team.',
+    ],
+    link: { href: './apps/#2-connector-requirements-', text: 'Connector requirements' },
+  },
+  {
+    id: 'credentials-in-the-vault',
+    scene: 'vault', label: 'Vault and credentials',
+    title: 'The vault holds the credentials.',
+    body: [
+      'A connector describes the operations available. Its connection uses the credentials stored in the vault to access the selected account.',
+      'Reusing a playbook does not copy someone else’s access. Each workspace binds the required connectors to its own authorized accounts.',
+    ],
+    link: { href: './concepts/connectors-and-approvals/#credentials-stay-in-the-vault', text: 'Connections and the vault' },
   },
   {
     id: 'use-the-mapped-data',
-    phase: 'Build on the ontology',
-    label: 'Apps and agents',
-    title: 'Build a view, an agent, or both',
-    scene: 'paths',
+    scene: 'apps', label: 'Custom apps',
+    title: 'Build apps on the same connections.',
     body: [
-      'Build a custom app to read authorized data or shared lists and show it in a graph. A prospecting dashboard could chart how many prospects are in each stage.',
-      'Build agents to read the same domain data and act on it. An agent can update an existing app through a declared connector operation, or publish approved changes to the shared records a custom app reads. Both paths use the same field definitions.',
+      'Agents can create custom apps that read connector data and display it as graphs, tables, or working interfaces. Apps can also consume the outputs that playbooks produce.',
+      'Agents use authorized operations to write changes back to the source services or the custom app’s data. The app gives people a place to see and work with the result, including through an externally hosted interface.',
     ],
-    link: { href: './concepts/records-and-apps/#two-paths-from-the-same-data', text: 'Custom views and agent updates' },
-  },
-  {
-    id: 'goal-to-playbook',
-    phase: 'Run the work',
-    label: 'Team and goal',
-    title: 'Give the team an outcome',
-    scene: 'plan',
-    body: [
-      'The domain specialist sets the goal and its completion criteria. For Lane, that means qualifying Northwind with evidence and preparing a follow-up for the correct contact. The team uses registered research and outreach playbooks or drafts a missing one for review.',
-      'The runtime checks the pinned definitions and binds the chosen harness and authorized connectors. The harness runs the agents on the team’s plan. The playbooks specify what each agent can read, change, and publish.',
-    ],
-    link: { href: './apps/#from-goals-to-playbooks', text: 'Goals and playbooks' },
-  },
-  {
-    id: 'from-git-to-a-running-workspace',
-    phase: 'Run the work',
-    label: 'Specialist review',
-    title: 'Ask the expert when the evidence disagrees',
-    scene: 'runtime',
-    body: [
-      'If two Northwind records match the same domain, the agent presents both candidates and its evidence. The affected work waits while the domain specialist confirms the right record, corrects the mapping, or rejects the proposed change.',
-      'An exception decision resolves the data question. A protected action still needs its own approval. Before an email goes out, the authorized reviewer sees the exact account, recipient, and message.',
-    ],
-    link: { href: './concepts/connectors-and-approvals/#anomalies-and-action-approvals', text: 'Anomaly review and action approvals' },
-  },
-  {
-    id: 'worked-example',
-    phase: 'Worked example',
-    label: 'Write back and publish',
-    title: 'See the decision reach the apps',
-    scene: 'app',
-    body: [
-      'In this example, the specialist confirms the active Northwind record. Once the send is approved and completes, Lane can update the authorized CRM record and publish the result to the prospects list. The prospect moves to Contacted.',
-      'Pilot prospects shows the new stage. A custom chart using the same list can update its stage counts as the records change. The team can trace the result to the goal, evidence, and approvals that produced it.',
-    ],
-    link: { href: './examples/#one-prospect-end-to-end', text: 'Follow the full Lane example' },
+    link: { href: './apps/#6-custom-app-packages-', text: 'Custom apps and installations' },
   },
   {
     id: 'learn-from-approvals',
-    phase: 'Improve the harness',
-    label: 'Learn from decisions',
-    title: 'Turn expert decisions into better next runs',
-    scene: 'learning',
+    scene: 'review', label: 'Expert review',
+    title: 'Keep the domain specialist in the loop.',
     body: [
-      'Every approval gives the team evidence about what was acceptable in that case. Keep the decision with the evidence, the reason when supplied, and the version that ran. Corrections and rejections show where a rule or mapping needs work.',
-      'The team can propose an eval for companies that share a domain and a playbook change that asks for expert review when the match is ambiguous. The domain specialist reviews the proposal before an authorized owner adopts it. The harness handles more routine work while the expert stays in charge of judgment.',
+      'When an anomaly or protected action needs judgment, the agent brings the evidence and proposed change to the specialist. They can approve, correct, or reject it.',
+      'Every decision is evidence for improvement. Record the reasoning, review the resulting changes to playbooks or domain rules, and use them in later runs. The harness grows around the expert’s knowledge.',
     ],
-    link: { href: './concepts/signals-and-evals/#learn-from-specialist-review', text: 'Learn from specialist review' },
+    link: { href: './concepts/signals-and-evals/#learn-from-specialist-review', text: 'How review improves the harness' },
   },
-] as const;
+  {
+    id: 'reuse-a-playbook',
+    scene: 'reuse', label: 'Reuse across personas',
+    title: 'Scale by reusing the work.',
+    body: [
+      'A playbook from the registry can serve several teams, including teams in different personas. Each goal invokes the work it needs with its own inputs and domain mappings.',
+      'Each workspace keeps its own connector accounts, vault, data, and approvals. A reviewed package revision can be adopted without rebuilding the entire composition.',
+    ],
+  },
+  {
+    id: 'the-complete-harness',
+    scene: 'complete', label: 'The complete harness',
+    title: 'This is a domain-specific harness.',
+    body: [
+      'A persona groups playbooks into teams around a domain model. Goals inside each team invoke the playbooks they need or create missing ones. Agents execute that work inside the harness.',
+      'Connectors move the data. The vault supplies account credentials. Custom apps make the data and results usable. Domain specialists guide the decisions and improvements.',
+    ],
+    link: { href: './specification/', text: 'Explore the specification' },
+  },
+  {
+    id: 'playbook-marketplace',
+    scene: 'marketplace', label: 'Marketplace',
+    title: 'Mix and match playbooks to build personas.',
+    aliases: ['persona-marketplace', 'package-a-playbook'],
+    body: [
+      'The proposed marketplace lets teams discover standard playbook packages and combine them into personas. Pair Research with Verify to build a research analyst, or pair Research with Draft to build a briefing writer.',
+      'Authors can publish individual playbooks or list a complete persona when they want to share the whole setup. The registry identifies the playbook revisions each persona uses.',
+    ],
+    link: { href: './concepts/teams-and-goals/#reuse-a-playbook', text: 'Packages and reuse' },
+  },
+];
 ---
 
 <div class="hs-story not-content" data-harness-story>
   <div class="hs-chapters">
     {chapters.map((chapter) => (
-      <article class="hs-chapter" id={chapter.id} data-hs-chapter>
-        {'legacy' in chapter && <span id={chapter.legacy} class="hs-anchor"></span>}
+      <article class="hs-chapter" id={chapter.id} data-hs-chapter={chapter.scene} data-hs-spec-start={chapter.scene === 'contract' ? '' : undefined}>
+        {chapter.aliases?.map(id => <span id={id} class="hs-anchor"></span>)}
         <div class="hs-copy">
-          <p class="hs-phase">{chapter.phase}</p>
+          <p class="hs-kicker"><span>{phaseFor(chapter.scene)}</span> · {chapter.label}</p>
           <h3>{chapter.title}</h3>
           {chapter.body.map((paragraph) => <p>{paragraph}</p>)}
-          {'link' in chapter && <a href={chapter.link.href}>{chapter.link.text} →</a>}
+          {chapter.link && <a href={chapter.link.href}>{chapter.link.text} →</a>}
         </div>
-        <div class="hs-inline" data-hs-source>
-          <HarnessScene scene={chapter.scene} />
-        </div>
+        <HarnessStage scene={chapter.scene} />
       </article>
     ))}
   </div>
 
   <aside class="hs-sticky" aria-label="Walkthrough diagrams" data-hs-sticky hidden>
-    <div class="hs-stage">
-      <div class="hs-stage-bar" aria-hidden="true">
-        <span data-hs-label>{chapters[0].label}</span>
-        <span data-hs-count>1 / {chapters.length}</span>
-      </div>
-      <div class="hs-stage-panels" data-hs-stage aria-hidden="true"></div>
-      <nav class="hs-progress" aria-label="Story chapters">
-        {chapters.map((chapter, index) => (
-          <a href={`#${chapter.id}`} aria-label={chapter.label} title={chapter.label} data-hs-jump>
-            {index + 1}
-          </a>
-        ))}
-      </nav>
-    </div>
+    <HarnessStage />
+    <nav class="hs-progress" aria-label="Walkthrough chapters">
+      {chapters.map(chapter => (
+        <a href={'#' + chapter.id} aria-label={phaseFor(chapter.scene) + ' · ' + chapter.label} title={chapter.label} data-hs-jump></a>
+      ))}
+    </nav>
   </aside>
 </div>
 
 <script>
+  import { mountHarnessScene } from '../scripts/harness-motion';
+  import type { Scene } from '../scripts/harness-storyboard';
+
   for (const story of document.querySelectorAll<HTMLElement>('[data-harness-story]')) {
     const chapters = [...story.querySelectorAll<HTMLElement>('[data-hs-chapter]')];
     const sticky = story.querySelector<HTMLElement>('[data-hs-sticky]');
     const stage = story.querySelector<HTMLElement>('[data-hs-stage]');
-    const label = story.querySelector<HTMLElement>('[data-hs-label]');
-    const count = story.querySelector<HTMLElement>('[data-hs-count]');
     const links = [...story.querySelectorAll<HTMLAnchorElement>('[data-hs-jump]')];
-    if (!sticky || !stage || !label || !count || !chapters.length) continue;
-
-    const panels = chapters.map((chapter) => {
-      const panel = document.createElement('div');
-      panel.className = 'hs-stage-panel';
-      const visual = chapter.querySelector('[data-hs-source]')?.firstElementChild;
-      if (visual) panel.append(visual.cloneNode(true));
-      return panel;
-    });
-    stage.replaceChildren(...panels);
+    if (!sticky || !stage || !chapters.length) continue;
 
     const wide = matchMedia('(min-width: 54rem) and (min-height: 36rem)');
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
+    const scenes = chapters.map(chapter => chapter.dataset.hsChapter as Scene);
+    let visual: ReturnType<typeof mountHarnessScene>;
+    let eyeLine = 0;
     let active = -1;
     let frame = 0;
 
-    const show = (index: number) => {
+    const setActive = (index: number) => {
       if (active === index) return;
+      links[active]?.removeAttribute('aria-current');
+      chapters[active]?.removeAttribute('data-hs-active');
       active = index;
-      panels.forEach((panel, i) => panel.classList.toggle('is-active', i === index));
-      links.forEach((link, i) => {
-        if (i === index) link.setAttribute('aria-current', 'step');
-        else link.removeAttribute('aria-current');
-      });
-      label.textContent = links[index]?.getAttribute('aria-label') ?? '';
-      count.textContent = `${index + 1} / ${chapters.length}`;
+      links[index]?.setAttribute('aria-current', 'step');
+      chapters[index]?.setAttribute('data-hs-active', '');
+    };
+
+    const render = (index: number, progress = 0) => {
+      const current = progress >= 0.5 ? index + 1 : index;
+      if (reducedMotion.matches || progress === 0 || progress === 1) {
+        visual?.render(scenes[current], scenes[current], 0);
+      } else {
+        visual?.render(scenes[index], scenes[index + 1], progress);
+      }
+
+      setActive(current);
+    };
+
+    const center = (chapter: HTMLElement) => {
+      const { top, height } = chapter.getBoundingClientRect();
+      return top + height / 2;
     };
 
     const measure = () => {
-      const eyeLine = innerHeight * 0.54;
-      let nearest = 0;
-      let distance = Infinity;
-      for (const [index, chapter] of chapters.entries()) {
-        const { top, bottom } = chapter.getBoundingClientRect();
-        const gap = Math.max(top - eyeLine, eyeLine - bottom, 0);
-        if (gap < distance) {
-          nearest = index;
-          distance = gap;
-        }
+      let from = center(chapters[0]);
+      if (eyeLine <= from) {
+        render(0);
+        return;
       }
-      show(nearest);
+
+      for (let i = 1; i < chapters.length; i++) {
+        const to = center(chapters[i]);
+        if (eyeLine <= to) {
+          const fraction = (eyeLine - from) / (to - from);
+          const progress = Math.max(0, Math.min(1, (fraction - 0.26) / 0.48));
+          render(i - 1, progress);
+          return;
+        }
+        from = to;
+      }
+
+      render(chapters.length - 1);
     };
 
     const schedule = () => {
       if (!wide.matches || frame) return;
       frame = requestAnimationFrame(() => {
         frame = 0;
-        measure();
+        if (wide.matches) measure();
       });
     };
 
-    const updateLayout = () => {
-      story.toggleAttribute('data-hs-ready', wide.matches);
-      sticky.hidden = !wide.matches;
-      if (wide.matches) measure();
+    const resize = () => {
+      eyeLine = Math.min(innerHeight * 0.48, 23 * parseFloat(getComputedStyle(document.documentElement).fontSize));
+      visual?.resize();
+      schedule();
     };
+
+    const updateLayout = () => {
+      if (wide.matches && !visual) visual = mountHarnessScene(stage);
+      story.toggleAttribute('data-hs-ready', wide.matches && Boolean(visual));
+      sticky.hidden = !wide.matches || !visual;
+      if (!sticky.hidden) {
+        resize();
+        measure();
+      }
+    };
+
+    new ResizeObserver(resize).observe(story);
 
     updateLayout();
     wide.addEventListener('change', updateLayout);
+    reducedMotion.addEventListener('change', schedule);
     addEventListener('scroll', schedule, { passive: true });
-    addEventListener('resize', schedule);
+    addEventListener('resize', resize);
     addEventListener('pageshow', schedule);
   }
 </script>

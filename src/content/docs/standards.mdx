@@ -3,13 +3,13 @@ title: Terms and standards
 description: How personas, runtimes, and agent harnesses fit together, and how the draft relates to Agent Skills, MCP, and A2A.
 ---
 
-A **persona** is the versioned definition of a role or team. A **runtime** imports it and coordinates work. An **agent harness** runs the model and tool loop for an agent. These terms describe responsibilities that an implementation can put in the same process or in separate services.
+A **persona** is the versioned definition of a domain, its teams, and the playbooks they use. A **runtime** imports it and coordinates work. An **agent harness** runs the model and tool loop for an agent. These terms describe responsibilities that an implementation can put in the same process or in separate services.
 
 ## Vocabulary
 
 | Term | Meaning in this specification |
 | --- | --- |
-| Persona | The Git definition of a role or team and the work it can do. |
+| Persona | The Git definition of a domain model, its teams, and the playbooks those teams can use. |
 | Runtime | Software that imports and verifies a persona, connects workspace resources, and coordinates execution. |
 | Agent harness | The execution system that runs the agent loop, including model calls, context, and tool use. |
 | Agent | An AI worker configured with instructions and tools. In a Gabriel team definition, the existing field for agent entries is `teams[].bots`. |
@@ -28,7 +28,7 @@ The definition of *harness* follows how [OpenAI describes the Codex agent loop](
 
 ## Agent Skills
 
-The persona’s root [`SKILL.md`](https://agentskills.io/specification) follows the Agent Skills format. A skills-compatible agent can read those instructions. Additional skills can live under `skills/`.
+The persona’s root [`SKILL.md`](https://agentskills.io/specification) follows the Agent Skills format. A skills-compatible agent can read those instructions. Additional skills can live under `skills/`. A **skill** gives an agent reusable instructions and supporting files. A **playbook** can use those skills within a workflow whose inputs, outputs, connector operations, and review rules the harness can resolve.
 
 A persona adds a registry and declarative definitions for domains, data, workflows, and evals. A runtime uses those definitions to install the persona and apply its runtime rules. Agent Skills can include executable scripts. The [definitions-only rule](../specification/#3-definitions-only-) applies to the persona’s definition files.
 

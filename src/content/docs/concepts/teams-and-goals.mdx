@@ -1,15 +1,25 @@
 ---
 title: Teams, goals, and playbooks
-description: How a persona's team turns an outcome into a plan and runs registered playbooks.
+description: How goals select, invoke, and create playbooks within a persona’s teams.
 ---
 
 A **team** owns the agents and shared resources that do a particular job. A **goal** describes an outcome and what counts as done. A **playbook** defines reusable work, including its inputs, required connector operations, and permitted outputs. A **run** is one attempt to carry out that work.
 
 ## From an outcome to a plan
 
-In Lane, a person gives Prospect to pilot a goal to qualify Northwind and prepare a follow-up. Research fit and Follow up are two reusable playbooks. A plan can use both and give each agent the evidence it needs for the next step. A team author can also draft a playbook from an outcome and register it after review.
+A goal belongs inside a team. It selects and invokes that team’s playbooks. The outcome, available capabilities, and dependencies determine which playbooks run and in what order; a team is not necessarily one fixed sequence. Agents execute those playbooks inside the harness. If a needed playbook is missing, the goal can create a definition for it, with declared inputs, outputs, connector requirements, and applicable review before execution.
+
+For example, the Accountants team can use Lead Finder, Signal Researcher, Copywriter, and Sequence Reviewer. One goal may need all four with accepted research passed into the writing steps. Another may need only the first two. A goal that requires a missing capability can create the additional playbook and include it in the plan.
 
 Gabriel distinguishes **Build from steps**, where the author specifies a sequence or graph of steps, from **Plan from a goal**, where the author supplies an objective, completion criteria, permitted capabilities, and limits for planning. Registration saves the definition. Starting work is a separate action that checks the selected plan and current access.
+
+## Reuse a playbook
+
+A team placement references a playbook definition. The portable composition model treats that definition as a versioned package that teams can reference from a playbook registry, including teams in different personas. To reuse a package, a team must be able to supply its inputs, map its domain data, and grant its required connector operations in the workspace. Review the revision and those bindings before adopting it.
+
+The proposed **marketplace** lets people discover playbook packages, combine them into different personas, and optionally list complete personas for others to adopt. A **persona** packages a domain model, teams, and the playbooks those teams use. The **playbook registry** identifies reusable definitions and revisions. A persona’s own [definition registry](../../specification/#5-registry-) pins its linked files.
+
+During execution, playbooks use connectors to read, update, and share data. Connections use credentials held in the workspace’s vault. Custom apps can consume the same connector data and agent outputs; agents can mutate the source records or the custom app’s data through their authorized operations. See [connectors and approvals](../connectors-and-approvals/) and [apps and connectors](../../apps/).
 
 ## Canvas and Work
 

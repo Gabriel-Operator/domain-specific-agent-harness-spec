@@ -6,8 +6,8 @@
 /* ---------- Palette ---------- */
 
 :root {
-	--ps-ok: #4ade80;
-	--ps-warn: #fbbf24;
+	--ps-ok: var(--sl-color-text);
+	--ps-warn: var(--sl-color-gray-3);
 	--ps-display: var(--sl-font-system);
 	--ps-mono: var(--sl-font-system-mono);
 
@@ -22,11 +22,6 @@
 	--ps-accent-soft: color-mix(in srgb, var(--sl-color-accent) 24%, var(--ps-panel));
 	--ps-ok-soft: color-mix(in srgb, var(--ps-ok) 18%, var(--ps-panel));
 	--ps-warn-soft: color-mix(in srgb, var(--ps-warn) 18%, var(--ps-panel));
-}
-
-:root[data-theme='light'] {
-	--ps-ok: #15803d;
-	--ps-warn: #b45309;
 }
 
 .ps-accent {

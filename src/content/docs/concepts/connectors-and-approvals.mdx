@@ -15,6 +15,12 @@ A playbook declares which outside operations it needs. The workspace resolves ea
 
 A connector step can read, write, or start a process whose result arrives later. A read can contribute evidence to a goal. A write can have an external effect, such as sending an email. When a required operation lacks a valid connection, the runtime holds the affected work.
 
+## Credentials stay in the vault
+
+A connector declares operations. A connection binds those operations to an account, using credentials stored in the vault. Playbook packages and persona definitions carry requirements and references; they do not carry the account’s secrets. Each workspace supplies its own authorized connections.
+
+Agents executing playbooks and custom apps can use the same declared connector operations, subject to their own grants. Data flows through those operations; credentials remain behind the connection boundary. An externally hosted custom interface uses its authorized app bridge rather than receiving provider credentials.
+
 ## Anomalies and action approvals
 
 The team needs a domain specialist to resolve cases its playbooks cannot decide. If two CRM records share a domain, the agent presents both candidates, their source evidence, and the decision the run is waiting for. The specialist can confirm the correct record, supply a correction, or reject the proposed match. Work that depends on the match waits for that decision.

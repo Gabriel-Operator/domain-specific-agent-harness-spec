@@ -1,0 +1,40 @@
+---
+import { phaseFor, pieces, space, storyboard, type Frame, type PieceId, type Scene } from '../scripts/harness-storyboard';
+import { pieceStyle, wireStyle } from '../scripts/harness-motion';
+
+interface Props { scene?: Scene; }
+const { scene } = Astro.props;
+const frame: Frame | undefined = scene ? storyboard[scene] : undefined;
+const visiblePieces = (Object.keys(pieces) as PieceId[]).filter(id => !frame || frame.poses[id]);
+---
+
+<div class="hs-stage-wrap" data-hs-static={frame ? '' : undefined}>
+  <div class="hs-scene" data-hs-stage={frame ? undefined : ''} data-scene={scene} aria-hidden="true">
+    <div class="hs-world" style={{ width: space.width + 'px', height: space.height + 'px' }}>
+      <div class="hs-wires" data-hs-wires>
+        {frame?.wires?.map(({ from, to, kind }) => {
+          const a = frame.poses[from];
+          const b = frame.poses[to];
+          return a && b && <span class="hs-wire" data-kind={kind} style={wireStyle(a, b)}></span>;
+        })}
+      </div>
+      <div class="hs-planes" style={{ perspective: space.perspective + 'px' }}>
+        {visiblePieces.map((id) => {
+          const { title, tone, shape } = pieces[id];
+          const pose = frame?.poses[id];
+          return (
+            <div class="hs-piece" data-hs-piece={id} data-tone={tone} data-shape={shape} style={pose && pieceStyle(pose)} hidden={!pose}>
+              {shape === 'cube' && <div class="hs-cube"><i class="hs-cube-top"></i><i class="hs-cube-left"></i><i class="hs-cube-right"></i></div>}
+              {shape === 'vault' && <svg class="hs-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="10" width="16" height="12" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3M12 15v3"/></svg>}
+              {shape === 'expert' && <svg class="hs-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3M9 18l2 2 4-4"/></svg>}
+              {title && <span class="hs-piece-title">{title}</span>}
+              {(shape === 'module' || id === 'core' || id === 'skill') && <span class="hs-module-bars"><i></i><i></i><i></i><i></i></span>}
+              {shape === 'app' && <div class="hs-app-content"><span class="hs-app-toolbar"><i></i><i></i><i></i></span><svg viewBox="0 0 160 75" fill="none"><path class="hs-chart-grid" d="M0 15h160M0 40h160M0 65h160"/><path class="hs-chart-area" d="M0 61L28 47L55 51L84 24L110 32L137 12L160 18V75H0Z"/><path class="hs-chart-line" d="M0 61L28 47L55 51L84 24L110 32L137 12L160 18"/></svg><span class="hs-app-rows"><i></i><i></i></span></div>}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  </div>
+  <p class="hs-caption"><strong data-hs-phase>{phaseFor(scene ?? 'basics')}</strong> <span data-hs-caption>{frame?.caption ?? storyboard.basics.caption}</span></p>
+</div>

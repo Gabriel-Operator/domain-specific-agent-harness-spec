@@ -2,30 +2,37 @@
 
 **A specification for giving an agent harness a domain, a team, and a way to carry out its goals.**
 
-A **persona** is a versioned Git definition of a role or team, including its instructions, playbooks, data definitions, approval requirements, and evals. The **runtime** verifies those definitions, binds workspace resources, and coordinates work with an **agent harness**. The harness runs the agent loop and coordinates model calls and tool use.
+A **persona** is a versioned Git definition of a domain, its teams, and the playbooks they use. It also carries shared data definitions, rules, and evals. The **runtime** verifies those definitions, binds workspace resources, and coordinates work with an **agent harness**. The harness runs the agent loop and coordinates model calls and tool use.
 
 [Read the draft](https://gabriel-operator.github.io/persona-spec/) · [Specification](src/content/docs/specification.mdx) · [Examples](src/content/docs/examples.mdx) · [Terms and standards](src/content/docs/standards.mdx)
 
 > **Status: draft 0.1.** The format comes from running Gabriel Operator installations and can still change.
 
+## Architecture
+
+![Architecture diagram showing how a Git persona loads into a workspace, where a team goal invokes playbooks, agents use vault-backed connectors and custom apps, and specialist review informs revisions. A final marketplace panel shows how shared playbooks compose into two different personas.](public/architecture.svg)
+
 ## How it works
 
 1. **Map the organization’s apps.** With a domain specialist, inventory the apps people use, which records they own, and how the team can read or update them.
 2. **Define the ontology.** Give those records shared entity names, fields, and relationships. Map data from the source apps to the persona’s versioned definitions.
-3. **Build views and agents.** Custom apps read the mapped data and plot it. Agents read the same data and can update authorized source apps or the shared records a custom app displays.
-4. **Run a goal with the team.** The specialist sets the outcome and completion criteria. The workspace binds the harness and connector accounts, and the team runs reviewed playbooks.
-5. **Review and improve.** The domain specialist resolves anomalies, and protected actions receive their own approvals. Each decision gives the team evidence to propose better mappings, playbooks, or evals. The specialist reviews those changes before the next revision is adopted.
+3. **Compose teams from playbooks.** Each playbook declares its inputs, outputs, connector operations, and approval rules. Teams group compatible playbooks around the work they do.
+4. **Run a team goal.** The goal selects and invokes the playbooks it needs. The runtime binds workspace resources and the harness runs agents. Connectors use accounts whose credentials are stored in the vault. Custom apps can display mapped data and agent results.
+5. **Review and improve.** The domain specialist resolves anomalies and reviews protected actions. Recorded decisions inform revisions to playbooks, mappings, and evals.
+6. **Share and recombine.** In the proposed marketplace, teams can mix and match playbook packages to build different personas. Authors can also list complete personas for others to adopt.
 
-[Read the illustrated story](https://gabriel-operator.github.io/persona-spec/#why-a-domain-specific-harness) to see where a single agent run falls short and how a team shares its rules and results.
+[Follow the illustrated walkthrough](https://gabriel-operator.github.io/persona-spec/#why-a-domain-specific-harness).
 
 ## Persona, runtime, harness
 
 | Term | What it means |
 | --- | --- |
-| **Persona** | The Git definition of a role or team and the work it can do. |
+| **Persona** | The Git definition of a domain model, its teams, and the playbooks they use. |
+| **Playbook** | A reusable workflow with declared inputs, outputs, operations, and approval rules. |
+| **Goal** | A desired outcome within a team that can invoke one or more playbooks. |
 | **Runtime** | Loads and verifies a persona, connects workspace resources, and coordinates execution. |
 | **Harness** | Runs the agent loop and coordinates model calls and tool use. |
-| **Agent** | A worker that uses instructions and tools. A persona can define a team of agents. |
+| **Agent** | A worker that uses instructions and tools. A team can include several agents. |
 | **Workspace** | One installation's accounts, records, permissions, and run history. |
 
 The root [`SKILL.md`](https://agentskills.io/specification) follows Agent Skills. A persona adds declarative definitions and a registry of pinned resources. This draft covers persona import and runtime behavior, including reporting which steps can run. How a runtime connects to its harness depends on the implementation.

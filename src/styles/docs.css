@@ -1,24 +1,25 @@
 /* Theme and documentation shell. Diagrams and the Studio tour use site.css. */
 :root {
-  --sl-color-white: #f0f3f1;
-  --sl-color-gray-1: #dce4df;
-  --sl-color-gray-2: #c4cec8;
-  --sl-color-gray-3: #a6b3ab;
-  --sl-color-gray-4: #78847d;
-  --sl-color-gray-5: #3a4540;
-  --sl-color-gray-6: #252c28;
-  --sl-color-black: #171c19;
-  --sl-color-accent-low: #243c31;
-  --sl-color-accent: #8dd6b4;
-  --sl-color-accent-high: #a8e1c6;
-  --sl-color-text-invert: #13291e;
-  --sl-color-bg-nav: #171c19;
-  --sl-color-bg-sidebar: #1b211d;
-  --sl-color-hairline: #313b35;
+  --sl-color-white: #fff;
+  --sl-color-gray-1: #ededed;
+  --sl-color-gray-2: #ccc;
+  --sl-color-gray-3: #aaa;
+  --sl-color-gray-4: #777;
+  --sl-color-gray-5: #383838;
+  --sl-color-gray-6: #1a1a1a;
+  --sl-color-black: #000;
+  --sl-color-accent-low: var(--sl-color-gray-6);
+  --sl-color-accent: var(--sl-color-white);
+  --sl-color-accent-high: var(--sl-color-white);
+  --sl-color-text: var(--sl-color-white);
+  --sl-color-text-invert: var(--sl-color-black);
+  --sl-color-bg-nav: var(--sl-color-black);
+  --sl-color-bg-sidebar: var(--sl-color-black);
+  --sl-color-hairline: var(--sl-color-gray-5);
   --sl-color-hairline-shade: var(--sl-color-hairline);
 
   --ap-line: var(--sl-color-hairline);
-  --ap-surface: #1d2420;
+  --ap-surface: #111;
   --ap-ink: var(--sl-color-white);
   --ap-muted: var(--sl-color-gray-3);
   --ap-accent: var(--sl-color-text-accent);
@@ -34,25 +35,20 @@
 }
 
 :root[data-theme='light'] {
-  --sl-color-white: #202420;
-  --sl-color-gray-1: #303632;
-  --sl-color-gray-2: #424b45;
-  --sl-color-gray-3: #606b64;
-  --sl-color-gray-4: #78847b;
-  --sl-color-gray-5: #d8e0da;
-  --sl-color-gray-6: #f2f5f3;
-  --sl-color-gray-7: #f8faf8;
+  --sl-color-white: #000;
+  --sl-color-gray-1: #1b1b1b;
+  --sl-color-gray-2: #3a3a3a;
+  --sl-color-gray-3: #565656;
+  --sl-color-gray-4: #727272;
+  --sl-color-gray-5: #d8d8d8;
+  --sl-color-gray-6: #efefef;
+  --sl-color-gray-7: #f8f8f8;
   --sl-color-black: #fff;
-  --sl-color-accent-low: #eaf3ee;
-  --sl-color-accent: #196448;
-  --sl-color-accent-high: #164e3a;
-  --sl-color-text-invert: #fff;
-  --sl-color-bg-nav: #fff;
-  --sl-color-bg-sidebar: #fafbf9;
-  --sl-color-hairline: #e1e6e2;
 
-  --ap-surface: #f7f9f7;
+  --ap-surface: #f7f7f7;
 }
+
+:root ::backdrop { --sl-color-backdrop-overlay: #0009; }
 
 :root[data-has-hero] { --sl-content-width: 72rem; }
 
@@ -80,7 +76,7 @@ header.header > .header { height: var(--ap-header-row); }
 
 .ap-brand-short { display: none; }
 
-.ap-brand img { width: 1.625rem; height: 1.625rem; flex: none; }
+.ap-brand-mark { width: 1.625rem; height: 1.625rem; flex: none; }
 
 header.header .social-icons::after { height: 1.25rem; }
 header.header .social-icons a { color: var(--ap-muted); }
@@ -133,9 +129,9 @@ header.header .social-icons a:hover { color: var(--ap-accent); }
 @media (max-width: 49.99rem) {
   :root[data-has-hero] { --sl-nav-height: calc(var(--ap-header-row) + var(--ap-nav-row)); }
   :root:not([data-has-hero]) .ap-top-nav { display: none; }
-  :root[data-has-hero] .header .right-group { display: flex; }
-  :root[data-has-hero] .header .social-icons { display: none; }
-  :root[data-has-hero] .header .title-wrapper { margin-inline-end: auto; }
+  header.header .right-group { display: flex; }
+  header.header .social-icons, #starlight__sidebar .ap-theme-toggle { display: none; }
+  header.header .title-wrapper { margin-inline-end: auto; }
   .ap-top-nav { justify-content: space-between; gap: 0.5rem; }
   .ap-top-nav a { font-size: 0.8125rem; }
   .ap-nav-full { display: none; }
@@ -143,7 +139,12 @@ header.header .social-icons a:hover { color: var(--ap-accent); }
   .ap-brand { font-size: 0.875rem; }
   .ap-brand-full { display: none; }
   .ap-brand-short { display: inline; }
-  .sl-menu-button { box-shadow: none; }
+  .sl-menu-button {
+    border: 1px solid var(--ap-line);
+    background-color: var(--sl-color-bg);
+    color: var(--ap-ink);
+    box-shadow: none;
+  }
 }
 
 /* Reference pages */
@@ -258,10 +259,10 @@ h1#_top { font-size: clamp(1.95rem, 1.75rem + 0.85vw, 2.4rem); }
   border-radius: 0.5rem;
 }
 
-.sl-markdown-content .starlight-aside--note {
+.sl-markdown-content .starlight-aside {
   --sl-color-asides-text-accent: var(--ap-accent);
-  --sl-color-asides-border: var(--sl-color-accent);
-  background: var(--sl-color-accent-low);
+  --sl-color-asides-border: var(--sl-color-gray-4);
+  background: var(--ap-surface);
 }
 
 .pagination-links a {
@@ -314,7 +315,7 @@ h1#_top { font-size: clamp(1.95rem, 1.75rem + 0.85vw, 2.4rem); }
   inset: 0 0 38%;
   background: radial-gradient(circle, var(--sl-color-accent) 1px, transparent 1.5px) 0 0 / 13px 13px;
   mask-image: radial-gradient(ellipse 62% 100% at 50% 0, #000, transparent 88%);
-  opacity: 0.17;
+  opacity: 0.1;
   pointer-events: none;
 }
 
@@ -441,10 +442,10 @@ h1#_top { font-size: clamp(1.95rem, 1.75rem + 0.85vw, 2.4rem); }
   .ap-reference-menu { grid-template-columns: minmax(0, 1fr); }
 }
 
-:root[data-has-hero] .sl-markdown-content > :is(p, ul, .expressive-code) { max-width: 48rem; }
+:root[data-has-hero] .sl-markdown-content > :is(p:not(.harness-intro), ul, .expressive-code) { max-width: 48rem; }
 
 @media print {
-  .ap-top-nav, .ap-search { display: none; }
+  .ap-top-nav, .ap-search, .ap-theme-toggle { display: none; }
   .ap-hero::before { content: none; }
 }
 

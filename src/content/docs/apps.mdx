@@ -46,11 +46,11 @@ This section is extracted from one persona that uses teams and from the publishe
 
 ### From goals to playbooks
 
-In Gabriel Operator, a person gives a team a **goal** with an outcome and completion criteria. The team can plan with playbooks it already has. An author can also draft a playbook from a goal and register it for reuse after review. The plan can then run within the workspace’s connector grants and execution limits.
+In Gabriel Operator, a person gives a team a **goal** with an outcome and completion criteria. The goal selects and invokes playbooks in that team, ordering them as the outcome and their dependencies require. It can create a missing playbook, with the applicable review before running or registering it for reuse. The plan can then run within the workspace’s connector grants and execution limits.
 
 Playbooks declare the operations they need. During a run, authorized connector results and agent outputs can be mapped to named fields on a team list. Apps read that list or use their own declared connector operations. A pipeline transition can start another playbook within its configured limits.
 
-[Follow the homepage walkthrough](../#how-it-works) for Lane’s example.
+See [how a team composes playbooks](../#how-it-works) on the homepage, or [follow a Lane run](../examples/#one-prospect-end-to-end).
 
 ## 2. Connector requirements <Badge text="Extracted" variant="success" />
 

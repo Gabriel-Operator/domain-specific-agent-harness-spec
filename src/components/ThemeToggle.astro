@@ -1,0 +1,102 @@
+---
+import { Icon } from '@astrojs/starlight/components';
+---
+
+<button class="ap-theme-toggle" type="button" role="switch" aria-label="Dark mode" aria-checked="false" hidden>
+  <span class="ap-theme-track" aria-hidden="true">
+    <span class="ap-theme-light"><Icon name="sun" /></span>
+    <span class="ap-theme-dark"><Icon name="moon" /></span>
+  </span>
+</button>
+
+<script>
+  type Theme = 'light' | 'dark';
+  const key = 'starlight-theme';
+  const root = document.documentElement;
+  const system = matchMedia('(prefers-color-scheme: dark)');
+  const parse = (value: string | null): Theme | null => value === 'light' || value === 'dark' ? value : null;
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.ap-theme-toggle');
+  let preference: Theme | null = null;
+
+  try {
+    preference = parse(localStorage.getItem(key));
+  } catch {}
+
+  function applyTheme() {
+    const theme = preference ?? (system.matches ? 'dark' : 'light');
+    root.dataset.theme = theme;
+    for (const button of buttons) {
+      button.setAttribute('aria-checked', String(theme === 'dark'));
+      button.title = theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+      button.hidden = false;
+    }
+  }
+
+  for (const button of buttons) {
+    button.addEventListener('click', () => {
+      preference = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      applyTheme();
+      try {
+        localStorage.setItem(key, preference);
+      } catch {}
+    });
+  }
+
+  system.addEventListener('change', () => { if (!preference) applyTheme(); });
+  window.addEventListener('storage', (event) => {
+    if (event.key === key || event.key === null) {
+      preference = parse(event.newValue);
+      applyTheme();
+    }
+  });
+  applyTheme();
+</script>
+
+<style>
+  .ap-theme-toggle {
+    display: grid;
+    place-items: center;
+    flex: none;
+    min-height: 2.75rem;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--ap-muted);
+    cursor: pointer;
+  }
+
+  .ap-theme-toggle[hidden] { display: none; }
+
+  .ap-theme-toggle:focus-visible {
+    outline: 2px solid var(--ap-ink);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+  }
+
+  .ap-theme-track {
+    display: grid;
+    grid-template-columns: repeat(2, 1.375rem);
+    gap: 0.125rem;
+    padding: 0.125rem;
+    border: 1px solid var(--ap-line);
+    border-radius: 999px;
+    background: var(--ap-surface);
+  }
+
+  .ap-theme-toggle:hover .ap-theme-track { border-color: var(--sl-color-gray-4); }
+
+  .ap-theme-track > span {
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1;
+    border-radius: 50%;
+  }
+
+  .ap-theme-track :global(svg) { width: 0.875rem; height: 0.875rem; }
+
+  .ap-theme-toggle[aria-checked='false'] .ap-theme-light,
+  .ap-theme-toggle[aria-checked='true'] .ap-theme-dark {
+    background: var(--ap-ink);
+    color: var(--sl-color-text-invert);
+  }
+</style>
