@@ -1,6 +1,6 @@
 ---
 title: Apps and connectors
-description: How an agent package defines agents, connectors and apps so they work on the same data, and how a runtime keeps every view current.
+description: How a persona defines agents, connectors and apps so they work on the same data, and how a runtime keeps every view current.
 ---
 
 import { Badge } from '@astrojs/starlight/components';
@@ -8,7 +8,7 @@ import DraftNotice from '../../components/DraftNotice.astro';
 import Hierarchy from '../../components/Hierarchy.astro';
 import Loop from '../../components/Loop.astro';
 
-This optional profile describes how an agent package defines three parts that work on the same data.
+This optional profile describes how a persona defines three parts that work on the same data.
 
 - **Agents** carry out playbooks.
 - **Connectors** are the operations a playbook may call on an outside service.
@@ -22,9 +22,9 @@ A runtime keeps them in step. When an agent or a person changes a record, every 
 
 ## 1. The parts <Badge text="Extracted" variant="success" />
 
-A package folder holds a library of playbooks and one or more teams. A team owns its agents, its apps, and its lists and pipelines. Each agent runs one playbook from the library.
+A persona repository holds a library of playbooks and one or more teams. A team owns its agents, its apps, and its lists and pipelines. Each agent runs one playbook from the library.
 
-An app with its own interface starts in a team, because a team needs it. Creating it registers an app package in its creator's registry and installs it into that team. From the registry it can be installed into other teams, including teams in another agent package.
+An app with its own interface starts in a team, because a team needs it. Creating it registers an app package in its creator's registry and installs it into that team. From the registry it can be installed into other teams, including teams in another persona.
 
 <Hierarchy />
 
@@ -42,7 +42,7 @@ All of these are declared in one definition file, `assets/studio-teams.json`. Th
 
 One distinction runs through this page. A **connector** is an operation contract. A **connection** is a private authenticated account. A definition holds the first and never the second.
 
-This section is extracted from one package that uses teams and from the published [team definition schema](https://github.com/Gabriel-Operator/persona-team-manager/blob/main/references/studio-teams.schema.json).
+This section is extracted from one persona that uses teams and from the published [team definition schema](https://github.com/Gabriel-Operator/persona-team-manager/blob/main/references/studio-teams.schema.json).
 
 ## 2. Connector requirements <Badge text="Extracted" variant="success" />
 
@@ -189,7 +189,7 @@ Steps 1 to 4 and step 6 describe how the extracted parts already work together. 
 
 ## 6. Custom app packages <Badge text="Extracted" variant="success" />
 
-An **app package** distributes a custom interface. It has its own registry and lifecycle, separate from the agent package that defines the team.
+An **app package** distributes a custom interface. It has its own registry and lifecycle, separate from the persona that defines the team.
 
 When a grid or a board is not enough, an app can bring its own interface. It is a package: a manifest, the compiled files of the interface, and optional sample data for previews.
 
@@ -256,8 +256,8 @@ The full format is the published [package schema](https://github.com/Gabriel-Ope
 An app starts in a team and then lives in a registry.
 
 1. **Create.** Someone builds the app in a team, because that team needs it.
-2. **Register.** Creating it registers a package in the creator's registry, with an identifier, numbered revisions and a fingerprint of its contents. The registry entry does not name a team or agent package.
-3. **Install.** The same step installs the package into the team it was built in. From the registry, its creator can install it into other teams, including teams in another agent package.
+2. **Register.** Creating it registers a package in the creator's registry, with an identifier, numbered revisions and a fingerprint of its contents. The registry entry does not name a team or persona.
+3. **Install.** The same step installs the package into the team it was built in. From the registry, its creator can install it into other teams, including teams in another persona.
 4. **Share.** The creator chooses who else may open an installation: nobody, anyone signed in, or anyone with the link.
 
 An installation binds one revision of an app package to one team. The same app package can be installed in several teams.
@@ -278,10 +278,10 @@ Rules:
 - Only the creator of a package can install it. Other people use it where it is installed.
 - An installation of a custom package is visible only to the person who installed it. They choose who else may open it: nobody, anyone signed in, or anyone with the link.
 - Removing a package removes its installations in every team.
-- An agent package MAY turn custom apps off for its teams.
+- A persona MAY turn custom apps off for its teams.
 - A package MAY also be registered directly through the account's API, without starting in a team.
 
-An agent package does not reference the app packages its teams have installed. Importing the agent package brings its teams, playbooks, lists, and views. Installed apps stay with their workspace.
+A persona does not reference the app packages its teams have installed. Importing the persona brings its teams, playbooks, lists, and views. Installed apps stay with their workspace.
 
 ## 7. Live sync <Badge text="Extracted" variant="success" />
 

@@ -1,6 +1,6 @@
 ---
 // A simplified picture of Gabriel's Playbook Studio, one tab at a time. Each tab says what people do there, what it
-// reads from the package folder, what the workspace keeps, and which part of the specification covers it.
+// reads from the persona folder, what the workspace keeps, and which part of the specification covers it.
 // Bot, connector, list and stage names come from Lane's "Prospect to pilot" team. Figures are illustrations.
 type Tab = {
 	id: string;
@@ -258,7 +258,7 @@ const tabs: Tab[] = [
 				<p>{tab.does}</p>
 				<dl>
 					<div>
-						<dt>From the package folder</dt>
+						<dt>From the persona folder</dt>
 						<dd set:html={tab.folder} />
 					</div>
 					<div>

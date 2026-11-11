@@ -1,44 +1,46 @@
 ---
 title: Terms and standards
-description: What an agent package contains, how it differs from an agent, and where Agent Skills, MCP, and A2A fit.
+description: How personas, runtimes, and agent harnesses fit together, and how the draft relates to Agent Skills, MCP, and A2A.
 ---
 
-An **agent package** is the versioned definition of a job. An **agent** is a worker that can carry it out. One package can describe several agents and the workflows, tools, and records they share.
+A **persona** is the versioned definition of a role or team. A **runtime** imports it and coordinates work. An **agent harness** runs the model and tool loop for an agent. These terms describe responsibilities that an implementation can put in the same process or in separate services.
 
 ## Vocabulary
 
 | Term | Meaning in this specification |
 | --- | --- |
-| Agent package | The Git repository that bundles instructions and declarative definitions for a job. Gabriel Operator calls this a **persona**. |
+| Persona | The Git definition of a role or team and the work it can do. |
+| Runtime | Software that imports and verifies a persona, connects workspace resources, and coordinates execution. |
+| Agent harness | The execution system that runs the agent loop, including model calls, context, and tool use. |
 | Agent | An AI worker configured with instructions and tools. In a Gabriel team definition, the existing field for agent entries is `teams[].bots`. |
-| Team | Agents and shared resources configured to work together. One package can declare multiple teams. |
+| Team | Agents and shared resources configured to work together. One persona can declare multiple teams. |
 | Skill | A reusable bundle of instructions and supporting files that an agent can load. |
 | Workflow (playbook) | A prescribed sequence or graph of steps. **Workflow** is the generic term; **playbook** is the name used in Gabriel Studio. |
 | Connector / connection | A connector declares which external operations work may call. A connection is an authenticated account that a workspace supplies. |
-| Runtime / workspace | The runtime loads definitions and executes work. A workspace is one installation's environment, with accounts, permissions, and state. |
+| Workspace | One installation's environment, with accounts, permissions, and state. |
 
-For example, Lane is a **package** for introductions and pilots. Lead researcher and Outreach coordinator are **agents** on one team. The steps for drafting and approving an email are a **playbook**. Sam's connected Gmail account and the resulting email history belong to the **workspace**.
+For example, Lane is a **persona** for introductions and pilots. Lead researcher and Outreach coordinator are **agents** on one team. The steps for drafting and approving an email are a **playbook**. Sam's connected Gmail account and the resulting email history belong to the **workspace**.
 
 Existing names such as `assets/persona-evals.json`, `teams[].bots`, and published resource keys retain their current meaning. The vocabulary in the docs does not introduce aliases or require a file migration.
 
-This use of *agent* follows the common distinction between a worker configured with instructions and tools and the workflow it may execute. See [OpenAI's agent definitions](https://developers.openai.com/api/docs/guides/agents/define-agents) and [Anthropic's distinction between workflows and agents](https://www.anthropic.com/research/building-effective-agents).
+The definition of *harness* follows how [OpenAI describes the Codex agent loop](https://openai.com/index/unrolling-the-codex-agent-loop/) and [Anthropic describes agent harnesses](https://www.anthropic.com/research/demystifying-evals-for-ai-agents). The persona runtime owns import and workspace binding in this spec. The draft leaves the harness interface to each implementation.
 
 ## Agent Skills
 
-The package's root [`SKILL.md`](https://agentskills.io/specification) follows the Agent Skills format. A skills-compatible agent can read those instructions. Additional skills can live under `skills/`.
+The persona’s root [`SKILL.md`](https://agentskills.io/specification) follows the Agent Skills format. A skills-compatible agent can read those instructions. Additional skills can live under `skills/`.
 
-The Agent Package Spec adds a registry and declarative definitions for domains, data, workflows, and evals. Loading the root skill alone does not validate those definitions, enforce approvals, or install the package. Agent Skills can also include executable scripts; this draft's [definitions-only rule](../specification/#3-definitions-only-) applies to the package's definition files.
+A persona adds a registry and declarative definitions for domains, data, workflows, and evals. A runtime uses those definitions to install the persona and apply its runtime rules. Agent Skills can include executable scripts. The [definitions-only rule](../specification/#3-definitions-only-) applies to the persona’s definition files.
 
 ## Model Context Protocol
 
-[Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/learn/server-concepts) defines how an AI application connects to servers that expose tools and resources. This draft describes which operations a workflow can request and how the runtime binds them to a connection. An MCP tool can satisfy a connector operation; the protocol itself does not define the package or grant access to an account.
+[Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/learn/server-concepts) defines how an AI application connects to servers that expose tools and resources. This draft describes which operations a workflow can request and how the runtime binds them to a connection. An MCP tool can satisfy a connector operation once the workspace authorizes the connection.
 
 ## Agent2Agent (A2A)
 
-[Agent2Agent (A2A)](https://a2a-protocol.org/latest/specification/) defines how running agents discover one another and exchange tasks and results. An A2A Agent Card describes a service available to call. A package registry pins files used to load a definition. The draft does not specify an A2A adapter.
+[Agent2Agent (A2A)](https://a2a-protocol.org/latest/specification/) defines how running agents discover one another and exchange tasks and results. An A2A Agent Card describes a service available to call. A persona registry pins files used to load a definition. The draft does not specify an A2A adapter.
 
 ## Standard Agent Specification
 
-The [Standard Agent Specification](https://standardagentspec.org) defines executable agents, including model selection, prompts, tools, threads, and hooks. It distributes TypeScript implementations as npm packages. This draft distributes Markdown and JSON definitions in Git. It can describe multiple teams, and its proposed binding rules leave model selection to the workspace.
+The [Standard Agent Specification](https://standardagentspec.org) defines executable agents, including model selection, prompts, tools, threads, and hooks. It distributes TypeScript implementations as npm packages. A persona holds Markdown and JSON definitions in Git. It can describe multiple teams, and the proposed binding rules leave model selection to the workspace.
 
-Prompts and tools are useful points of comparison, but their execution and state models differ. A package does not directly run as a Standard Agent. Exporting individual agents would require an adapter and is not specified here.
+Exporting individual agents from a persona as Standard Agents would require an adapter for the two execution and state models.

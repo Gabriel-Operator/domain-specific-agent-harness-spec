@@ -1,26 +1,28 @@
-# Agent Package Spec
+# Persona Runtime Spec
 
-**A Git format for the work an AI agent or team needs to do.**
+**A runtime contract for agents and teams that run on an existing harness.**
 
-Package instructions, playbooks, data definitions, approvals, and evals together. Review changes in Git, pin linked definitions, and import the package into a compatible runtime. Accounts, records, and run history belong to the workspace.
+A **persona** is a versioned Git definition of a role or team, including its instructions, playbooks, data definitions, approval requirements, and evals. The **runtime** verifies those definitions, binds workspace resources, and coordinates work with an **agent harness**. The harness runs the agent loop and coordinates model calls and tool use.
 
 [Read the draft](https://gabriel-operator.github.io/persona-spec/) · [Specification](src/content/docs/specification.mdx) · [Examples](src/content/docs/examples.mdx) · [Terms and standards](src/content/docs/standards.mdx)
 
 > **Status: draft 0.1.** The format comes from running Gabriel Operator installations and can still change.
 
-## Package, agent, workspace
+## Persona, runtime, harness
 
 | Term | What it means |
 | --- | --- |
-| **Agent package** | The versioned folder that describes a job. Gabriel Operator calls it a *persona*. |
-| **Agent** | A worker that uses instructions and tools. A package can define a team of agents. |
+| **Persona** | The Git definition of a role or team and the work it can do. |
+| **Runtime** | Loads and verifies a persona, connects workspace resources, and coordinates execution. |
+| **Harness** | Runs the agent loop and coordinates model calls and tool use. |
+| **Agent** | A worker that uses instructions and tools. A persona can define a team of agents. |
 | **Workspace** | One installation's accounts, records, permissions, and run history. |
 
-The root [`SKILL.md`](https://agentskills.io/specification) follows Agent Skills. The package adds declarative definitions and a registry of pinned resources. A skills client can read the instructions; a compatible runtime handles installation and execution.
+The root [`SKILL.md`](https://agentskills.io/specification) follows Agent Skills. A persona adds declarative definitions and a registry of pinned resources. This draft covers persona import and runtime behavior, including reporting which steps can run. How a runtime connects to its harness depends on the implementation.
 
 Existing paths and identifiers such as `assets/persona-evals.json` and `teams[].bots` still apply.
 
-## What ships in a package
+## What a persona contains
 
 ```text
 persona-lane/
@@ -50,12 +52,12 @@ The draft marks features **Extracted** (used in Gabriel today), **Proposed** (ne
 | [Examples](src/content/docs/examples.mdx) | A tour of the Lane team and its prospect workflow |
 | [Terms and standards](src/content/docs/standards.mdx) | Vocabulary and how Agent Skills, MCP, A2A, and Standard Agents fit |
 
-The format comes from [Gabriel Operator](https://github.com/Gabriel-Operator). The [Portable Persona Runtime](https://github.com/Gabriel-Operator/portable-persona-runtime) is a self-hosted implementation. Check the runtime's capability report for the steps it can execute, especially offline.
+The format comes from [Gabriel Operator](https://github.com/Gabriel-Operator). The [Portable Persona Runtime installer](https://github.com/Gabriel-Operator/portable-persona-runtime) deploys published personas to a self-hosted runtime appliance. Check the runtime's capability report for the steps it can execute, especially offline.
 
 For a coding agent, start with:
 
 ```text
-Read https://gabriel-operator.github.io/persona-spec/llms.txt before writing or reviewing an agent package.
+Read https://gabriel-operator.github.io/persona-spec/llms.txt before authoring a persona or implementing a runtime.
 ```
 
 ## Develop locally

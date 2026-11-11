@@ -1,6 +1,6 @@
 ---
-title: Agent Package Spec
-description: An open format for versioning and sharing the definitions that an AI agent or team needs to do a job.
+title: Persona Runtime Spec
+description: An open specification for runtimes that load personas and coordinate work through an agent harness.
 template: splash
 hero: {}
 ---
@@ -12,17 +12,22 @@ import DocCategories from '../../components/DocCategories.astro';
 
 <DocCategories />
 
-## Package, agent, workspace
+<span id="package-agent-workspace"></span>
 
-- **Package.** The Git repository you version and share. Gabriel Operator calls this a *persona*.
-- **Agent.** The worker that uses instructions and tools. A package can define a team of agents.
+## Persona, runtime, and harness
+
+- **Persona.** The versioned definition of a role or team, including its instructions, workflows, and data.
+- **Runtime.** The layer that loads a persona, connects it to workspace resources, and coordinates execution.
+- **Agent harness.** The system that runs the agent loop and coordinates model calls and tool use.
 - **Workspace.** An installation that holds accounts, records, permissions, and run history.
 
 See [Terms and standards](./standards/) for the glossary and how Agent Skills, MCP, and A2A fit.
 
 <span id="anatomy-of-a-persona"></span>
 
-## Inside the package
+<span id="inside-the-package"></span>
+
+## Inside a persona
 
 [**`SKILL.md`**](./specification/#2-skillmd-) provides instructions. [**Definition files**](./specification/#6-definition-files-) describe the data and workflows. The [**registry**](./specification/#5-registry-) pins the Git revision and fingerprint of each linked definition.
 
@@ -30,9 +35,9 @@ See [Terms and standards](./standards/) for the glossary and how Agent Skills, M
 
 ## From Git to a running workspace
 
-A runtime [checks the package on import](./specification/#5-registry-), binds what the installation needs, and [reports which steps it can execute](./specification/#71-capability-report-).
+A runtime [verifies a persona on import](./specification/#5-registry-), binds workspace resources, and [reports which steps it can execute](./specification/#71-capability-report-). It can use an agent harness for work that requires model reasoning or tool use. The harness integration depends on the runtime.
 
-Draft 0.1 comes from packages running on **Gabriel Operator**. The [Portable Persona Runtime](https://github.com/Gabriel-Operator/portable-persona-runtime) is a self-hosted implementation.
+Draft 0.1 comes from personas running on **Gabriel Operator**. The [Portable Persona Runtime installer](https://github.com/Gabriel-Operator/portable-persona-runtime) deploys published personas to a self-hosted runtime appliance.
 
 <span id="get-started"></span>
 

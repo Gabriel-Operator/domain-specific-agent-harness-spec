@@ -2,7 +2,7 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
-const NAME = 'Agent Package Spec';
+const NAME = 'Persona Runtime Spec';
 const REPOSITORY = 'https://github.com/Gabriel-Operator/persona-spec';
 
 // GitHub Pages serves the site under /persona-spec. Hosts that serve it at the root (Vercel, a custom domain) leave
@@ -17,7 +17,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: NAME,
-			description: 'An open format for packaging the definitions an AI agent or team needs to do a job.',
+			description: 'An open specification for runtimes that load personas and coordinate work through an agent harness.',
 			social: [{ icon: 'github', label: 'GitHub', href: REPOSITORY }],
 			editLink: { baseUrl: `${REPOSITORY}/edit/main/` },
 			lastUpdated: true,

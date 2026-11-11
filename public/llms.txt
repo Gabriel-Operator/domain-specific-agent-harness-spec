@@ -1,8 +1,8 @@
-# Agent Package Spec
+# Persona Runtime Spec
 
-> Draft 0.1 of a Git format for the definitions an AI agent or team needs to do a job. Gabriel Operator calls an agent package a persona. An agent executes work; a runtime loads the package; a workspace keeps installation state.
+> Draft 0.1 of a runtime contract for loading personas and coordinating work through an agent harness. A persona is the versioned definition of a role or team. The runtime loads it and binds workspace resources. The harness runs the agent loop.
 
-- [Overview](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/README.md): What an agent package is and how to read this repository.
+- [Overview](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/README.md): How personas, runtimes, and harnesses fit together.
 - [Specification](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/specification.mdx): Folder structure, SKILL.md, definitions-only rule, resource keys, registry, and runtime rules.
 - [Apps and connectors](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/apps.mdx): Connector requirements, steps, lists, pipelines, app packages, live sync, and presence.
 - [Examples](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/examples.mdx): Studio tour and a prospect workflow from research to onboarding.

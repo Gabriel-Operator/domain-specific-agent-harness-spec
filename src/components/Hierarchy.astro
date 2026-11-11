@@ -1,8 +1,8 @@
 ---
-// What a package folder holds, and what sits outside it. The folder has a shared library of playbooks and one or more
+// What a persona folder holds, and what sits outside it. The folder has a shared library of playbooks and one or more
 // teams. An app with its own interface is built in a team, kept in its creator's registry, and installed from there
 // into any team.
-// The figures are from one package's team file.
+// The figures are from one persona's team file.
 const playbooks = ['meeting-watcher', 'brief-researcher', 'briefing-caller', 'meeting-scribe', 'pilot-research'];
 const playbookCount = 17;
 
@@ -28,13 +28,13 @@ const teams = [
 const packageFacts = [
 	['Starts in a team', 'Built there, because that team needs it.'],
 	['Kept in a registry', 'Its creator’s own, with numbered revisions and a fingerprint.'],
-	['Installed anywhere', 'Into any team, in any package. Opened to others by sharing.'],
+	['Installed anywhere', 'Into any team, in any persona. Opened to others by sharing.'],
 ];
 ---
 
 <div class="ps-tree not-content" data-reveal="children">
 	<div class="ps-tree-folder">
-		<p class="ps-tree-label">persona-lane/ <span>the package folder</span></p>
+		<p class="ps-tree-label">persona-lane/ <span>the persona folder</span></p>
 		<div class="ps-tree-body">
 			<div class="ps-tree-box" style="--i:0">
 				<p class="ps-tree-title">Playbook library <span>{playbookCount} playbooks</span></p>
