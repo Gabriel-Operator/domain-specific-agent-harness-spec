@@ -7,11 +7,6 @@ const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
 <div class="ap-hero">
   <h1 id="_top" data-page-title>{siteTitle}</h1>
   <p>An open specification for composing reusable playbooks into domain teams. Goals drive the work, connectors bring the data, and experts guide improvement.</p>
-  <button type="button" class="ap-search" data-hero-search hidden aria-haspopup="dialog">
-    <Icon name="magnifier" />
-    <span>Search documentation…</span>
-    <kbd aria-hidden="true"></kbd>
-  </button>
   <nav class="ap-topics" aria-label="Start here">
     <a href={siteTitleHref + '#why-a-domain-specific-harness'}>Read the story <Icon name="down-arrow" /></a>
     <a href={siteTitleHref + '#where-the-spec-starts'}>Where the spec starts</a>
@@ -19,22 +14,3 @@ const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
     <a href={siteTitleHref + '#explore-the-specification'}>Explore the spec</a>
   </nav>
 </div>
-
-<script>
-  // Share the header's Starlight search dialog and Pagefind index.
-  await customElements.whenDefined('site-search');
-  const trigger = document.querySelector<HTMLButtonElement>('[data-hero-search]');
-  const open = document.querySelector<HTMLButtonElement>('site-search [data-open-modal]');
-  const dialog = document.querySelector<HTMLDialogElement>('site-search dialog');
-
-  if (trigger && open && dialog) {
-    trigger.hidden = false;
-    const key = trigger.querySelector('kbd');
-    if (key) key.textContent = open.querySelector('kbd')?.textContent?.trim() || 'Ctrl K';
-    trigger.addEventListener('click', (event) => {
-      // Starlight listens for outside clicks after it opens the dialog.
-      event.stopPropagation();
-      open.click();
-    });
-  }
-</script>

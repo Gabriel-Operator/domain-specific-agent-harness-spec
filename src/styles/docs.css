@@ -337,39 +337,6 @@ h1#_top { font-size: clamp(1.95rem, 1.75rem + 0.85vw, 2.4rem); }
   text-wrap: pretty;
 }
 
-.ap-search:not([hidden]) {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  width: min(100%, 36rem);
-  min-height: 3.5rem;
-  margin-block: 1.75rem 0;
-  padding: 0.75rem 1rem;
-  border: 1px solid color-mix(in srgb, var(--ap-accent) 38%, var(--ap-line));
-  border-radius: 0.625rem;
-  background: var(--sl-color-black);
-  color: var(--ap-muted);
-  font: inherit;
-  text-align: start;
-  cursor: pointer;
-}
-
-.ap-search svg { width: 1.125rem; height: 1.125rem; flex: none; color: var(--ap-accent); }
-.ap-search:hover { border-color: var(--ap-accent); }
-.ap-search:focus-visible { outline: 2px solid var(--ap-accent); outline-offset: 3px; }
-
-.ap-search kbd {
-  margin-inline-start: auto;
-  padding: 0.05rem 0.45rem;
-  border: 1px solid var(--ap-line);
-  border-radius: 0.3rem;
-  background: var(--ap-surface);
-  color: var(--ap-muted);
-  font: inherit;
-  font-size: 0.75rem;
-  white-space: nowrap;
-}
-
 .ap-topics {
   display: flex;
   flex-wrap: wrap;
@@ -445,7 +412,7 @@ h1#_top { font-size: clamp(1.95rem, 1.75rem + 0.85vw, 2.4rem); }
 :root[data-has-hero] .sl-markdown-content > :is(p:not(.harness-intro), ul, .expressive-code) { max-width: 48rem; }
 
 @media print {
-  .ap-top-nav, .ap-search, .ap-theme-toggle { display: none; }
+  .ap-top-nav, .ap-theme-toggle { display: none; }
   .ap-hero::before { content: none; }
 }
 
