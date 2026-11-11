@@ -3,9 +3,9 @@ import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
 const NAME = 'Domain-Specific Agent Harness Spec';
-const REPOSITORY = 'https://github.com/Gabriel-Operator/persona-spec';
+const REPOSITORY = 'https://github.com/Gabriel-Operator/domain-specific-agent-harness-spec';
 
-// GitHub Pages serves the site under /persona-spec. Hosts that serve it at the root (Vercel, a custom domain) leave
+// GitHub Pages serves the site under /domain-specific-agent-harness-spec. Hosts that serve it at the root (Vercel, a custom domain) leave
 // SITE_BASE unset. Links between pages are relative so they work either way.
 const SITE_URL = process.env.SITE_URL || undefined;
 const SITE_BASE = process.env.SITE_BASE || undefined;

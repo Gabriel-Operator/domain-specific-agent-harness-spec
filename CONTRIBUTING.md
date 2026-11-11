@@ -10,7 +10,7 @@ Typo fixes, clearer wording, better examples and fixes to the diagrams are welco
 
 ### Problems with the specification
 
-Found something in the specification that is wrong, contradictory or impossible to implement? [Open an issue](https://github.com/Gabriel-Operator/persona-spec/issues). Say which section, what you expected and what you found.
+Found something in the specification that is wrong, contradictory or impossible to implement? [Open an issue](https://github.com/Gabriel-Operator/domain-specific-agent-harness-spec/issues). Say which section, what you expected and what you found.
 
 ### Proposals
 

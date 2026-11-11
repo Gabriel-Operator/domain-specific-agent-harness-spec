@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SITE_URL: https://gabriel-operator.github.io
-      SITE_BASE: /persona-spec
+      SITE_BASE: /domain-specific-agent-harness-spec
     steps:
       - name: Check out the repository
         uses: actions/checkout@v7

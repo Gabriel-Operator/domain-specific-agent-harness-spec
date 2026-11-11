@@ -1,5 +1,5 @@
 {
-  "name": "persona-spec",
+  "name": "domain-specific-agent-harness-spec",
   "type": "module",
   "version": "0.0.1",
   "scripts": {

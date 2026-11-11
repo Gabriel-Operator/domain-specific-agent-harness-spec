@@ -4,7 +4,7 @@
 
 A **persona** is a versioned Git definition of a domain, its teams, and the playbooks they use. It also carries shared data definitions, rules, and evals. The **runtime** verifies those definitions, binds workspace resources, and coordinates work with an **agent harness**. The harness runs the agent loop and coordinates model calls and tool use.
 
-[Read the draft](https://gabriel-operator.github.io/persona-spec/) · [Specification](src/content/docs/specification.mdx) · [Examples](src/content/docs/examples.mdx) · [Terms and standards](src/content/docs/standards.mdx)
+[Read the draft](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/) · [Specification](src/content/docs/specification.mdx) · [Examples](src/content/docs/examples.mdx) · [Terms and standards](src/content/docs/standards.mdx)
 
 > **Status: draft 0.1.** The format comes from running Gabriel Operator installations and can still change.
 
@@ -21,7 +21,7 @@ A **persona** is a versioned Git definition of a domain, its teams, and the play
 5. **Review and improve.** The domain specialist resolves anomalies and reviews protected actions. Recorded decisions inform revisions to playbooks, mappings, and evals.
 6. **Share and recombine.** In the proposed marketplace, teams can mix and match playbook packages to build different personas. Authors can also list complete personas for others to adopt.
 
-[Follow the illustrated walkthrough](https://gabriel-operator.github.io/persona-spec/#why-a-domain-specific-harness).
+[Follow the illustrated walkthrough](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/#why-a-domain-specific-harness).
 
 ## Persona, runtime, harness
 
@@ -60,7 +60,7 @@ persona-lane/
 └── skills/
 ```
 
-The [folder reference](https://gabriel-operator.github.io/persona-spec/specification/#1-folder-structure-) explains which files each profile uses and which resources belong to the workspace. The [implementation guide](src/content/docs/implementation.mdx) maps the architecture to the files and includes example JSON.
+The [folder reference](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/specification/#1-folder-structure-) explains which files each profile uses and which resources belong to the workspace. The [implementation guide](src/content/docs/implementation.mdx) maps the architecture to the files and includes example JSON.
 
 The draft marks features **Extracted** (used in Gabriel today), **Proposed** (new in this draft), or **Planned** (still to be specified). The core format and registry are extracted. Runtime binding and presence are proposed. A complete set of interoperable schemas and a shared team orchestration contract are planned.
 
@@ -81,7 +81,7 @@ The format comes from [Gabriel Operator](https://github.com/Gabriel-Operator). T
 For a coding agent, start with:
 
 ```text
-Read https://gabriel-operator.github.io/persona-spec/llms.txt before authoring a persona or implementing a runtime.
+Read https://gabriel-operator.github.io/domain-specific-agent-harness-spec/llms.txt before authoring a persona or implementing a runtime.
 ```
 
 ## Develop locally
@@ -94,6 +94,6 @@ npm run dev -- --background
 npm run build
 ```
 
-The site uses Astro and Starlight. Pages live in `src/content/docs/`, diagrams in `src/components/`, and styles in `src/styles/`. The build writes `dist/`; the GitHub Pages workflow sets `SITE_BASE=/persona-spec`. [`public/llms.txt`](public/llms.txt) indexes the source for coding agents.
+The site uses Astro and Starlight. Pages live in `src/content/docs/`, diagrams in `src/components/`, and styles in `src/styles/`. The build writes `dist/`; the GitHub Pages workflow sets `SITE_BASE=/domain-specific-agent-harness-spec`. [`public/llms.txt`](public/llms.txt) indexes the source for coding agents.
 
 See [Contributing](CONTRIBUTING.md) to report an issue or propose a change. Released under the [Apache License 2.0](LICENSE).
