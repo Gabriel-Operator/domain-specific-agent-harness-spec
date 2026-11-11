@@ -32,7 +32,6 @@ A persona is a Git repository with this layout:
     - studio-teams.json Optional: teams, playbooks and team resources
     - data-feeds/
       - catalog.json
-    - apps/ Proposed: packaged apps, one directory each
   - references/
     - registry.json Required
     - lists/ One linked repository per list
@@ -73,7 +72,7 @@ A definition file MUST NOT contain:
 - Database identifiers from any one installation. A page ID, user ID, command ID or action ID is local to the runtime that created it.
 - Scripts or styles: `javascript`, `script`, `css`, `tailwind`.
 
-One exception is proposed. The compiled interface of a packaged app may live in its own directory under `assets/apps/`, and it runs only in a sandbox. See [where a package lives](../apps/#where-a-package-lives-).
+An app with its own interface carries compiled code, so it is not a definition file. It is a separate package outside the persona folder. See [packages and installations](../apps/#packages-and-installations-).
 
 Definition files that could be confused with runtime data declare the rule explicitly:
 

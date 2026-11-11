@@ -1,6 +1,7 @@
 ---
-// What a persona folder holds: a shared library of playbooks and one or more teams. Each team owns its bots, apps,
-// lists and pipelines. The figures are from one persona's team file.
+// What a persona folder holds, and what sits outside it. The folder has a shared library of playbooks and one or more
+// teams. App packages are their own units: a team installs one, and the same package can serve many teams.
+// The figures are from one persona's team file.
 const playbooks = ['meeting-watcher', 'brief-researcher', 'briefing-caller', 'meeting-scribe', 'pilot-research'];
 const playbookCount = 17;
 
@@ -9,7 +10,7 @@ const teams = [
 		name: 'Meeting follow-through',
 		rows: [
 			['Bots', '6, each runs one playbook'],
-			['Apps', '3'],
+			['Apps', '3 views over lists'],
 			['Lists and pipelines', '1 list, 1 pipeline'],
 		],
 	},
@@ -17,10 +18,16 @@ const teams = [
 		name: 'Prospect to pilot',
 		rows: [
 			['Bots', '7, each runs one playbook'],
-			['Apps', '1'],
+			['Apps', '1 view over a list'],
 			['Lists and pipelines', '1 list, 1 pipeline'],
 		],
 	},
+];
+
+const packageFacts = [
+	['Its own unit', 'An identity, numbered revisions and a fingerprint.'],
+	['Belongs to its creator', 'Registered to an account, not to a persona or a team.'],
+	['Installed where it is used', 'Into any number of teams, in any persona.'],
 ];
 ---
 
@@ -50,9 +57,9 @@ const teams = [
 										<dd>{value}</dd>
 									</div>
 								))}
-								<div class="proposed">
-									<dt>Packaged apps</dt>
-									<dd>proposed</dd>
+								<div class="installed">
+									<dt>Installed apps</dt>
+									<dd>from packages ↓</dd>
 								</div>
 							</dl>
 						</div>
@@ -60,6 +67,20 @@ const teams = [
 				}
 			</div>
 		</div>
+	</div>
+
+	<div class="ps-tree-box ps-tree-outside" style="--i:3">
+		<p class="ps-tree-title">App packages <span>outside the folder</span></p>
+		<ul>
+			{
+				packageFacts.map(([title, text]) => (
+					<li>
+						<strong>{title}</strong>
+						<span>{text}</span>
+					</li>
+				))
+			}
+		</ul>
 	</div>
 </div>
 

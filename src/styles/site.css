@@ -1530,13 +1530,41 @@ html:not(.ps-js) .ps-registry-check span {
 	text-align: right;
 }
 
-.ps-tree-box dl > div.proposed {
-	border: 1px dashed var(--ps-warn);
-	background: var(--ps-warn-soft);
+.ps-tree-box dl > div.installed {
+	border: 1px dashed var(--ps-accent);
+	background: var(--ps-accent-soft);
 }
 
-.ps-tree-box dl > div.proposed dd {
-	color: var(--ps-warn);
+.ps-tree-box dl > div.installed dd {
+	color: var(--ps-accent);
+}
+
+.ps-tree-outside {
+	margin-top: 0.75rem;
+	border-style: dashed;
+	border-color: var(--ps-accent);
+}
+
+.ps-tree-outside ul {
+	display: grid;
+	grid-template-columns: repeat(3, minmax(0, 1fr));
+	gap: 0.75rem;
+	margin: 0.6rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.ps-tree-outside li strong {
+	display: block;
+	font-size: var(--sl-text-sm);
+	color: var(--sl-color-white);
+}
+
+.ps-tree-outside li span {
+	display: block;
+	font-size: var(--sl-text-sm);
+	line-height: 1.45;
+	color: var(--sl-color-gray-2);
 }
 
 /* ---------- Questions ---------- */
@@ -1729,6 +1757,10 @@ html:not(.ps-js) .ps-registry-check span {
 	}
 
 	.ps-tree-body {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.ps-tree-outside ul {
 		grid-template-columns: minmax(0, 1fr);
 	}
 
