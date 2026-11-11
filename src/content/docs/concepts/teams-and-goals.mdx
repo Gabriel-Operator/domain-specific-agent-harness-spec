@@ -7,15 +7,15 @@ A **team** owns the agents and shared resources that do a particular job. A **go
 
 ## From an outcome to a plan
 
-A goal belongs inside a team. It selects and invokes that team’s playbooks. The outcome, available capabilities, and dependencies determine which playbooks run and in what order; a team is not necessarily one fixed sequence. Agents execute those playbooks inside the harness. If a needed playbook is missing, the goal can create a definition for it, with declared inputs, outputs, connector requirements, and applicable review before execution.
+A goal belongs inside a team. It selects and invokes that team’s playbooks. The outcome, available capabilities, and dependencies determine which playbooks run and in what order; a team is not necessarily one fixed sequence. Agents execute those playbooks inside the harness. A saved goal playbook can delegate work within its configured limits. If the team needs a reusable playbook, an author can draft one from the goal, review its contract, and register it for later runs.
 
-For example, the Accountants team can use Lead Finder, Signal Researcher, Copywriter, and Sequence Reviewer. One goal may need all four with accepted research passed into the writing steps. Another may need only the first two. A goal that requires a missing capability can create the additional playbook and include it in the plan.
+For example, the Accountants team can use Lead Finder, Signal Researcher, Copywriter, and Sequence Reviewer. One goal may need all four with accepted research passed into the writing steps. Another may need only the first two. If a goal requires a missing capability, the team can author the additional playbook and include it in the plan after review.
 
 Gabriel distinguishes **Build from steps**, where the author specifies a sequence or graph of steps, from **Plan from a goal**, where the author supplies an objective, completion criteria, permitted capabilities, and limits for planning. Registration saves the definition. Starting work is a separate action that checks the selected plan and current access.
 
 ## Reuse a playbook
 
-A team placement references a playbook definition. The portable composition model treats that definition as a versioned package that teams can reference from a playbook registry, including teams in different personas. To reuse a package, a team must be able to supply its inputs, map its domain data, and grant its required connector operations in the workspace. Review the revision and those bindings before adopting it.
+A team placement references a playbook definition. Gabriel pins the revision in a team placement. The proposed marketplace extends this model to independently discoverable packages across personas. To reuse a package, a team must be able to supply its inputs, map its domain data, and grant its required connector operations in the workspace. Review the revision and those bindings before adopting it.
 
 The proposed **marketplace** lets people discover playbook packages, combine them into different personas, and optionally list complete personas for others to adopt. A **persona** packages a domain model, teams, and the playbooks those teams use. The **playbook registry** identifies reusable definitions and revisions. A persona’s own [definition registry](../../specification/#5-registry-) pins its linked files.
 
@@ -29,6 +29,6 @@ During execution, playbooks use connectors to read, update, and share data. Conn
 | **Work** | Goals, their plans and tasks, execution settings, and progress from planning to completion. |
 | **Active tasks** | Running or waiting work, with links back to the goal and any approval it needs. |
 
-The draft covers [team resources](../../apps/#1-the-parts-), [goal authoring in Gabriel](../../apps/#from-goals-to-playbooks), and [connector steps](../../apps/#3-steps-that-use-a-connector-). Full team orchestration remains [planned](../../specification/#8-not-yet-specified-).
+The draft covers [team resources](../../apps/#1-the-parts-), [goal authoring in Gabriel](../../apps/#from-goals-to-playbooks), and [connector steps](../../apps/#3-steps-that-use-a-connector-). See the [Studio definition fields](../../specification/#63-studio-definitions) and [sample files](../../implementation/#example-files). A shared orchestration contract across runtimes remains [planned](../../specification/#8-not-yet-specified-).
 
 Use [`persona-team-manager`](../../skills/#persona-authoring-and-operations) to author a Studio team and register playbooks. [`team-agents`](../../skills/#team-graph-nodes) documents the separate Page Builder orchestration graph and its node references.

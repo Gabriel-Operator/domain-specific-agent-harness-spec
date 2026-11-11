@@ -3,7 +3,7 @@ title: Runs and collaboration
 description: How Studio exposes run state, context, conversations, outputs, and audit evidence.
 ---
 
-A runtime loads the persona, checks available capabilities, and coordinates work through the selected harness. The harness handles agent reasoning and tool use. The workspace owns the run state, accounts, permissions, and shared history. The way a runtime connects to a harness is implementation-specific in this draft.
+A runtime loads the persona, checks available capabilities, and coordinates work through the selected harness. The harness handles agent reasoning and tool use. The workspace owns the run state, accounts, permissions, and shared history. Gabriel captures the run’s playbook definitions and limits at start, then checks current permissions before dispatch. The way a runtime connects to a harness is implementation-specific in this draft. See the [run sequence](../../implementation/#bind-and-run-a-team-goal).
 
 ## What Studio shows
 

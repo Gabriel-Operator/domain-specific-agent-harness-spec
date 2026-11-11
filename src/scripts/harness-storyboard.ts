@@ -50,7 +50,7 @@ const catalog = {
   teamB: { title: 'Team B', shape: 'frame', tone: 'domain', origin: 'team' },
   goal: { title: 'Goal', shape: 'strip', tone: 'runtime', origin: 'team' },
   planning: { title: 'Select · order · invoke', shape: 'label', tone: 'runtime', origin: 'goal' },
-  creation: { title: 'Create the missing playbook', shape: 'label', tone: 'contract', origin: 'goal' },
+  creation: { title: 'Draft the missing playbook', shape: 'label', tone: 'contract', origin: 'goal' },
   agents: { title: 'Agents execute the selected playbooks', shape: 'label', tone: 'contract' },
   harness: { title: 'Harness', shape: 'frame', tone: 'runtime' },
   connectors: { title: 'Connectors', shape: 'strip', tone: 'domain' },
@@ -181,7 +181,7 @@ export const storyboard = {
     wires: [wire('goal', 'core'), wire('goal', 'playbookB'), wire('goal', 'playbookC')],
   },
   missing: {
-    caption: 'If the team lacks a capability, the goal can create a playbook and add it to the plan.',
+    caption: 'A goal can reveal a missing capability. The team can draft, review, and register a playbook for it.',
     poses: {
       ...activeTeam,
       playbookC: at(544, 441, 132, 60),

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "resourceKey": "ontology.persona.meeting-desk",
+  "version": "1.0.0",
+  "name": "Meeting desk",
+  "status": "defined",
+  "entities": [
+    {
+      "type": "Meeting",
+      "description": "An upcoming occurrence on an authorized calendar.",
+      "attributes": {
+        "occurrenceId": {
+          "type": "string",
+          "required": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "startsAt": {
+          "type": "datetime",
+          "required": true
+        }
+      }
+    }
+  ],
+  "relationships": []
+}

@@ -1,7 +1,7 @@
 ---
 import { Icon } from '@astrojs/starlight/components';
 
-const { siteTitle } = Astro.locals.starlightRoute;
+const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
 ---
 
 <div class="ap-hero">
@@ -13,10 +13,10 @@ const { siteTitle } = Astro.locals.starlightRoute;
     <kbd aria-hidden="true"></kbd>
   </button>
   <nav class="ap-topics" aria-label="Start here">
-    <a href="#why-a-domain-specific-harness">Read the story <Icon name="down-arrow" /></a>
-    <a href="#where-the-spec-starts">Where the spec starts</a>
-    <a href="#the-complete-harness">The whole harness</a>
-    <a href="#explore-the-specification">Explore the spec</a>
+    <a href={siteTitleHref + '#why-a-domain-specific-harness'}>Read the story <Icon name="down-arrow" /></a>
+    <a href={siteTitleHref + '#where-the-spec-starts'}>Where the spec starts</a>
+    <a href={siteTitleHref + '#architecture-at-a-glance'}>Architecture</a>
+    <a href={siteTitleHref + '#explore-the-specification'}>Explore the spec</a>
   </nav>
 </div>
 

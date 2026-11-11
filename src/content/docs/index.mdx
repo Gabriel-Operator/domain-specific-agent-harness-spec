@@ -15,6 +15,17 @@ import HarnessWalkthrough from '../../components/HarnessWalkthrough.astro';
 
 <HarnessWalkthrough />
 
+## Architecture at a glance
+
+<figure class="ap-architecture">
+  <a href="./architecture.svg">
+    <img src="./architecture.svg" width="1200" height="900" loading="lazy" alt="A workspace loads a persona definition. Team goals invoke playbooks through the runtime and harness. Connectors use vault credentials, specialist review informs revisions, and marketplace playbooks can be combined into different personas." />
+  </a>
+  <figcaption>Select the diagram to view it at full size.</figcaption>
+</figure>
+
+[Map the architecture to files and runtime behavior](./implementation/).
+
 <span id="explore-the-documentation"></span>
 
 ## Explore the specification
@@ -29,7 +40,7 @@ Start with the definitions, follow a run, or look up the Gabriel Operator skills
 
 - **Playbook.** Reusable work that can be discovered in a marketplace and referenced by teams.
 - **Persona.** The versioned composition of a domain model, teams, and their playbooks.
-- **Goal.** An outcome that selects and invokes the team’s playbooks, or creates a missing playbook for the plan.
+- **Goal.** An outcome scoped to a team. It can invoke saved playbooks and guide the authoring of new ones.
 - **Runtime.** The layer that loads a persona, connects it to workspace resources, and coordinates execution.
 - **Agent harness.** The system that runs the agent loop and coordinates model calls and tool use.
 - **Workspace.** An installation that holds accounts, records, permissions, and run history.

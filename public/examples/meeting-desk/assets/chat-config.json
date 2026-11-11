@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 2,
+  "resourceKey": "persona.meeting-desk",
+  "publishedConfig": {
+    "name": "Meeting desk",
+    "systemPrompt": "Review upcoming meetings from authorized sources and share only approved summaries."
+  }
+}

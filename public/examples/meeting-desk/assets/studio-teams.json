@@ -1,0 +1,277 @@
+{
+  "schemaVersion": 1,
+  "teams": [
+    {
+      "id": "meeting-desk",
+      "name": "Meeting desk",
+      "goal": "Review upcoming meetings and share approved summaries.",
+      "revision": 1,
+      "budget": {
+        "dailyCredits": 0,
+        "episodeCredits": 0
+      },
+      "apps": [],
+      "automationPolicies": [],
+      "bots": [
+        {
+          "id": "reviewer",
+          "playbookId": "studio:review-meetings",
+          "sourceFingerprint": "23a67f9c4bcac40e304c202ed184db58a0cba57d16922d29c14330d2c724853d",
+          "name": "Meeting reviewer",
+          "objective": "Use the Read meetings playbook and draft a summary of upcoming meetings.",
+          "completionCriteria": "Return an evidence-backed summary for review.",
+          "position": {
+            "x": 0,
+            "y": 0
+          }
+        },
+        {
+          "id": "publisher",
+          "playbookId": "studio:publish-summary",
+          "sourceFingerprint": "e05935875299f77ea2e8fde83880eb1a67dd8be8e3c438135aba5dde2cfc98df",
+          "name": "Summary publisher",
+          "objective": "Publish the reviewed summary with the workspace’s grant.",
+          "completionCriteria": "Only the approved summary reaches the shared list.",
+          "position": {
+            "x": 320,
+            "y": 0
+          }
+        }
+      ],
+      "connections": []
+    }
+  ],
+  "playbooks": [
+    {
+      "teamId": "meeting-desk",
+      "schemaVersion": 1,
+      "key": "read-meetings",
+      "name": "Read meetings",
+      "revision": 1,
+      "inputs": [
+        {
+          "key": "from",
+          "label": "Start time",
+          "required": true
+        },
+        {
+          "key": "until",
+          "label": "End time",
+          "required": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "calendar",
+          "label": "Google Calendar",
+          "context": "personal",
+          "providers": [
+            "googlecalendar"
+          ],
+          "operations": [
+            "upcoming"
+          ],
+          "optional": false
+        }
+      ],
+      "outputFields": [
+        "meetings"
+      ],
+      "kind": "structured",
+      "steps": [
+        {
+          "id": "read",
+          "title": "Read upcoming meetings",
+          "instruction": "Read only the selected time window.",
+          "dependsOn": [],
+          "type": "connector_operation",
+          "operation": {
+            "requirementId": "calendar",
+            "operationId": "upcoming",
+            "values": {
+              "from": "/input/from",
+              "until": "/input/until"
+            },
+            "effect": "read"
+          },
+          "inputMappings": {},
+          "outputFields": {
+            "meetings": "/meetings"
+          },
+          "requiresApproval": false
+        }
+      ]
+    },
+    {
+      "teamId": "meeting-desk",
+      "schemaVersion": 1,
+      "key": "review-meetings",
+      "name": "Review meetings",
+      "revision": 1,
+      "inputs": [
+        {
+          "key": "from",
+          "label": "Start time",
+          "required": true
+        },
+        {
+          "key": "until",
+          "label": "End time",
+          "required": true
+        }
+      ],
+      "requirements": [
+        {
+          "id": "calendar",
+          "label": "Google Calendar",
+          "context": "personal",
+          "providers": [
+            "googlecalendar"
+          ],
+          "operations": [
+            "upcoming"
+          ],
+          "optional": false
+        }
+      ],
+      "outputFields": [
+        "summary"
+      ],
+      "kind": "goal",
+      "objective": "Use the Read meetings playbook and draft a summary of upcoming meetings.",
+      "completionCriteria": "Return a summary grounded in the authorized calendar result without editing the calendar.",
+      "allowedSkills": [],
+      "limits": {
+        "maxDepth": 1,
+        "maxAgents": 3,
+        "maxTasks": 4,
+        "maxConcurrentAgents": 1,
+        "activeMinutes": 10,
+        "elapsedDays": 1
+      },
+      "allowedPlaybooks": [
+        "read-meetings"
+      ]
+    },
+    {
+      "teamId": "meeting-desk",
+      "schemaVersion": 1,
+      "key": "publish-summary",
+      "name": "Publish summary",
+      "revision": 1,
+      "inputs": [
+        {
+          "key": "summary",
+          "label": "Summary to review",
+          "required": true
+        }
+      ],
+      "requirements": [],
+      "outputFields": [],
+      "kind": "structured",
+      "steps": [
+        {
+          "id": "review",
+          "title": "Review the proposed summary",
+          "instruction": "Check that the reviewed summary is suitable for the shared list.",
+          "dependsOn": [],
+          "type": "reason",
+          "inputMappings": {},
+          "outputFields": {},
+          "requiresApproval": true
+        },
+        {
+          "id": "publish",
+          "title": "Publish the reviewed summary",
+          "instruction": "Publish only the reviewed summary to the authorized destination.",
+          "dependsOn": [
+            "review"
+          ],
+          "type": "publish_list",
+          "inputMappings": {},
+          "outputFields": {},
+          "requiresApproval": false,
+          "publication": {
+            "target": "meeting-summaries",
+            "fields": {
+              "summary": "/input/summary"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "resources": [
+    {
+      "key": "list.meeting-desk.summaries",
+      "teamId": "meeting-desk",
+      "revision": 1,
+      "archived": false,
+      "kind": "list",
+      "definition": {
+        "name": "Meeting summaries",
+        "description": "",
+        "language": "en",
+        "columns": [
+          {
+            "key": "summary",
+            "label": "Summary",
+            "type": "text",
+            "required": true
+          }
+        ]
+      }
+    },
+    {
+      "key": "pipeline.meeting-desk.summaries",
+      "teamId": "meeting-desk",
+      "revision": 1,
+      "archived": false,
+      "kind": "pipeline",
+      "definition": {
+        "name": "Summary follow-up",
+        "description": "",
+        "listRef": "list.meeting-desk.summaries",
+        "stages": [
+          {
+            "id": "shared",
+            "name": "Shared",
+            "type": "initial"
+          },
+          {
+            "id": "done",
+            "name": "Done",
+            "type": "terminal"
+          }
+        ],
+        "transitions": [
+          {
+            "id": "finish",
+            "name": "Mark done",
+            "fromStageId": "shared",
+            "toStageId": "done",
+            "fieldMappings": []
+          }
+        ]
+      }
+    },
+    {
+      "key": "app.meeting-desk.summaries",
+      "teamId": "meeting-desk",
+      "revision": 1,
+      "archived": false,
+      "kind": "app",
+      "definition": {
+        "name": "Summary board",
+        "description": "",
+        "listRef": "list.meeting-desk.summaries",
+        "view": "board",
+        "fields": [
+          "summary"
+        ],
+        "pipelineRef": "pipeline.meeting-desk.summaries",
+        "requirements": []
+      }
+    }
+  ]
+}

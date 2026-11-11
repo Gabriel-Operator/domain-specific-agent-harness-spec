@@ -23,15 +23,17 @@ See the [ontology contract](../../specification/#61-ontology) and the [two ways 
 
 ## The portable definition
 
-| Part | What it contributes |
+| File | What it contributes |
 | --- | --- |
-| Root `SKILL.md` | Instructions for working in this domain. |
-| Ontology | The entities, attributes, and relationships the rest of the persona refers to. |
-| Team definition | Agents, playbook references, and team resources. |
-| Registry | Stable resource keys with pinned revisions and definition fingerprints. |
-| Evals | Expected behavior and the cases that check it. |
+| `SKILL.md` | Instructions for working in this domain. |
+| `assets/chat-config.json` | Published persona and command references. |
+| `assets/ontology.json` | Entities, attributes, and relationships. |
+| `assets/studio-teams.json` | Teams, playbooks, pinned agent placements, and team resources. |
+| `references/registry.json` | Stable keys, pinned revisions, and fingerprints for portable linked resources. |
+| `references/workspace.json` | The generated authoring graph, when present. |
+| `assets/persona-evals.json` | Expected behavior and cases that check it. |
 
-See the [folder tree](../../specification/#1-folder-structure-), [registry](../../specification/#5-registry-), and [definition files](../../specification/#6-definition-files-).
+See the [folder tree](../../specification/#1-folder-structure-), [registry](../../specification/#5-registry-), [definition files](../../specification/#6-definition-files-), and [example files](../../implementation/#example-files).
 
 ## Importing and updating
 

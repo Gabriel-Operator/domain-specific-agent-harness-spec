@@ -5,6 +5,7 @@
 - [Overview](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/README.md): How personas, runtimes, and harnesses fit together.
 - [Homepage story](https://gabriel-operator.github.io/persona-spec/#why-a-domain-specific-harness): Why a team needs shared rules and how a domain-specific harness carries a goal from plan to published records.
 - [Specification](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/specification.mdx): Folder structure, SKILL.md, definitions-only rule, resource keys, registry, and runtime rules.
+- [Implementation guide](https://gabriel-operator.github.io/persona-spec/implementation/): Map the architecture to definition files, workspace behavior, and validated example JSON.
 - [Apps and connectors](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/apps.mdx): Connector requirements, steps, lists, pipelines, app packages, live sync, and presence.
 - [Concept reference](https://gabriel-operator.github.io/persona-spec/concepts/): Topic pages that map Gabriel Operator concepts and Studio views to the draft.
 - [Skill catalogue](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/skills.mdx): Individual Gabriel Operator skills and child references.

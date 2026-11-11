@@ -44,6 +44,7 @@ export default defineConfig({
 					label: 'Reference',
 					items: [
 						{ label: 'Specification', slug: 'specification', attrs: { 'data-primary-nav': '' } },
+						{ label: 'Implementation guide', slug: 'implementation' },
 						{ label: 'Apps and connectors', slug: 'apps', attrs: { 'data-primary-nav': '' } },
 					],
 				},

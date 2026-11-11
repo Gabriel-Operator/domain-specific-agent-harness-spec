@@ -14,7 +14,7 @@ This optional profile describes how a persona defines three parts that work on t
 - **Connectors** are the operations a playbook may call on an outside service.
 - **Apps** are the views people use to see the result and move it on.
 
-A runtime keeps them in step. When an agent or a person changes a record, every open view of it updates.
+A runtime that supports live sync can keep open views in step with changes from agents and people.
 
 <DraftNotice profile />
 
@@ -28,16 +28,18 @@ An app with its own interface starts in a team, because a team needs it. Creatin
 
 <Hierarchy />
 
-All of these are declared in one definition file, `assets/studio-teams.json`. The schema uses the field `teams[].bots` for agents. It allows up to 100 teams, 128 playbooks and 256 team resources in a folder, and up to 64 agents and 50 apps in a team.
+Team definitions, playbooks, and declarative resources live in `assets/studio-teams.json`. Workspace installations supply connector accounts, publisher grants, and installed app packages. The team schema uses `teams[].bots` for agent placements. It allows up to 100 teams, 128 playbooks and 256 team resources in a folder, and up to 64 agents and 50 apps in a team.
 
 | Part | What it is | Where it is declared |
 | --- | --- | --- |
+| Goal run | A specific outcome, plan, and run | In the workspace, scoped to a team |
+| Playbook | A reusable execution or planning definition | `playbooks[]` |
 | Agent | A team member that carries out one playbook | `teams[].bots` |
 | Connector requirement | An operation contract: which service, and which operations | `playbooks[].requirements` |
 | List | Shared records | `resources[]`, kind `list` |
 | Pipeline | The stages a record moves through | `resources[]`, kind `pipeline` |
 | App | A view over a list | `resources[]`, kind `app` |
-| App package | An app with its own interface | Created in a team, then kept in its creator's registry. See [packages and installations](#packages-and-installations-). |
+| App package | An app with its own interface | Kept in its creator’s package registry and installed into a workspace team. See [packages and installations](#packages-and-installations-). |
 | Connection | A private, authenticated account | Never in a definition. The workspace holds it. |
 
 One distinction runs through this page. A **connector** is an operation contract. A **connection** is a private authenticated account. A definition holds the first and never the second.
@@ -46,7 +48,7 @@ This section is extracted from one persona that uses teams and from the publishe
 
 ### From goals to playbooks
 
-In Gabriel Operator, a person gives a team a **goal** with an outcome and completion criteria. The goal selects and invokes playbooks in that team, ordering them as the outcome and their dependencies require. It can create a missing playbook, with the applicable review before running or registering it for reuse. The plan can then run within the workspace’s connector grants and execution limits.
+In Gabriel Operator, a person gives a team a **goal** with an outcome and completion criteria. The goal selects and invokes playbooks in that team, ordering them as the outcome and their dependencies require. When the team lacks a playbook, an author can draft and register one from the goal. A saved goal playbook can also plan and delegate within its configured limits. The plan can then run within the workspace’s connector grants and execution limits.
 
 Playbooks declare the operations they need. During a run, authorized connector results and agent outputs can be mapped to named fields on a team list. Apps read that list or use their own declared connector operations. A pipeline transition can start another playbook within its configured limits.
 
@@ -89,7 +91,8 @@ A step of type `connector_operation` calls one declared operation.
 ```json
 {
   "id": "upcoming",
-  "title": "Discover accepted upcoming occurrences",
+  "title": "Discover upcoming occurrences",
+  "instruction": "Read upcoming occurrences from the authorized calendar.",
   "type": "connector_operation",
   "dependsOn": [],
   "operation": {
@@ -107,7 +110,9 @@ A step of type `connector_operation` calls one declared operation.
 | --- | --- |
 | `connector_operation` | Calls one operation of one requirement. |
 | `reason` | A model works on what earlier steps produced. |
-| `publish_list` | Writes named fields to a team list. |
+| `playbook` | Invokes a registered playbook with declared input mappings. |
+| `wait_until` | Waits until the time resolved from a declared pointer. |
+| `publish_list` | Writes named fields to an authorized team list. |
 | `publish_page` | Writes a page. |
 
 An operation states its `effect`:
@@ -120,14 +125,16 @@ An operation states its `effect`:
 
 Rules:
 
-- `values` and `outputFields` are JSON Pointers into the run's input and into what earlier steps observed. They are not expressions, and a runtime MUST NOT evaluate them as code.
-- A step with `"requiresApproval": true` waits for a person's decision before it runs.
+- `values` maps operation arguments to JSON Pointers into the run context, for example `/input/from` or `/steps/read/meetings`. `outputFields` maps declared names to pointers into this step’s result. A runtime MUST NOT evaluate these mappings as code.
+- Gabriel pauses a `reason` step or connector read marked `"requiresApproval": true` for a person’s decision. Connector `write` and `process` operations always require exact effect approval. Use an explicit review step before publishing when the result needs a person’s decision.
 - A step MAY name a `completion`: a status operation the runtime checks until the work succeeds, fails or reaches a deadline.
-- A `publish_list` step names each field it writes. Nothing else from the run reaches the list.
+- A `publish_list` step names a logical publisher key and the fields it writes. The workspace owner binds that publisher to a permitted destination and field allow-list. Only allowed fields with the required grants reach the list.
 
 ```json
 {
   "id": "cycle",
+  "title": "Publish accepted meeting outcome",
+  "instruction": "Publish the selected fields to the shared meeting list.",
   "type": "publish_list",
   "publication": {
     "target": "meeting-cycles",
@@ -192,7 +199,7 @@ One round of the loop:
 Steps 1 to 4 and step 6 describe how the extracted parts already work together. Step 5 is the guarantee this draft proposes:
 
 - When a record in a list changes, a runtime that supports [live sync](#7-live-sync-) SHOULD announce it, so an open view updates without a reload.
-- An agent and a person change records through the same definitions. Neither has a private path that skips validation, approval or the list's own rules.
+- Record changes follow the list validation and permission rules. The operation, step, or destination determines which approval is required.
 - Only the fields a step or a binding names leave their private source.
 
 ## 6. Custom app packages <Badge text="Extracted" variant="success" />
@@ -351,5 +358,5 @@ This section describes one client. In it, presence travels as shared awareness s
 ## 9. Open questions
 
 - **Names.** The interface calls and the events carry the `gabriel` prefix of the runtime they were extracted from. Neutral names are undecided.
-- **Pinning.** Team definitions live in one file that the registry does not pin. Whether the team file becomes a linked definition is undecided.
+- **Pinning.** The persona’s root commit versions the Studio team file. The portable registry pins linked workflows, pipelines, and lists. A common format for marketplace playbook packages is still open.
 - **Agents in presence.** Whether a running agent appears to people as a participant is not specified.

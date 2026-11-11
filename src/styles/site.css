@@ -1249,15 +1249,6 @@ html:not(.ps-js) .ps-registry-check span {
 	text-align: right;
 }
 
-.ps-tree-box dl > div.installed {
-	border: 1px dashed var(--ps-accent);
-	background: var(--ps-accent-soft);
-}
-
-.ps-tree-box dl > div.installed dd {
-	color: var(--ps-accent);
-}
-
 .ps-tree-outside {
 	margin-top: 0.75rem;
 	border-style: dashed;

@@ -1,0 +1,57 @@
+---
+title: Implementation guide
+description: Map the harness architecture to persona files, workspace services, and an example Studio team definition.
+---
+
+Start with the [architecture diagram](../#architecture-at-a-glance). Use the [folder tree](../specification/#1-folder-structure-) to lay out the persona, then follow the same definitions through installation, a team goal, and review.
+
+## Map the architecture to an implementation
+
+| Architecture | Definition or runtime responsibility | Reference |
+| --- | --- | --- |
+| Persona and domain | Git holds the root skill, published configuration, ontology, and release evals. | [Definition files](../specification/#6-definition-files-) |
+| Team and playbooks | Studio stores team definitions, pinned agent placements, saved playbooks, and team resources in `assets/studio-teams.json`. | [Studio definitions](../specification/#63-studio-definitions) |
+| Linked definitions | The portable registry identifies workflow, pipeline, and list revisions. The generated workspace graph describes the wider authoring repository. | [Registry and authoring graph](../specification/#5-registry-) |
+| Goal, runtime, and harness | A team-scoped run captures its definition revisions and inputs. The runtime checks access and capabilities and uses the harness for supported steps. | [Runtime rules](../specification/#7-runtime-rules) |
+| Connector and vault | The playbook declares operations and account context. The workspace grants a connection, holds its credentials, and maps logical operations to permitted tools. | [Requirements and steps](../apps/#2-connector-requirements-) |
+| Records and apps | A publish step sends allowed fields to a bound destination. A team view reads a list. A custom interface is a separate package with workspace installation settings. | [Records, pipelines, and apps](../concepts/records-and-apps/) |
+| Specialist review | Approvals, corrections, receipts, and run evidence stay in the workspace. Reviewed changes to definitions or evals become new Git revisions. | [Review and improvement](../specification/#73-specialist-review-and-improvement-) |
+| Marketplace | Playbook packages can be composed into personas. The shared listing and installation format is proposed. | [Publish and reuse](#publish-and-reuse) |
+
+## Example files
+
+The Meeting desk example uses a team goal to read an authorized calendar and draft a summary. A separate playbook lets a member review a summary before publishing it to a team board. The JSON uses the Gabriel Studio and ontology schemas.
+
+| Path | What to inspect |
+| --- | --- |
+| [`SKILL.md`](../examples/meeting-desk/SKILL.md) | Domain instructions and review expectations. |
+| [`assets/chat-config.json`](../examples/meeting-desk/assets/chat-config.json) | The portable root envelope with a stable persona key. |
+| [`assets/ontology.json`](../examples/meeting-desk/assets/ontology.json) | The meeting entity and fields that a source mapping can use. |
+| [`assets/studio-teams.json`](../examples/meeting-desk/assets/studio-teams.json) | The team, agent pins, goal and structured playbooks, connector requirement, and list, pipeline, and board definitions. |
+| [`references/registry.json`](../examples/meeting-desk/references/registry.json) | The portable lock. It is empty because all the example’s resources are local Studio definitions. |
+
+These files illustrate the definition profile. Gabriel’s authoring tools generate the pins and validate changes against the destination workspace. The example has zero execution credits, and a workspace supplies the actual model, account, publisher, and grants. An appliance import uses a separately compiled, signed release candidate. See the [Portable Persona Runtime installer](https://github.com/Gabriel-Operator/portable-persona-runtime).
+
+## Bind and run a team goal
+
+1. **Load the persona and verify pins.** Read the root revision and each linked definition from its published revision. Compare fingerprints and reject unresolved or mismatched references. In Studio, export the current team definition and preview a change before committing it against the expected Git head and workspace revision.
+2. **Resolve the execution environment.** Select a harness with the capabilities the work needs and report unsupported steps. Gabriel’s native goal and connector playbooks use its native runtime. Other runtimes report their supported actions and account availability.
+3. **Bind the example’s calendar.** Use a member-authorized calendar connection and bind the logical `calendar:upcoming` operation. Map its result to the example’s `meetings` field. Configure a team budget and give the run `from` and `until` inputs. The goal playbook declares the same connector authority as the child it can invoke.
+4. **Start the goal.** A run captures the selected playbook and its permitted child definitions, with limits on delegation, time, model calls, and credits. Recheck membership and grants before dispatch. A missing account holds the step. A repeated start with the same request identifier must refer to the same inputs.
+5. **Review and publish.** Configure the workspace publisher `meeting-summaries` for `list.meeting-desk.summaries` and allow only `summary`. Rehearse **Publish summary** with synthetic text, consent to sharing the field, and review the exact input before continuing. The board reads the resulting list record. For a real handoff of private data, use the runtime’s accepted-output reference in the same parent goal so it can recheck the source grants.
+
+Gabriel resolves private handoffs of the form `studio-output:<runId>#/summary` only when the source run is complete and its assignment was accepted in the same parent goal, team, workspace, and member scope. The workspace still checks whether the source allows shared publication.
+
+See the [Lane rehearsal](../examples/#one-prospect-end-to-end) for a larger example with connector reads, exact effect approval, shared publication, and handoffs.
+
+## Review a revision
+
+For a connector write or process, hold dispatch until the authorized person approves the exact effect. An approval in Gabriel is scoped to the run, definition, step, operation, mapped input, and current connector assignment. Recheck it when the relevant details change. For shared publishing, check the destination grant, the member’s field consent, and source grants independently.
+
+Record what the specialist reviewed and what was approved, corrected, or rejected. Turn a recurring issue into an eval case, then review and publish the updated definition. Future runs take the adopted revision and obtain their own permissions and approvals. See [evals](../specification/#62-evals) and [specialist review](../concepts/signals-and-evals/#learn-from-specialist-review).
+
+## Publish and reuse
+
+Commit linked resources first, then publish the persona root with their Git links and generated fingerprints. The [portable registry](../specification/#5-registry-) pins linked definitions. The root commit versions local assets such as `studio-teams.json`. A workspace can adopt a new revision while keeping its own credentials, records, and run history.
+
+For playbook reuse, review the definition revision, map the inputs and outputs to the destination team, and grant the required operations there. The proposed marketplace gives people a place to discover reusable playbooks and optionally list complete personas. For example, Research can pair with Verify for one persona and with Draft for another. Marketplace metadata and resolution rules are [planned](../specification/#8-not-yet-specified-). The creator’s [custom app package registry](../apps/#packages-and-installations-) is a separate, implemented installation mechanism.

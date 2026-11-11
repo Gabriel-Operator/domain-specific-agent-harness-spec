@@ -71,8 +71,8 @@ const chapters: Chapter[] = [
     scene: 'missing', label: 'Create a missing playbook',
     title: 'Missing a playbook? Create it.',
     body: [
-      'A goal can also create a playbook when the team lacks a needed capability. The new definition declares its inputs, steps, outputs, and connector requirements.',
-      'Add it to the team’s plan with the applicable review and permissions. It can then become reusable work for later goals.',
+      'When a goal reveals a missing capability, the team can draft a playbook for it. The new definition declares its inputs, steps, outputs, and connector requirements.',
+      'Review and register it before adding it to a plan. Later goals can reuse the reviewed definition.',
     ],
   },
   {
@@ -130,7 +130,7 @@ const chapters: Chapter[] = [
     scene: 'complete', label: 'The complete harness',
     title: 'This is a domain-specific harness.',
     body: [
-      'A persona groups playbooks into teams around a domain model. Goals inside each team invoke the playbooks they need or create missing ones. Agents execute that work inside the harness.',
+      'A persona groups playbooks into teams around a domain model. Goals inside each team invoke the playbooks they need. A missing capability can guide a new playbook draft. Agents execute that work inside the harness.',
       'Connectors move the data. The vault supplies account credentials. Custom apps make the data and results usable. Domain specialists guide the decisions and improvements.',
     ],
     link: { href: './specification/', text: 'Explore the specification' },
@@ -142,7 +142,7 @@ const chapters: Chapter[] = [
     aliases: ['persona-marketplace', 'package-a-playbook'],
     body: [
       'The proposed marketplace lets teams discover standard playbook packages and combine them into personas. Pair Research with Verify to build a research analyst, or pair Research with Draft to build a briefing writer.',
-      'Authors can publish individual playbooks or list a complete persona when they want to share the whole setup. The registry identifies the playbook revisions each persona uses.',
+      'Authors can publish individual playbooks or list a complete persona when they want to share the whole setup. Team definitions pin the playbook revisions they use.',
     ],
     link: { href: './concepts/teams-and-goals/#reuse-a-playbook', text: 'Packages and reuse' },
   },

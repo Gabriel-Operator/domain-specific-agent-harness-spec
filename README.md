@@ -45,6 +45,7 @@ Existing paths and identifiers such as `assets/persona-evals.json` and `teams[].
 persona-lane/
 ├── SKILL.md
 ├── assets/
+│   ├── chat-config.json
 │   ├── chat-app.json
 │   ├── ontology.json
 │   ├── persona-evals.json
@@ -52,19 +53,23 @@ persona-lane/
 │   └── data-feeds/
 ├── references/
 │   ├── registry.json
+│   ├── workspace.json
 │   ├── lists/
 │   ├── pipelines/
 │   └── workflows/
 └── skills/
 ```
 
-The draft marks features **Extracted** (used in Gabriel today), **Proposed** (new in this draft), or **Planned** (still to be specified). The core format and registry are extracted. Runtime binding and presence are proposed; JSON Schemas and full team orchestration rules are planned.
+The [folder reference](https://gabriel-operator.github.io/persona-spec/specification/#1-folder-structure-) explains which files each profile uses and which resources belong to the workspace. The [implementation guide](src/content/docs/implementation.mdx) maps the architecture to the files and includes example JSON.
+
+The draft marks features **Extracted** (used in Gabriel today), **Proposed** (new in this draft), or **Planned** (still to be specified). The core format and registry are extracted. Runtime binding and presence are proposed. A complete set of interoperable schemas and a shared team orchestration contract are planned.
 
 ## Read the docs
 
 | Page | Start here for |
 | --- | --- |
 | [Specification](src/content/docs/specification.mdx) | Folder layout, stable keys, registry, definition files, and runtime rules |
+| [Implementation guide](src/content/docs/implementation.mdx) | Architecture-to-file map, example JSON, and runtime binding |
 | [Apps and connectors](src/content/docs/apps.mdx) | Connector operations, shared records, app packages, and live sync |
 | [Concept reference](src/content/docs/concepts/index.mdx) | Personas, teams, goals, connectors, apps, and runtime behavior |
 | [Skill catalogue](src/content/docs/skills.mdx) | Gabriel Operator authoring skills and individual action, node, and component references |
