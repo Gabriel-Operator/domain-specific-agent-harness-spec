@@ -1,0 +1,329 @@
+---
+// A simplified picture of Gabriel's Playbook Studio, one tab at a time. Each tab says what people do there, what it
+// reads from the persona folder, what the workspace keeps, and which part of the specification covers it.
+// Bot, connector, list and stage names come from Lane's "Prospect to pilot" team. Figures are illustrations.
+type Tab = {
+	id: string;
+	label: string;
+	does: string;
+	folder: string;
+	workspace: string;
+	spec: { label: string; href: string; status: 'Extracted' | 'Proposed' | 'Planned' }[];
+};
+
+const tabs: Tab[] = [
+	{
+		id: 'canvas',
+		label: 'Canvas',
+		does: 'See the team as a graph: each bot, the playbook it runs, who hands work to whom, and the service each one needs. Open a bot to read or edit its playbook. Colleagues in the team show as cursors, and you can follow one to see exactly what they see.',
+		folder: '<code>teams[].bots</code>, <code>teams[].connections</code> (hand-offs and delegations) and <code>playbooks[].requirements</code> in <code>assets/studio-teams.json</code>.',
+		workspace: 'Run state, where pages sit, and who is online.',
+		spec: [
+			{ label: 'The parts', href: '../apps/#1-the-parts-', status: 'Extracted' },
+			{ label: 'Presence and following', href: '../apps/#8-presence-and-following-', status: 'Proposed' },
+		],
+	},
+	{
+		id: 'work',
+		label: 'Work',
+		does: 'Give the team a goal. It plans the work from its playbooks, you review the plan before anything starts, then follow each run step by step. Credits and model calls are capped per run.',
+		folder: 'The playbooks’ steps, inputs and outputs, and <code>automationPolicies</code> for work that repeats on a schedule, each with <code>maxCredits</code> and <code>maxModelCalls</code>.',
+		workspace: 'Goals, plans, runs and their receipts.',
+		spec: [{ label: 'Steps that use a connector', href: '../apps/#3-steps-that-use-a-connector-', status: 'Extracted' }],
+	},
+	{
+		id: 'context',
+		label: 'Context',
+		does: 'Pages the team writes together. What people write and what bots keep up to date stay apart: a bot proposes an addition, and a person accepts it.',
+		folder: 'Where pages sit on the canvas (<code>pagePositions</code>) and the domain model bots work with (<code>assets/ontology.json</code>).',
+		workspace: 'The pages and their history.',
+		spec: [{ label: 'Ontology', href: '../specification/#61-ontology', status: 'Extracted' }],
+	},
+	{
+		id: 'approvals',
+		label: 'Approvals',
+		does: 'Every step marked for approval waits here, showing the exact email, booking or record change and the account it will use. Approve it, or send it back.',
+		folder: '<code>"requiresApproval": true</code> on a step, and the step’s <code>effect</code>: <code>read</code>, <code>write</code> or <code>process</code>.',
+		workspace: 'Who approved what and when, and the receipt of what happened.',
+		spec: [
+			{ label: 'Steps that use a connector', href: '../apps/#3-steps-that-use-a-connector-', status: 'Extracted' },
+			{ label: 'Governance', href: '../specification/#8-not-yet-specified-', status: 'Planned' },
+		],
+	},
+	{
+		id: 'conversations',
+		label: 'Conversations',
+		does: 'The team conversation, where people and agents talk. Tag a playbook with @ and only that one answers. Start a call: the team joins as a voice, answers when called by name, and rings people in. Meetings and a calendar sit alongside.',
+		folder: 'Nothing beyond the team and its playbooks.',
+		workspace: 'Messages, calls, meetings and read marks. Updates arrive live.',
+		spec: [
+			{ label: 'Live sync', href: '../apps/#7-live-sync-', status: 'Extracted' },
+			{ label: 'Presence and following', href: '../apps/#8-presence-and-following-', status: 'Proposed' },
+		],
+	},
+	{
+		id: 'outputs',
+		label: 'Outputs',
+		does: 'What the team produced and a person accepted: documents, images, films and published records.',
+		folder: '<code>publish_list</code> and <code>publish_page</code> steps, which name exactly the fields that leave a run.',
+		workspace: 'The results and their files.',
+		spec: [{ label: 'Steps that use a connector', href: '../apps/#3-steps-that-use-a-connector-', status: 'Extracted' }],
+	},
+	{
+		id: 'apps',
+		label: 'Apps',
+		does: 'The views people use to follow and move the work, here a grid of pilot prospects with each one’s stage. Custom apps from a creator’s registry are installed here too.',
+		folder: 'Team resources: the app <code>app.lane.prospect-pilot</code> over the list <code>list.lane.prospect-pilot</code>, whose pipeline has 12 stages.',
+		workspace: 'The records, and the installed packages with their saved state.',
+		spec: [
+			{ label: 'Lists, pipelines and apps', href: '../apps/#4-lists-pipelines-and-apps-', status: 'Extracted' },
+			{ label: 'Packages and installations', href: '../apps/#packages-and-installations-', status: 'Extracted' },
+		],
+	},
+	{
+		id: 'connectors',
+		label: 'Connectors',
+		does: 'Connect each service the team’s playbooks need, once, with your own account. Every connector shows which bots use it and whether it is ready.',
+		folder: 'Connector requirements: the providers and the operations a playbook may call, for example <code>gmail</code> with <code>send</code>, <code>reply</code> and <code>reply-status</code>.',
+		workspace: 'The connections themselves, and who granted them to which bot.',
+		spec: [
+			{ label: 'Connector requirements', href: '../apps/#2-connector-requirements-', status: 'Extracted' },
+			{ label: 'Binding', href: '../specification/#72-binding-', status: 'Proposed' },
+		],
+	},
+	{
+		id: 'vault',
+		label: 'Vault',
+		does: 'Your own credentials for services that need a sign-in. Values are write-only: after saving you see only a masked hint, and nobody else can use them.',
+		folder: 'Nothing. A credential never enters a definition.',
+		workspace: 'The encrypted values, per person.',
+		spec: [{ label: 'Definitions only', href: '../specification/#3-definitions-only-', status: 'Extracted' }],
+	},
+	{
+		id: 'activity',
+		label: 'Activity',
+		does: 'What the team did and what it cost: runs, credits, business impact and an audit log.',
+		folder: 'Nothing. Accounting belongs to the runtime.',
+		workspace: 'Runs, usage, credits and the audit log.',
+		spec: [{ label: 'Not yet specified', href: '../specification/#8-not-yet-specified-', status: 'Planned' }],
+	},
+];
+---
+
+<div class="ps-tour not-content" data-tour>
+	<div class="tm-window">
+		<div class="tm-chrome" aria-hidden="true"><span></span><span></span><span></span><b>Playbook Studio · Prospect to pilot</b></div>
+		<div class="tm-tabs" role="tablist" aria-label="Studio tabs">
+			{
+				tabs.map((tab, index) => (
+					<button type="button" role="tab" id={`tm-tab-${tab.id}`} aria-controls={`tm-panel-${tab.id}`} aria-selected={index === 0 ? 'true' : 'false'} tabindex={index === 0 ? 0 : -1} data-tab={tab.id}>
+						{tab.label}
+					</button>
+				))
+			}
+		</div>
+
+		<div class="tm-screens">
+			<!-- Canvas -->
+			<div class="tm-screen tm-canvas" data-screen="canvas">
+				<div class="tm-frame">
+					<span class="tm-frame-label">Prospect to pilot · 7 bots</span>
+					<div class="tm-chain">
+						<div class="tm-bot"><i></i><b>Lead researcher</b><small>exa</small></div>
+						<span class="tm-arrow">→</span>
+						<div class="tm-bot is-gate"><i></i><b>Outreach coordinator</b><small>gmail · approval</small></div>
+						<span class="tm-arrow">→</span>
+						<div class="tm-bot"><i></i><b>Meeting scheduler</b><small>googlecalendar</small></div>
+						<span class="tm-arrow">→ …</span>
+					</div>
+					<div class="tm-delegate"><span>delegates after each milestone ↓</span></div>
+					<div class="tm-chain is-end">
+						<div class="tm-page"><b>Pilot brief</b><small>shared page</small></div>
+						<div class="tm-bot is-gate"><i></i><b>CRM steward</b><small>notion · approval</small></div>
+					</div>
+				</div>
+				<span class="tm-cursor" style="--x:52%; --y:62%"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 1l11 6-4.5 1.5L6.5 13z"/></svg>Kim</span>
+			</div>
+
+			<!-- Work -->
+			<div class="tm-screen" data-screen="work">
+				<div class="tm-card">
+					<p class="tm-kicker">Goal · plan reviewed by Sam</p>
+					<p class="tm-title">Run one prospect-to-pilot journey</p>
+					<div class="tm-progress"><span style="width:28%"></span></div>
+					<ul class="tm-steps">
+						<li data-state="done">Research and qualify one prospect<small>Lead researcher</small></li>
+						<li data-state="wait">Send the reviewed outreach email<small>Waiting for your approval</small></li>
+						<li>Book the agreed meeting<small>Meeting scheduler</small></li>
+						<li>Capture the consented meeting<small>Meeting scribe</small></li>
+					</ul>
+				</div>
+			</div>
+
+			<!-- Context -->
+			<div class="tm-screen" data-screen="context">
+				<div class="tm-doc">
+					<p class="tm-title">Pilot brief</p>
+					<p class="tm-kicker">Written by Sam</p>
+					<span class="tm-line" style="width:92%"></span><span class="tm-line" style="width:84%"></span><span class="tm-line" style="width:60%"></span>
+					<div class="tm-live"><p class="tm-kicker">Lead researcher · live section · updated 2 min ago</p><span class="tm-line" style="width:88%"></span><span class="tm-line" style="width:70%"></span></div>
+					<div class="tm-proposal"><span>CRM steward proposes an addition</span><em>Accept</em><em>Dismiss</em></div>
+				</div>
+			</div>
+
+			<!-- Approvals -->
+			<div class="tm-screen" data-screen="approvals">
+				<div class="tm-card is-gate">
+					<p class="tm-kicker">Outreach coordinator · send · write</p>
+					<p class="tm-title">Send one reviewed email</p>
+					<dl class="tm-fields"><div><dt>To</dt><dd>prospect@northwind.example</dd></div><div><dt>Subject</dt><dd>A two-week pilot for Northwind</dd></div><div><dt>Account</dt><dd>Gmail · Sam</dd></div></dl>
+					<span class="tm-line" style="width:90%"></span><span class="tm-line" style="width:76%"></span>
+					<div class="tm-buttons"><em class="is-primary">Approve</em><em>Request changes</em></div>
+				</div>
+			</div>
+
+			<!-- Conversations -->
+			<div class="tm-screen" data-screen="conversations">
+				<div class="tm-subtabs"><b>Chats</b><span>Meetings</span><span>Calendar</span></div>
+				<div class="tm-call"><i></i>In a call with Sam, Prospect to pilot<span class="tm-pill">team in call</span></div>
+				<div class="tm-chat">
+					<p class="tm-bubble is-person"><b>Kim</b>@Outreach coordinator did Northwind reply?</p>
+					<p class="tm-bubble is-agent"><b>Outreach coordinator</b>Yes, this morning. They asked for Tuesday. The Meeting scheduler is checking times.</p>
+				</div>
+			</div>
+
+			<!-- Outputs -->
+			<div class="tm-screen" data-screen="outputs">
+				<div class="tm-tiles">
+					<div class="tm-tile"><span class="tm-thumb is-doc"></span><b>Meeting notes</b><small>accepted result</small></div>
+					<div class="tm-tile"><span class="tm-thumb is-image"></span><b>Pilot one-pager</b><small>image</small></div>
+					<div class="tm-tile"><span class="tm-thumb is-video"></span><b>Product walkthrough</b><small>film</small></div>
+					<div class="tm-tile"><span class="tm-thumb is-doc"></span><b>Follow-up email</b><small>sent after approval</small></div>
+				</div>
+			</div>
+
+			<!-- Apps -->
+			<div class="tm-screen" data-screen="apps">
+				<p class="tm-title">Pilot prospects <small>list.lane.prospect-pilot</small></p>
+				<table class="tm-table">
+					<thead><tr><th>Prospect</th><th>Company</th><th>Stage</th><th>Next action</th></tr></thead>
+					<tbody>
+						<tr><td>Alex Moreau</td><td>Northwind</td><td><span class="tm-stage">Meeting booked</span></td><td>Capture on Tuesday</td></tr>
+						<tr><td>Priya Shah</td><td>Lumen Labs</td><td><span class="tm-stage">Contacted</span></td><td>Wait for a reply</td></tr>
+						<tr><td>Jonas Berg</td><td>Fjord AB</td><td><span class="tm-stage is-you">Needs you</span></td><td>Confirm the time</td></tr>
+					</tbody>
+				</table>
+			</div>
+
+			<!-- Connectors -->
+			<div class="tm-screen" data-screen="connectors">
+				<ul class="tm-rows">
+					<li><b>Exa</b><span>Lead researcher</span><em class="is-ok">Connected</em></li>
+					<li><b>Gmail</b><span>Outreach coordinator, Follow-up writer</span><em class="is-ok">Connected</em></li>
+					<li><b>Google Calendar</b><span>Meeting scheduler</span><em class="is-warn">Finish setup</em></li>
+					<li><b>Recall.ai</b><span>Meeting scribe</span><em class="is-ok">Connected</em></li>
+					<li><b>Notion</b><span>CRM steward · team app destination</span><em class="is-ok">Connected</em></li>
+				</ul>
+			</div>
+
+			<!-- Vault -->
+			<div class="tm-screen" data-screen="vault">
+				<ul class="tm-rows">
+					<li><b>Partner portal login</b><span>••••••••a91f</span><em>Only you</em></li>
+					<li><b>Enrichment API key</b><span>••••••••77c2</span><em>Only you</em></li>
+				</ul>
+				<p class="tm-note">Values are write-only. Each is sent only to the service it was saved for.</p>
+			</div>
+
+			<!-- Activity -->
+			<div class="tm-screen" data-screen="activity">
+				<div class="tm-metrics">
+					<div><b>14</b><small>runs</small></div>
+					<div><b>31</b><small>credits</small></div>
+					<div><b>6</b><small>approvals</small></div>
+				</div>
+				<ul class="tm-audit">
+					<li><time>10:42</time>Sam approved “Send one reviewed email”</li>
+					<li><time>10:43</time>Outreach coordinator sent 1 email through Gmail</li>
+					<li><time>11:05</time>CRM steward published a milestone to Pilot prospects</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	{
+		tabs.map((tab, index) => (
+			<section class="tm-panel" role="tabpanel" id={`tm-panel-${tab.id}`} aria-labelledby={`tm-tab-${tab.id}`} data-panel={tab.id}>
+				<h3>{tab.label}</h3>
+				<p>{tab.does}</p>
+				<dl>
+					<div>
+						<dt>From the persona folder</dt>
+						<dd set:html={tab.folder} />
+					</div>
+					<div>
+						<dt>Kept by the workspace</dt>
+						<dd>{tab.workspace}</dd>
+					</div>
+					<div>
+						<dt>In the specification</dt>
+						<dd>
+							{tab.spec.map((item) => (
+								<a href={item.href}>
+									{item.label} <span class="ps-pill" data-status={item.status.toLowerCase()}>{item.status}</span>
+								</a>
+							))}
+						</dd>
+					</div>
+				</dl>
+			</section>
+		))
+	}
+	<p class="tm-caption">A simplified picture of Gabriel’s Playbook Studio. Names come from Lane’s team file; people, companies and figures are illustrations.</p>
+</div>
+
+<script>
+	// Switches the tour between tabs, by click, by arrow keys, or from a link elsewhere on the page.
+	for (const tour of document.querySelectorAll<HTMLElement>('[data-tour]')) {
+		const tabs = [...tour.querySelectorAll<HTMLButtonElement>('[role="tab"]')];
+		const screens = [...tour.querySelectorAll<HTMLElement>('[data-screen]')];
+		const panels = [...tour.querySelectorAll<HTMLElement>('[data-panel]')];
+		tour.dataset.ready = '';
+
+		const show = (id: string, focus = false) => {
+			tabs.forEach((tab) => {
+				const on = tab.dataset.tab === id;
+				tab.setAttribute('aria-selected', String(on));
+				tab.tabIndex = on ? 0 : -1;
+				if (on && focus) tab.focus();
+				if (on) tab.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+			});
+			screens.forEach((screen) => screen.classList.toggle('is-on', screen.dataset.screen === id));
+			panels.forEach((panel) => (panel.hidden = panel.dataset.panel !== id));
+		};
+
+		tabs.forEach((tab, index) => {
+			tab.addEventListener('click', () => show(tab.dataset.tab ?? ''));
+			tab.addEventListener('keydown', (event) => {
+				const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+				if (event.key === 'Home' || event.key === 'End') {
+					event.preventDefault();
+					show(tabs[event.key === 'Home' ? 0 : tabs.length - 1].dataset.tab ?? '', true);
+				} else if (step) {
+					event.preventDefault();
+					show(tabs[(index + step + tabs.length) % tabs.length].dataset.tab ?? '', true);
+				}
+			});
+		});
+
+		// Links like <button data-show-tab="approvals"> open that tab and bring the tour into view.
+		for (const link of document.querySelectorAll<HTMLElement>('[data-show-tab]')) {
+			link.addEventListener('click', () => {
+				show(link.dataset.showTab ?? '');
+				tour.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+			});
+		}
+
+		show(tabs[0]?.dataset.tab ?? '');
+	}
+</script>
