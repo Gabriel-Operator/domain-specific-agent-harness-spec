@@ -1403,6 +1403,142 @@ html:not(.ps-js) .ps-registry-check span {
 	color: var(--ps-accent);
 }
 
+/* ---------- What a persona folder holds ---------- */
+
+.ps-tree {
+	margin-top: 1.5rem;
+}
+
+.ps-tree-folder {
+	padding: 0.9rem 1rem 1rem;
+	border: 1px solid var(--ps-line-strong);
+	border-radius: 14px;
+	background-color: color-mix(in srgb, var(--ps-surface) 45%, var(--ps-panel));
+	background-image: radial-gradient(circle, var(--ps-line) 0.9px, transparent 1.2px);
+	background-size: 14px 14px;
+}
+
+.ps-tree-label {
+	margin: 0 0 0.8rem;
+	font-family: var(--ps-mono);
+	font-size: 0.8rem;
+	color: var(--sl-color-white);
+}
+
+.ps-tree-label span,
+.ps-tree-title span {
+	margin-left: 0.4rem;
+	font-family: var(--ps-mono);
+	font-size: 0.7rem;
+	font-weight: 400;
+	color: var(--ps-muted);
+}
+
+.ps-tree-body {
+	display: grid;
+	grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+	gap: 0.75rem;
+	align-items: start;
+}
+
+.ps-tree-teams {
+	display: grid;
+	gap: 0.75rem;
+}
+
+.ps-tree-box {
+	padding: 0.8rem 0.9rem 0.9rem;
+	border: 1px solid var(--ps-line-strong);
+	border-radius: 10px;
+	background: var(--ps-panel);
+	transition:
+		opacity 0.5s ease,
+		transform 0.5s ease;
+	transition-delay: calc(var(--i) * 150ms);
+}
+
+.ps-tree-box[data-kind='team'] {
+	border-color: var(--ps-accent);
+}
+
+.ps-js .ps-tree:not(.is-in) .ps-tree-box {
+	opacity: 0;
+	transform: translateY(12px);
+}
+
+.ps-tree-title {
+	margin: 0;
+	font-weight: 600;
+	color: var(--sl-color-white);
+}
+
+.ps-tree-chips {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35rem;
+	margin: 0.65rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.ps-tree-chips li {
+	padding: 0.15rem 0.5rem;
+	border-radius: 6px;
+	background: var(--ps-row);
+	font-family: var(--ps-mono);
+	font-size: 0.7rem;
+	color: var(--sl-color-gray-2);
+}
+
+.ps-tree-chips li.more {
+	background: transparent;
+	color: var(--ps-muted);
+}
+
+.ps-tree-note {
+	margin: 0.65rem 0 0;
+	font-size: var(--sl-text-sm);
+	color: var(--ps-muted);
+}
+
+.ps-tree-box dl {
+	display: grid;
+	gap: 0.3rem;
+	margin: 0.6rem 0 0;
+}
+
+.ps-tree-box dl > div {
+	display: flex;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 0.3rem 0.55rem;
+	border: 1px solid transparent;
+	border-radius: 6px;
+	background: var(--ps-row);
+	font-size: var(--sl-text-sm);
+}
+
+.ps-tree-box dt {
+	color: var(--sl-color-white);
+}
+
+.ps-tree-box dd {
+	margin: 0;
+	font-family: var(--ps-mono);
+	font-size: 0.72rem;
+	color: var(--ps-muted);
+	text-align: right;
+}
+
+.ps-tree-box dl > div.proposed {
+	border: 1px dashed var(--ps-warn);
+	background: var(--ps-warn-soft);
+}
+
+.ps-tree-box dl > div.proposed dd {
+	color: var(--ps-warn);
+}
+
 /* ---------- Questions ---------- */
 
 .ps-faq {
@@ -1592,6 +1728,10 @@ html:not(.ps-js) .ps-registry-check span {
 		grid-template-columns: minmax(0, 1fr);
 	}
 
+	.ps-tree-body {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
 	.ps-loop-link {
 		justify-self: center;
 		width: 2px;
@@ -1645,13 +1785,15 @@ html:not(.ps-js) .ps-registry-check span {
 	.ps-js [data-reveal],
 	.ps-js .ps-flow:not(.is-in) .pop,
 	.ps-js .ps-layers:not(.is-in) .ps-layer,
-	.ps-js .ps-capability:not(.is-in) li {
+	.ps-js .ps-capability:not(.is-in) li,
+	.ps-js .ps-tree:not(.is-in) .ps-tree-box {
 		opacity: 1;
 		transform: none;
 	}
 
 	.ps-story *,
 	.ps-loop *,
+	.ps-tree *,
 	.ps-flow *,
 	.ps-layers *,
 	.ps-registry *,

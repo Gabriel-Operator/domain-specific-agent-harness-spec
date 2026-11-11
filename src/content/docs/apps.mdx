@@ -3,7 +3,8 @@ title: Apps and connectors
 description: How a persona packages agents, connectors and apps so they work on the same data, and how a runtime keeps every view current.
 ---
 
-import { Aside, Badge } from '@astrojs/starlight/components';
+import { Aside, Badge, FileTree } from '@astrojs/starlight/components';
+import Hierarchy from '../../components/Hierarchy.astro';
 import Loop from '../../components/Loop.astro';
 
 <Aside type="caution" title="Draft 0.1">
@@ -22,7 +23,11 @@ A runtime keeps them in step. When an agent or a person changes a record, every 
 
 ## 1. The parts <Badge text="Extracted" variant="success" />
 
-All of these are declared in one definition file, `assets/studio-teams.json`.
+A persona folder is neither one playbook nor one team. It holds a library of playbooks and one or more teams. A team owns its bots, its apps, and its lists and pipelines. Each bot runs one playbook from the library.
+
+<Hierarchy />
+
+All of these are declared in one definition file, `assets/studio-teams.json`. The published schema allows up to 100 teams, 128 playbooks and 256 team resources in a folder, and up to 64 bots and 50 apps in a team.
 
 | Part | What it is | Where it is declared |
 | --- | --- | --- |
@@ -31,6 +36,7 @@ All of these are declared in one definition file, `assets/studio-teams.json`.
 | List | Shared records | `resources[]`, kind `list` |
 | Pipeline | The stages a record moves through | `resources[]`, kind `pipeline` |
 | App | A view over a list | `resources[]`, kind `app` |
+| Packaged app | An app with its own interface | `resources[]`, kind `package`. See [where a package lives](#where-a-package-lives-). |
 | Connection | A private, authenticated account | Never in a definition. The workspace holds it. |
 
 One distinction runs through this page. A **connector** is an operation contract. A **connection** is a private authenticated account. A definition holds the first and never the second.
@@ -242,13 +248,57 @@ Rules:
 
 The full format is the published [package schema](https://github.com/Gabriel-Operator/connector-app-builder/blob/main/skills/connector-app-builder/references/connector-package.schema.json).
 
-### Where a package lives
+### Where a package lives <Badge text="Proposed" variant="caution" />
 
-The [definitions-only rule](../specification/#3-definitions-only-) still holds: a persona's definition files contain no scripts. A package is a separate artifact.
+A packaged app is installed into a team, so it is part of that team. A persona folder holds its teams, so the package belongs in the folder with the team's other resources.
 
-Today a package belongs to the person who created it and is installed into a team. It is not part of the persona folder and does not appear in the registry.
+It is declared as a team resource:
 
-Carrying a package inside a persona, pinned by fingerprint like any linked definition, is <Badge text="Proposed" variant="caution" />.
+```json
+{
+  "key": "package.lane.follow-up-board",
+  "teamId": "lane-meeting-follow-through",
+  "revision": 1,
+  "archived": false,
+  "kind": "package",
+  "definition": {
+    "name": "Follow-up board",
+    "path": "assets/apps/follow-up-board",
+    "fingerprint": "<sha-256 of the package>"
+  }
+}
+```
+
+Its files sit beside the team file:
+
+<FileTree>
+
+- assets/
+  - studio-teams.json
+  - apps/
+    - follow-up-board/
+      - app-config.json The manifest
+      - mcp-app.html The interface
+      - fixtures/ Optional sample data for previews
+
+</FileTree>
+
+| Travels in the folder | Stays with the workspace |
+| --- | --- |
+| The manifest and the compiled interface | The accounts connected for its connectors |
+| Which team the app belongs to | The document the app has saved |
+| How its entities map to the team's lists | The remaining allowance for starting playbooks |
+| The services it needs, each named by a key | Who it is shared with outside the team |
+
+Rules:
+
+- A packaged app belongs to exactly one team. The team lists it in `apps` by key, like any other app.
+- A runtime MUST check the fingerprint before it serves the interface, and MUST refuse a package that does not match.
+- Importing a persona makes a packaged app available to its team. Its connectors still have to be connected in that workspace before anyone can use it.
+- Everyone who can read the team's definitions can read the package. An app that must stay private to one person stays out of the folder.
+- The [definitions-only rule](../specification/#3-definitions-only-) gains one exception. Compiled interface code may live in a package's directory, and it runs only in the sandbox. Definition files still contain no scripts.
+
+This is not implemented yet. Today the hosted runtime keeps a package under its creator's account and records, for each team, which revision is installed. The installation is already per team. The package files are not yet written to the folder.
 
 ## 7. Live sync <Badge text="Extracted" variant="success" />
 
@@ -310,5 +360,5 @@ This section describes one client. In it, presence travels as shared awareness s
 ## 9. Open questions
 
 - **Names.** The interface calls and the events carry the `gabriel` prefix of the runtime they were extracted from. Neutral names are undecided.
-- **Packaging.** Team definitions live in one file that the registry does not pin. Whether teams, and custom app packages, become linked definitions is undecided.
+- **Pinning.** Team definitions live in one file that the registry does not pin. Whether the team file becomes a linked definition is undecided.
 - **Agents in presence.** Whether a running agent appears to people as a participant is not specified.
