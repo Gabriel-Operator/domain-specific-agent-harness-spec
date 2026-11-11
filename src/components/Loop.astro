@@ -12,7 +12,7 @@ const nodes = [
 	{
 		id: 'agent',
 		title: 'Agent',
-		text: 'A bot with a playbook',
+		text: 'An agent with a playbook',
 		where: 'bots',
 		icon: '<rect x="5" y="8" width="14" height="11" rx="2.5"/><path d="M12 8V4M9.5 13v1.5M14.5 13v1.5M3 13.5h2M19 13.5h2"/>',
 	},
@@ -34,8 +34,8 @@ const nodes = [
 
 // `links` are the gaps between neighbouring parts, counted from the left.
 const steps = [
-	{ nodes: 'connector agent', links: '0', text: 'A bot’s playbook reads from a service through a connector requirement.' },
-	{ nodes: 'agent', links: '', text: 'The bot works on what it read and prepares a result.' },
+	{ nodes: 'connector agent', links: '0', text: 'An agent’s playbook reads from a service through a connector requirement.' },
+	{ nodes: 'agent', links: '', text: 'The agent works on what it read and prepares a result.' },
 	{ nodes: 'agent', links: '', wait: true, text: 'A step that needs approval waits for a person’s decision.' },
 	{ nodes: 'agent list', links: '1', text: 'A publish step writes the accepted fields to the team list.' },
 	{ nodes: 'list app', links: '2', text: 'The runtime announces the change, and every open view of the list updates.' },

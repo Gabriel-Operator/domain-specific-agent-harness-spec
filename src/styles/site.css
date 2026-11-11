@@ -1,18 +1,14 @@
 /*
- * Site styles: the palette, the home page layout, and every diagram.
+ * Styles for diagrams, the Studio tour, and supporting components.
  * Diagrams read Starlight's own colour variables, so they follow the light and dark themes.
  */
 
 /* ---------- Palette ---------- */
 
 :root {
-	--sl-color-accent-low: #0a3936;
-	--sl-color-accent: #0d9488;
-	--sl-color-accent-high: #8ef0de;
-
 	--ps-ok: #4ade80;
 	--ps-warn: #fbbf24;
-	--ps-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+	--ps-display: var(--sl-font-system);
 	--ps-mono: var(--sl-font-system-mono);
 
 	--ps-ink: var(--sl-color-white);
@@ -29,56 +25,12 @@
 }
 
 :root[data-theme='light'] {
-	--sl-color-accent-low: #d5f5ef;
-	--sl-color-accent: #0f766e;
-	--sl-color-accent-high: #134e4a;
-
 	--ps-ok: #15803d;
 	--ps-warn: #b45309;
 }
 
-/* ---------- Type ---------- */
-
-h1#_top,
-.sl-markdown-content h2 {
-	font-family: var(--ps-display);
-	font-weight: 500;
-	letter-spacing: -0.01em;
-}
-
-.ps-hero {
-	margin: 0;
-	font-family: var(--ps-display);
-	font-size: clamp(1.9rem, 1.15rem + 2.7vw, 3rem);
-	font-weight: 500;
-	line-height: 1.14;
-	letter-spacing: -0.015em;
-	color: var(--sl-color-white);
-	text-wrap: balance;
-}
-
 .ps-accent {
 	color: var(--ps-accent);
-}
-
-.ps-lead {
-	font-size: var(--sl-text-lg);
-	line-height: 1.6;
-	color: var(--sl-color-gray-2);
-}
-
-.ps-lead em {
-	font-style: normal;
-	color: var(--ps-accent);
-}
-
-.ps-status {
-	display: flex;
-	flex-wrap: wrap;
-	align-items: center;
-	gap: 0.6rem;
-	font-size: var(--sl-text-sm);
-	color: var(--ps-muted);
 }
 
 .ps-pill {
@@ -105,38 +57,6 @@ h1#_top,
 	color: var(--ps-warn);
 }
 
-/* ---------- Home page layout ---------- */
-
-/* The home page is wider than a document page so the story has room for two columns. */
-:root:has(.ps-home) {
-	--sl-content-width: 60rem;
-}
-
-:root:has(.ps-home) .sl-markdown-content > :not(.ps-wide) {
-	max-width: 46rem;
-}
-
-/* The page title stays for screen readers and search; the hero statement replaces it visually. */
-:root:has(.ps-home) main > .content-panel:first-child {
-	position: absolute;
-	width: 1px;
-	height: 1px;
-	padding: 0;
-	overflow: hidden;
-	clip-path: inset(50%);
-	white-space: nowrap;
-	border: 0;
-}
-
-:root:has(.ps-home) main > .content-panel + .content-panel {
-	border-top: 0;
-}
-
-:root:has(.ps-home) .sl-markdown-content h2 {
-	margin-top: 4.5rem;
-	font-size: clamp(1.6rem, 1.3rem + 1vw, 2.1rem);
-}
-
 /* ---------- Reveal on scroll ---------- */
 
 .ps-js [data-reveal=''] {
@@ -153,52 +73,12 @@ h1#_top,
 	transform: none;
 }
 
-/* ---------- Principles ---------- */
-
-.ps-principles {
-	margin: 1.5rem 0 0;
-	padding: 0;
-	list-style: none;
-	border: 1px solid var(--ps-line);
-	border-radius: 12px;
-	background: var(--ps-surface);
-	overflow: hidden;
-}
-
-.ps-principles li {
-	display: grid;
-	grid-template-columns: 1.5rem 1fr;
-	gap: 0.75rem;
-	align-items: baseline;
-	padding: 0.85rem 1.1rem;
-	color: var(--sl-color-white);
-	font-weight: 500;
-}
-
-.ps-principles li + li {
-	border-top: 1px solid var(--ps-line);
-}
-
-.ps-principles .n {
-	font-family: var(--ps-mono);
-	font-size: 0.72rem;
-	color: var(--ps-muted);
-}
-
-.ps-principles small {
-	display: block;
-	margin-top: 0.15rem;
-	font-size: var(--sl-text-sm);
-	font-weight: 400;
-	color: var(--ps-muted);
-}
-
 /* ---------- Scroll story ---------- */
 
 .ps-story {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(0, 26.5rem);
-	gap: 3.5rem;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+	gap: clamp(1.25rem, 3vw, 2.5rem);
 	margin-top: 3rem;
 	padding-top: 2.5rem;
 	border-top: 1px solid var(--ps-line);
@@ -208,14 +88,8 @@ h1#_top,
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
-	min-height: 72vh;
+	min-height: clamp(14rem, 38vh, 23rem);
 	padding-block: 2rem;
-}
-
-.ps-chapter:first-child {
-	justify-content: flex-start;
-	min-height: 58vh;
-	padding-top: 0.5rem;
 }
 
 .ps-chapter h3 {
@@ -242,15 +116,6 @@ h1#_top,
 	background: var(--sl-color-bg-inline-code);
 	font-family: var(--ps-mono);
 	font-size: 0.88em;
-}
-
-.ps-story[data-ready] .ps-chapter {
-	opacity: 0.28;
-	transition: opacity 0.45s ease;
-}
-
-.ps-story[data-ready] .ps-chapter.is-active {
-	opacity: 1;
 }
 
 .ps-story-stage {
@@ -2413,56 +2278,6 @@ html:not(.ps-js) .ps-walk button {
 	}
 }
 
-/* ---------- Questions ---------- */
-
-.ps-faq {
-	margin-top: 1.25rem;
-	border-top: 1px solid var(--ps-line);
-}
-
-.ps-faq details {
-	border-bottom: 1px solid var(--ps-line);
-}
-
-.ps-faq summary {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 1rem;
-	padding: 0.95rem 0;
-	font-weight: 600;
-	color: var(--sl-color-white);
-	cursor: pointer;
-	list-style: none;
-}
-
-.ps-faq summary::-webkit-details-marker {
-	display: none;
-}
-
-.ps-faq summary::after {
-	content: '';
-	flex: none;
-	width: 0.5rem;
-	height: 0.5rem;
-	margin-right: 0.3rem;
-	border-right: 2px solid var(--ps-muted);
-	border-bottom: 2px solid var(--ps-muted);
-	transform: rotate(45deg);
-	transition: transform 0.25s ease;
-}
-
-.ps-faq details[open] summary::after {
-	transform: rotate(-135deg);
-}
-
-.ps-faq details p {
-	margin: 0 0 1rem;
-	max-width: 42rem;
-	line-height: 1.6;
-	color: var(--sl-color-gray-2);
-}
-
 /* ---------- Give it to a coding agent ---------- */
 
 .ps-prompt {
@@ -2562,13 +2377,7 @@ html:not(.ps-js) .ps-walk button {
 
 	/* Shorter chapters, so the text of the scene on the stage is always in view below it. */
 	.ps-chapter,
-	.ps-chapter:first-child {
-		justify-content: flex-start;
-		min-height: 46vh;
-		padding-block: 2.5rem 1rem;
-	}
-
-	.ps-story[data-ready] .ps-chapter {
+		.ps-story[data-ready] .ps-chapter {
 		opacity: 0.45;
 	}
 

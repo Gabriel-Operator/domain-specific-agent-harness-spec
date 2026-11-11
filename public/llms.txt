@@ -1,13 +1,11 @@
-# Persona Spec
+# Agent Package Spec
 
-> An open format for packaging a complete AI persona as a portable, version-controlled folder. A persona folder is an Agent Skill with declarative definition files added. Status: draft 0.1.
+> Draft 0.1 of a Git format for the definitions an AI agent or team needs to do a job. Gabriel Operator calls an agent package a persona. An agent executes work; a runtime loads the package; a workspace keeps installation state.
 
-Each link below is the raw source of one page.
+- [Overview](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/README.md): What an agent package is and how to read this repository.
+- [Specification](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/specification.mdx): Folder structure, SKILL.md, definitions-only rule, resource keys, registry, and runtime rules.
+- [Apps and connectors](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/apps.mdx): Connector requirements, steps, lists, pipelines, app packages, live sync, and presence.
+- [Examples](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/examples.mdx): Studio tour and a prospect workflow from research to onboarding.
+- [Terms and standards](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/standards.mdx): Terminology, Agent Skills, MCP, A2A, and the Standard Agent Specification.
 
-- [Introduction](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/README.md): What a persona is and how this repository is laid out.
-- [Specification](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/specification.mdx): Folder structure, SKILL.md, the definitions-only rule, resource keys, the registry, definition files and runtime rules.
-- [Apps and connectors](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/apps.mdx): Connector requirements, connector steps, lists, pipelines and apps, custom app packages, live sync and presence.
-- [Examples](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/examples.mdx): Gabriel's Playbook Studio tab by tab, one prospect taken from research to onboarding, and which persona illustrates each concept.
-- [Other standards](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/standards.mdx): How the format relates to Agent Skills, the Model Context Protocol and the Standard Agent Specification.
-
-The specification builds on Agent Skills: https://agentskills.io/llms.txt
+- [Agent Skills specification](https://agentskills.io/specification): Format for the root SKILL.md and bundled skills.

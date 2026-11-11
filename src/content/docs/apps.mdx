@@ -1,17 +1,14 @@
 ---
 title: Apps and connectors
-description: How a persona packages agents, connectors and apps so they work on the same data, and how a runtime keeps every view current.
+description: How an agent package defines agents, connectors and apps so they work on the same data, and how a runtime keeps every view current.
 ---
 
-import { Aside, Badge } from '@astrojs/starlight/components';
+import { Badge } from '@astrojs/starlight/components';
+import DraftNotice from '../../components/DraftNotice.astro';
 import Hierarchy from '../../components/Hierarchy.astro';
 import Loop from '../../components/Loop.astro';
 
-<Aside type="caution" title="Draft 0.1">
-  This page is a profile. A persona does not have to use it, and a runtime does not have to support it. Sections carry the same labels as the [Specification](../specification/): <Badge text="Extracted" variant="success" />, <Badge text="Proposed" variant="caution" /> and <Badge text="Planned" variant="note" />.
-</Aside>
-
-A persona can carry three parts that work on the same data.
+This optional profile describes how an agent package defines three parts that work on the same data.
 
 - **Agents** carry out playbooks.
 - **Connectors** are the operations a playbook may call on an outside service.
@@ -19,17 +16,19 @@ A persona can carry three parts that work on the same data.
 
 A runtime keeps them in step. When an agent or a person changes a record, every open view of it updates.
 
+<DraftNotice profile />
+
 <Loop />
 
 ## 1. The parts <Badge text="Extracted" variant="success" />
 
-A persona folder is neither one playbook nor one team. It holds a library of playbooks and one or more teams. A team owns its bots, its apps, and its lists and pipelines. Each bot runs one playbook from the library.
+A package folder holds a library of playbooks and one or more teams. A team owns its agents, its apps, and its lists and pipelines. Each agent runs one playbook from the library.
 
-An app with its own interface starts in a team, because a team needs it. Creating it registers a package in its creator's registry and installs it into that team. From the registry it can be installed into any other team, in any persona.
+An app with its own interface starts in a team, because a team needs it. Creating it registers an app package in its creator's registry and installs it into that team. From the registry it can be installed into other teams, including teams in another agent package.
 
 <Hierarchy />
 
-All of these are declared in one definition file, `assets/studio-teams.json`. The published schema allows up to 100 teams, 128 playbooks and 256 team resources in a folder, and up to 64 bots and 50 apps in a team.
+All of these are declared in one definition file, `assets/studio-teams.json`. The schema uses the field `teams[].bots` for agents. It allows up to 100 teams, 128 playbooks and 256 team resources in a folder, and up to 64 agents and 50 apps in a team.
 
 | Part | What it is | Where it is declared |
 | --- | --- | --- |
@@ -43,7 +42,7 @@ All of these are declared in one definition file, `assets/studio-teams.json`. Th
 
 One distinction runs through this page. A **connector** is an operation contract. A **connection** is a private authenticated account. A definition holds the first and never the second.
 
-This section is extracted from one persona that uses teams and from the published [team definition schema](https://github.com/Gabriel-Operator/persona-team-manager/blob/main/references/studio-teams.schema.json).
+This section is extracted from one package that uses teams and from the published [team definition schema](https://github.com/Gabriel-Operator/persona-team-manager/blob/main/references/studio-teams.schema.json).
 
 ## 2. Connector requirements <Badge text="Extracted" variant="success" />
 
@@ -175,8 +174,8 @@ Rules:
 
 One round of the loop:
 
-1. A bot's playbook reads from a service through a connector requirement.
-2. The bot works on what it read and prepares a result.
+1. A agent's playbook reads from a service through a connector requirement.
+2. The agent works on what it read and prepares a result.
 3. A step that needs approval waits for a person's decision.
 4. A publish step writes the accepted fields to the team list.
 5. The runtime announces the change, and every open view of the list updates.
@@ -189,6 +188,8 @@ Steps 1 to 4 and step 6 describe how the extracted parts already work together. 
 - Only the fields a step or a binding names leave their private source.
 
 ## 6. Custom app packages <Badge text="Extracted" variant="success" />
+
+An **app package** distributes a custom interface. It has its own registry and lifecycle, separate from the agent package that defines the team.
 
 When a grid or a board is not enough, an app can bring its own interface. It is a package: a manifest, the compiled files of the interface, and optional sample data for previews.
 
@@ -255,11 +256,11 @@ The full format is the published [package schema](https://github.com/Gabriel-Ope
 An app starts in a team and then lives in a registry.
 
 1. **Create.** Someone builds the app in a team, because that team needs it.
-2. **Register.** Creating it registers a package in the creator's registry, with an identifier, numbered revisions and a fingerprint of its contents. The registry entry names no team and no persona.
-3. **Install.** The same step installs the package into the team it was built in. From the registry, its creator can install it into any other team, in any persona.
+2. **Register.** Creating it registers a package in the creator's registry, with an identifier, numbered revisions and a fingerprint of its contents. The registry entry does not name a team or agent package.
+3. **Install.** The same step installs the package into the team it was built in. From the registry, its creator can install it into other teams, including teams in another agent package.
 4. **Share.** The creator chooses who else may open an installation: nobody, anyone signed in, or anyone with the link.
 
-So a package is its own unit. It is not part of a persona folder, and once it exists it is not tied to the team it started in. A team uses it through an installation, which puts one revision of one package into one team.
+An installation binds one revision of an app package to one team. The same app package can be installed in several teams.
 
 | The package holds | An installation holds |
 | --- | --- |
@@ -277,10 +278,10 @@ Rules:
 - Only the creator of a package can install it. Other people use it where it is installed.
 - An installation of a custom package is visible only to the person who installed it. They choose who else may open it: nobody, anyone signed in, or anyone with the link.
 - Removing a package removes its installations in every team.
-- A persona MAY turn custom apps off for its teams.
+- An agent package MAY turn custom apps off for its teams.
 - A package MAY also be registered directly through the account's API, without starting in a team.
 
-Because a package lives outside the folder, a persona's definitions do not name the packages its teams have installed. Importing a persona brings its teams, playbooks, lists and views. It does not bring installed packages.
+An agent package does not reference the app packages its teams have installed. Importing the agent package brings its teams, playbooks, lists, and views. Installed apps stay with their workspace.
 
 ## 7. Live sync <Badge text="Extracted" variant="success" />
 
@@ -314,7 +315,7 @@ Rules:
 - When the runtime can no longer replay from that point, it sends `gabriel.replay.reset_required`. The client MUST reload its state. It MUST NOT assume it missed nothing.
 - A browser MUST NOT hold a long-lived credential. It connects with a short-lived, single-use secret that a server mints for it.
 
-This section is extracted from the published [persona SDK](https://github.com/Gabriel-Operator/persona-sdk). Which events a runtime must send for lists, runs and connections is <Badge text="Planned" variant="note" />.
+This section is extracted from the published [Persona SDK](https://github.com/Gabriel-Operator/persona-sdk). Which events a runtime must send for lists, runs and connections is <Badge text="Planned" variant="note" />.
 
 ## 8. Presence and following <Badge text="Proposed" variant="caution" />
 

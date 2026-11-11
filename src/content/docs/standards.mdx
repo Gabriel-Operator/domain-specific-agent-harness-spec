@@ -1,58 +1,44 @@
 ---
-title: Other standards
-description: How the persona format relates to Agent Skills, the Model Context Protocol and the Standard Agent Specification.
+title: Terms and standards
+description: What an agent package contains, how it differs from an agent, and where Agent Skills, MCP, and A2A fit.
 ---
 
-import Layers from '../../components/Layers.astro';
+An **agent package** is the versioned definition of a job. An **agent** is a worker that can carry it out. One package can describe several agents and the workflows, tools, and records they share.
 
-A persona format should not redefine what other open formats already define well. This page says what the specification builds on, what it sits beside and where it differs.
+## Vocabulary
+
+| Term | Meaning in this specification |
+| --- | --- |
+| Agent package | The Git repository that bundles instructions and declarative definitions for a job. Gabriel Operator calls this a **persona**. |
+| Agent | An AI worker configured with instructions and tools. In a Gabriel team definition, the existing field for agent entries is `teams[].bots`. |
+| Team | Agents and shared resources configured to work together. One package can declare multiple teams. |
+| Skill | A reusable bundle of instructions and supporting files that an agent can load. |
+| Workflow (playbook) | A prescribed sequence or graph of steps. **Workflow** is the generic term; **playbook** is the name used in Gabriel Studio. |
+| Connector / connection | A connector declares which external operations work may call. A connection is an authenticated account that a workspace supplies. |
+| Runtime / workspace | The runtime loads definitions and executes work. A workspace is one installation's environment, with accounts, permissions, and state. |
+
+For example, Lane is a **package** for introductions and pilots. Lead researcher and Outreach coordinator are **agents** on one team. The steps for drafting and approving an email are a **playbook**. Sam's connected Gmail account and the resulting email history belong to the **workspace**.
+
+Existing names such as `assets/persona-evals.json`, `teams[].bots`, and published resource keys retain their current meaning. The vocabulary in the docs does not introduce aliases or require a file migration.
+
+This use of *agent* follows the common distinction between a worker configured with instructions and tools and the workflow it may execute. See [OpenAI's agent definitions](https://developers.openai.com/api/docs/guides/agents/define-agents) and [Anthropic's distinction between workflows and agents](https://www.anthropic.com/research/building-effective-agents).
 
 ## Agent Skills
 
-[Agent Skills](https://agentskills.io) is the base format. A persona folder is an Agent Skill, and a persona carries more skills under `skills/`.
+The package's root [`SKILL.md`](https://agentskills.io/specification) follows the Agent Skills format. A skills-compatible agent can read those instructions. Additional skills can live under `skills/`.
 
-| | Agent Skills | Persona Spec |
-| --- | --- | --- |
-| Unit | A skill: instructions for one kind of task | A persona: a whole role |
-| Required file | `SKILL.md` | `SKILL.md` and `references/registry.json` |
-| Form | Markdown with YAML frontmatter | The same, plus JSON definition files |
-| Adds | | Domain model, records, playbooks, approval and evals |
-
-Both formats are declarative. Neither asks a runtime to execute the author's code in order to load a definition.
-
-<Layers />
+The Agent Package Spec adds a registry and declarative definitions for domains, data, workflows, and evals. Loading the root skill alone does not validate those definitions, enforce approvals, or install the package. Agent Skills can also include executable scripts; this draft's [definitions-only rule](../specification/#3-definitions-only-) applies to the package's definition files.
 
 ## Model Context Protocol
 
-The [Model Context Protocol](https://modelcontextprotocol.io) connects a running agent to tools and data. This specification describes the persona before it runs.
+[Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/learn/server-concepts) defines how an AI application connects to servers that expose tools and resources. This draft describes which operations a workflow can request and how the runtime binds them to a connection. An MCP tool can satisfy a connector operation; the protocol itself does not define the package or grant access to an account.
 
-The two meet at run time. A runtime MAY expose a running persona as a Model Context Protocol server, and a persona's playbooks MAY call tools from other servers. Gabriel Operator does both.
+## Agent2Agent (A2A)
+
+[Agent2Agent (A2A)](https://a2a-protocol.org/latest/specification/) defines how running agents discover one another and exchange tasks and results. An A2A Agent Card describes a service available to call. A package registry pins files used to load a definition. The draft does not specify an A2A adapter.
 
 ## Standard Agent Specification
 
-The [Standard Agent Specification](https://standardagentspec.org) defines how an agent executes: providers, models, prompts, tools, threads and hooks. It sits one layer below a persona.
+The [Standard Agent Specification](https://standardagentspec.org) defines executable agents, including model selection, prompts, tools, threads, and hooks. It distributes TypeScript implementations as npm packages. This draft distributes Markdown and JSON definitions in Git. It can describe multiple teams, and its proposed binding rules leave model selection to the workspace.
 
-The two differ in three ways:
-
-- **Form.** Standard Agents are TypeScript, shipped as npm packages. Personas are JSON and Markdown in Git.
-- **Model.** A Standard Agent is coupled to a model. A persona states what it needs and the workspace binds the model.
-- **Scope.** A Standard Agent is an agent. A persona is a role, which may be carried out by one agent or by a team.
-
-The concepts map as follows.
-
-| Standard Agent Specification | Persona Spec |
-| --- | --- |
-| Providers, models | Capability requirements, bound by the workspace |
-| Prompts | `SKILL.md` and the instructions of each team member |
-| Tools | Playbooks, data feeds and connected accounts |
-| Effects | Signals and routines |
-| Handlers | Deterministic playbook steps and pipeline transitions |
-| Agents, subagents | Teams |
-| Threads | Conversations, records and files, kept by the runtime |
-| Hooks | Governance rules and approvals, declared as policy |
-| Thread client API | [Live sync](../apps/#7-live-sync-): a resumable event stream |
-| Users | Workspace members and roles |
-| Packaging | A Git repository with a registry of fingerprints |
-| No equivalent | Ontology, lists and pipelines, evals, surfaces |
-
-An exporter that turns a persona's agents into a Standard Agent package is planned.
+Prompts and tools are useful points of comparison, but their execution and state models differ. A package does not directly run as a Standard Agent. Exporting individual agents would require an adapter and is not specified here.

@@ -1,36 +1,39 @@
 ---
 title: Examples
-description: How Gabriel's Playbook Studio puts a persona to work, tab by tab, and one prospect taken from research to onboarding.
+description: Tour Gabriel's Playbook Studio and follow a prospect from research to onboarding.
 ---
 
 import { Aside } from '@astrojs/starlight/components';
 import Hierarchy from '../../components/Hierarchy.astro';
 import Loop from '../../components/Loop.astro';
 import StudioTour from '../../components/StudioTour.astro';
+import Story from '../../components/Story.astro';
 
-Every example on this page comes from a persona built on Gabriel Operator. The first sections show the format from the side people see: **Playbook Studio**, the part of Gabriel where a team of people and agents works. The last section lists which persona illustrates each concept.
+Follow **Lane**, an agent package for introductions and pilots, in Gabriel Operator’s Playbook Studio. The tour shows how one team works with its agents, connectors, approvals, and records.
 
-## A persona at work: Playbook Studio
+<span id="a-persona-at-work-playbook-studio"></span>
 
-Open a persona in Gabriel and choose a team. Studio shows that team in up to ten tabs. Each tab is a view over the same persona: some of what it shows comes from the persona folder, and the rest is kept by the workspace the persona runs in.
+## Tour Playbook Studio
+
+Open a persona in Gabriel and choose a team. Studio shows the team in up to ten tabs. Each view combines definitions from the package with live data from the workspace.
 
 Choose a tab to see what people do there, what it reads from the folder, and which part of the specification covers it.
 
 <StudioTour />
 
 <Aside title="The rule behind every tab">
-  The folder says what the team is: its bots, playbooks, requirements, lists and views. The workspace keeps everything that happens: runs, messages, records, connections and credentials. A runtime that reads the same folder can show the same team.
+  The folder says what the team is: its agents, playbooks, requirements, lists and views. The workspace keeps everything that happens: runs, messages, records, connections and credentials. A runtime that reads the same folder can show the same team.
 </Aside>
 
 ## The team behind the tour
 
-The tour uses Lane, a persona for introductions and pilots. Its folder holds a library of 17 playbooks and two teams. The tour shows the second team, **Prospect to pilot**.
+The tour uses Lane. Its folder holds a library of 17 playbooks and two teams. The tour shows the second team, **Prospect to pilot**.
 
 <Hierarchy />
 
-**Prospect to pilot** has seven bots. Each runs one playbook from the library, and each declares the services it may call:
+**Prospect to pilot** has seven agents. Each runs one playbook from the library, and each declares the services it may call:
 
-| Bot | Needs | Steps that wait for approval |
+| Agent | Needs | Steps that wait for approval |
 | --- | --- | --- |
 | Lead researcher | `exa`: search | None declared |
 | Outreach coordinator | `gmail`: send, reply, reply-status | Send |
@@ -53,9 +56,9 @@ How the team takes one prospect from research to onboarding, as the people on it
   <li><span><button type="button" data-show-tab="work">Work</button>Sam gives the team its goal. The team plans the work from its seven playbooks. Sam reads the plan and starts it.</span></li>
   <li><span><button type="button" data-show-tab="canvas">Canvas</button>The Lead researcher qualifies one prospect and hands the result to the Outreach coordinator. Kim, who is also on the team, follows Sam's view to watch.</span></li>
   <li><span><button type="button" data-show-tab="approvals">Approvals</button>The Outreach coordinator drafts the email and stops: its send step needs approval. Sam reads the exact email, the recipient and the account it will use, and approves it.</span></li>
-  <li><span><button type="button" data-show-tab="conversations">Conversations</button>Kim asks in the team conversation, “@Outreach coordinator did Northwind reply?”. Only the tagged playbook answers. Later Sam and Kim talk it over on a call, and ask the team out loud what to do next.</span></li>
+  <li><span><button type="button" data-show-tab="conversations">Conversations</button>Kim asks in the team conversation, “@Outreach coordinator did Northwind reply?”. Only the tagged agent answers. Later Sam and Kim talk it over on a call, and ask the team out loud what to do next.</span></li>
   <li><span><button type="button" data-show-tab="apps">Apps</button>The prospect's row in Pilot prospects moves on as the work does: Contacted, Responded, Meeting booked. A step that needs a person moves the row to Needs you.</span></li>
-  <li><span><button type="button" data-show-tab="context">Context</button>The team keeps a shared brief. Sam writes the background; the bots keep their live sections current and propose additions, which Sam accepts or dismisses.</span></li>
+  <li><span><button type="button" data-show-tab="context">Context</button>The team keeps a shared brief. Sam writes the background; the agents keep their live sections current and propose additions, which Sam accepts or dismisses.</span></li>
   <li><span><button type="button" data-show-tab="outputs">Outputs</button>The Meeting scribe captures only the meeting the prospect consented to, after approval. The Follow-up writer sends a reviewed follow-up. The accepted notes and the follow-up appear in Outputs.</span></li>
   <li><span><button type="button" data-show-tab="activity">Activity</button>Every run, what it cost and who approved each step is in Activity.</span></li>
 </ol>
@@ -69,19 +72,21 @@ The same round, drawn as the parts of the format:
 Studio is built for several people and several agents on one team at the same time.
 
 - **Presence.** Everyone working in the team shows as an avatar, and on the canvas as a cursor with their name. A click shows as a ripple in their colour.
-- **Following.** Choose someone's avatar to follow them. Your screen shows what theirs shows: the same tab, the same bot or page open, the same part of the canvas at the same zoom. Following only shows; it never starts anything for you, and your own access still applies.
+- **Following.** Choose someone's avatar to follow them. Your screen shows what theirs shows: the same tab, the same agent or page open, the same part of the canvas at the same zoom. Following only shows; it never starts anything for you, and your own access still applies.
 - **The team conversation.** One conversation per team, beside every tab. People talk to each other; an agent answers only when it is tagged. Pictures can be attached or pasted.
 - **Calls and meetings.** A call puts the team in as a voice. It answers when someone calls it by name, asks a playbook to answer in its own voice, and rings people in. Anyone in the call can take the team out and bring it back. Meetings have their own call and their own conversation.
-- **Shared pages.** Pages in Context are edited together, live. What people write and what bots maintain stay apart.
-- **Agents as colleagues.** Everything Studio does is also a tool on the persona's server. The Coach, Gabriel's assistant beside every page, and any connected agent can create a team, add a bot, start a goal or read why a bot is blocked, with the same permissions and the same approvals as a person clicking.
+- **Shared pages.** Pages in Context are edited together, live. What people write and what agents maintain stay apart.
+- **Agents as colleagues.** Everything Studio does is also a tool on the package's server. The Coach, Gabriel's assistant beside every page, and any connected agent can create a team, add a agent, start a goal or read why a agent is blocked, with the same permissions and the same approvals as a person clicking.
 
 The format covers the parts these features read: teams, playbooks, requirements, lists and apps. [Apps and connectors](../apps/) specifies them, together with the event stream that keeps every open view current and the shape of presence.
 
-## Each concept, in a persona
+<span id="each-concept-in-a-persona"></span>
 
-| Concept | Persona | What it shows |
+## More examples by concept
+
+| Concept | Package | What it shows |
 | --- | --- | --- |
-| Teams | **Lane**, introductions | Two teams, one with six bots and one with seven, sharing a library of 17 playbooks. |
+| Teams | **Lane**, introductions | Two teams, one with six agents and one with seven, sharing a library of 17 playbooks. |
 | Connector requirements | **Lane**, introductions | Exa, Gmail, Google Calendar, Recall.ai and Notion, each with the operations a playbook may call. |
 | Apps over lists | **Lane**, introductions | A board and a grid, each a view over a list and its pipeline. |
 | Ontology | **Boli**, courses for ages 9 to 18 | A domain model of 32 entities. |
@@ -95,4 +100,8 @@ The format covers the parts these features read: teams, playbooks, requirements,
 | Evals | **Boli**, **Chakri**, **Nest** | 36, 30 and 29 cases tied to stated requirements. |
 | A governed domain | **Nora**, banking | Know-your-customer, credit and compliance work under explicit rules. |
 
-Worked examples for each row, with the definition files trimmed to the part that matters and the eval cases that verify them, are being written.
+## How the package fits together
+
+This illustrated walkthrough traces Lane from its files in Git to an approval in a running workspace.
+
+<Story />

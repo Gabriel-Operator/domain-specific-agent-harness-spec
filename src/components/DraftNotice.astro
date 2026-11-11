@@ -1,0 +1,13 @@
+---
+import { Badge } from '@astrojs/starlight/components';
+const { profile = false } = Astro.props;
+---
+
+<aside class="ap-draft not-content" aria-label="Draft status">
+  <p><strong>Draft 0.1</strong> <span>{profile ? 'Optional profile for teams, apps, and connectors.' : 'The format is open for feedback and can change.'}</span></p>
+  <ul>
+    <li><Badge text="Extracted" variant="success" /> In use today</li>
+    <li><Badge text="Proposed" variant="caution" /> Under consideration</li>
+    <li><Badge text="Planned" variant="note" /> Still to be specified</li>
+  </ul>
+</aside>

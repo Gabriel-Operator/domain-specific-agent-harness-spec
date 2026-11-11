@@ -2,8 +2,7 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 
-// Working title and repository. Change both here when the name is final.
-const NAME = 'Persona Spec';
+const NAME = 'Agent Package Spec';
 const REPOSITORY = 'https://github.com/Gabriel-Operator/persona-spec';
 
 // GitHub Pages serves the site under /persona-spec. Hosts that serve it at the root (Vercel, a custom domain) leave
@@ -18,19 +17,33 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: NAME,
-			description: 'An open format for packaging a complete AI persona as a portable, version-controlled folder.',
+			description: 'An open format for packaging the definitions an AI agent or team needs to do a job.',
 			social: [{ icon: 'github', label: 'GitHub', href: REPOSITORY }],
 			editLink: { baseUrl: `${REPOSITORY}/edit/main/` },
 			lastUpdated: true,
-			customCss: ['./src/styles/site.css'],
+			customCss: ['./src/styles/site.css', './src/styles/docs.css'],
+			components: {
+				Hero: './src/components/PackageHero.astro',
+				SiteTitle: './src/components/SpecSiteTitle.astro',
+			},
 			// Lets the styles hide animated parts before they scroll into view, and only when scripts run.
 			head: [{ tag: 'script', content: "document.documentElement.classList.add('ps-js')" }],
 			sidebar: [
-				{ label: 'Overview', link: '/' },
-				{ label: 'Specification', slug: 'specification' },
-				{ label: 'Apps and connectors', slug: 'apps' },
-				{ label: 'Examples', slug: 'examples' },
-				{ label: 'Other standards', slug: 'standards' },
+				{
+					label: 'Read the draft',
+					items: [
+						{ label: 'Overview', link: '/' },
+						{ label: 'Specification', slug: 'specification' },
+						{ label: 'Apps and connectors', slug: 'apps' },
+					],
+				},
+				{
+					label: 'Learn the format',
+					items: [
+						{ label: 'Examples', slug: 'examples' },
+						{ label: 'Terms and standards', slug: 'standards' },
+					],
+				},
 			],
 		}),
 	],

@@ -1,110 +1,66 @@
 ---
-title: Persona Spec
-description: An open format for packaging a complete AI persona as a portable, version-controlled folder.
-tableOfContents: false
-sidebar:
-  label: Overview
+title: Agent Package Spec
+description: An open format for versioning and sharing the definitions that an AI agent or team needs to do a job.
+template: splash
+hero: {}
 ---
 
-import { CardGrid, FileTree, LinkCard } from '@astrojs/starlight/components';
+import { Icon } from '@astrojs/starlight/components';
 import Anatomy from '../../components/Anatomy.astro';
 import CopyPrompt from '../../components/CopyPrompt.astro';
-import Faq from '../../components/Faq.astro';
 import Flow from '../../components/Flow.astro';
-import Layers from '../../components/Layers.astro';
-import Loop from '../../components/Loop.astro';
-import Principles from '../../components/Principles.astro';
-import Story from '../../components/Story.astro';
 
-<p class="ps-home ps-hero">Persona Spec is an <span class="ps-accent">open format</span> for packaging a whole AI role as a portable, version-controlled folder.</p>
+<nav class="ap-guide not-content" aria-label="Documentation">
+  <a href="./specification/">
+    <span class="ap-guide-index">01 / Reference</span>
+    <strong>Specification <Icon name="right-arrow" /></strong>
+    <span>Folder layout, pinned definitions, and runtime rules.</span>
+  </a>
+  <a href="./apps/">
+    <span class="ap-guide-index">02 / Integration</span>
+    <strong>Apps &amp; connectors <Icon name="right-arrow" /></strong>
+    <span>How agents use services and share records with people.</span>
+  </a>
+  <a href="./examples/">
+    <span class="ap-guide-index">03 / Walkthrough</span>
+    <strong>Examples <Icon name="right-arrow" /></strong>
+    <span>Follow a prospect from research to onboarding in Lane.</span>
+  </a>
+  <a href="./standards/">
+    <span class="ap-guide-index">04 / Ecosystem</span>
+    <strong>Terms &amp; standards <Icon name="right-arrow" /></strong>
+    <span>Where Agent Skills, MCP, and A2A fit.</span>
+  </a>
+</nav>
 
-<p class="ps-lead">A persona carries who it is, what it knows about its domain, the work it can carry out, what it must ask a person first, and how you check that it still works.</p>
+## Package, agent, workspace
 
-<p class="ps-status"><span class="ps-pill" data-status="draft">Draft 0.1</span> Extracted from personas that already run on Gabriel Operator. The format can still change.</p>
+<div class="ap-terms not-content">
+  <div><span>01 / Definition</span><strong>Package</strong><p>The folder you review, version, and share. Gabriel Operator calls this a <em>persona</em>.</p></div>
+  <div><span>02 / Execution</span><strong>Agent</strong><p>The worker that follows instructions, uses tools, and can run a playbook. A package can define a team of agents.</p></div>
+  <div><span>03 / Installation</span><strong>Workspace</strong><p>The environment where the package is installed. It holds accounts, records, permissions, and run history.</p></div>
+</div>
 
-## Principles
+<span id="anatomy-of-a-persona"></span>
 
-<p class="ps-lead">A persona is a <em>declarative</em> description of a role. Everything that belongs to one installation is supplied when it runs.</p>
+## Inside the package
 
-<Principles />
-
-## Why a persona format?
-
-<p class="ps-lead">A prompt and a list of tools describe an assistant. They do not describe a role someone can hand real work to, review like any other change, and move between runtimes.</p>
-
-<Story />
-
-## Anatomy of a persona
-
-<p class="ps-lead">At its core, a persona is a folder with a `SKILL.md` file and a set of declarative definition files.</p>
-
-<FileTree>
-
-- persona-lane/
-  - SKILL.md Required: name, description and instructions
-  - assets/
-    - chat-app.json The app people use: pages, actions, data points
-    - ontology.json The domain model: entities and relationships
-    - persona-evals.json Requirements and the tests that verify them
-    - studio-teams.json Optional: teams, their bots, apps and lists
-    - data-feeds/ Sources the persona may read
-  - references/
-    - registry.json Every linked definition, with a fingerprint and revision
-    - lists/ Record collections
-    - pipelines/ State machines
-    - workflows/ Playbooks: the multi-step work the persona carries out
-  - skills/ Optional: more Agent Skills the persona brings
-
-</FileTree>
-
-Each part has a section in the specification. The label shows how settled it is.
+The root [Agent Skills](https://agentskills.io/specification) file provides instructions. JSON definitions describe the work and the data it uses. The registry pins the Git revision and fingerprint of each linked definition.
 
 <Anatomy />
 
-## How does a persona work?
+<span id="how-does-a-persona-work"></span>
 
-<p class="ps-lead">A persona goes from a Git repository to a running workspace in three steps.</p>
+## From Git to a running workspace
+
+A compatible runtime checks the package on import, supplies what the installation needs, and reports which steps it can execute.
 
 <Flow />
 
-## Agents, connectors and apps
+The draft comes from packages running on **Gabriel Operator**. The [Portable Persona Runtime](https://github.com/Gabriel-Operator/portable-persona-runtime) is a self-hosted implementation. Check each runtime's capability report before running a package.
 
-<p class="ps-lead">A persona can carry the agents that do the work, the connectors they may call and the apps people use to see the result. A runtime keeps all three in step.</p>
+<span id="get-started"></span>
 
-<div class="ps-wide"><Loop /></div>
-
-[Apps and connectors](./apps/) specifies each part, the package format for a custom interface, the event stream that keeps every view current, and presence.
-
-## Built on Agent Skills
-
-A persona folder is an [Agent Skill](https://agentskills.io). Its `SKILL.md` follows the Agent Skills format, so any skills-compatible agent can already discover a persona and read its instructions.
-
-This specification adds what a skill does not describe: the definition files, how they are identified and verified, and what a runtime must do with them.
-
-<Layers />
-
-See [Other standards](./standards/) for how the format relates to the Model Context Protocol and the Standard Agent Specification.
-
-## Where do personas run?
-
-- **Gabriel Operator.** The hosted runtime where these personas were first built.
-- **[Portable Persona Runtime](https://github.com/Gabriel-Operator/portable-persona-runtime).** A self-hosted appliance that runs a persona's skills, knowledge and workflows on your own hardware.
-- **Embedded offline runtime.** Runs the supported subset on a desktop or phone, and reports every step it cannot run offline.
-
-A runtime does not need to support every part of a persona. It must say which parts it supports.
-
-## Frequently asked questions
-
-<Faq />
-
-## Get started
+## Read it with a coding agent
 
 <CopyPrompt />
-
-<CardGrid>
-  <LinkCard title="Specification" description="The draft format: folder layout, registry, definitions and runtime rules." href="./specification/" />
-  <LinkCard title="Apps and connectors" description="Agents, connectors and apps on the same data, with live sync and presence." href="./apps/" />
-  <LinkCard title="Examples" description="Each concept shown through a persona that uses it." href="./examples/" />
-  <LinkCard title="Other standards" description="Agent Skills, the Model Context Protocol and the Standard Agent Specification." href="./standards/" />
-  <LinkCard title="Contribute on GitHub" description="Report a problem or propose a change to the specification." href="https://github.com/Gabriel-Operator/persona-spec" />
-</CardGrid>

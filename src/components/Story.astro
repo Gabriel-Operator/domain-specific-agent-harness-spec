@@ -1,11 +1,11 @@
 ---
-// The scroll story on the home page. The text scrolls on the left; the stage on the right stays in view and moves
+// The scroll story on the examples page. The text scrolls on the left; the stage on the right stays in view and moves
 // to the scene that matches the chapter being read. Every part of the stage lists its scenes in `data-scenes`.
-// File names, keys, bots and fingerprints are taken from one persona, Lane.
+// File names, keys, bots and fingerprints are taken from one package, Lane.
 const chapters = [
 	{
 		title: 'What does it take to hand <span class="ps-accent">real work</span> to an AI?',
-		body: ['Scroll to see how a persona is put together.'],
+		body: ['Scroll to see how a package is put together.'],
 	},
 	{
 		title: 'Start with an assistant.',
@@ -15,13 +15,13 @@ const chapters = [
 		title: 'A role needs <span class="ps-accent">more</span>.',
 		body: [
 			'To do a job it has to know the domain, keep records, follow a procedure, ask before it acts and prove it still works.',
-			'Today those parts live in a platform’s database and settings screens. You cannot review a change to them, and you cannot take them with you.',
+			'When definitions live in a platform’s settings, it is harder to review and reuse them.',
 		],
 	},
 	{
 		title: 'Put the whole role in a <span class="ps-accent">folder</span>.',
 		body: [
-			'A persona is a Git repository: a <code>SKILL.md</code> and a set of declarative definition files.',
+			'An agent package is a Git repository: a <code>SKILL.md</code> and a set of declarative definition files.',
 			'There is no code to compile and no build step. A change is a pull request anyone can read.',
 		],
 	},
@@ -35,7 +35,7 @@ const chapters = [
 	{
 		title: 'Give it a <span class="ps-accent">team</span>.',
 		body: [
-			'One file declares the teams: the bots and the playbook each one runs, the service each may call, and the apps people use to follow the work.',
+			'One file declares the teams: the agents and the playbook each one runs, the service each may call, and the apps people use to follow the work.',
 			'An app with its own interface is built in a team and kept in a registry, so any team can install it.',
 		],
 	},
@@ -43,7 +43,7 @@ const chapters = [
 		title: 'Bind it at <span class="ps-accent">run time</span>.',
 		body: [
 			'A definition never names a model account, a credential or a person.',
-			'The workspace that runs the persona supplies them, so one persona works for many teams and on many models.',
+			'The workspace supplies them. Each installation can bind its own model, accounts, and people.',
 		],
 	},
 	{
@@ -110,7 +110,7 @@ const runtimes = [
 ];
 ---
 
-<section class="ps-story ps-wide not-content" data-scene="0" aria-label="How a persona is put together">
+<section class="ps-story not-content" data-scene="0" aria-label="How a package is put together">
 	<div class="ps-story-text">
 		{
 			chapters.map((chapter, index) => (
@@ -167,7 +167,7 @@ const runtimes = [
 					}
 				</g>
 
-				<!-- 3, 4 and 6: the persona folder -->
+				<!-- 3, 4 and 6: the package folder -->
 				<g class="sc-folder" data-scenes="3 4 6">
 					<g class="folder-inner">
 						<path
@@ -221,7 +221,7 @@ const runtimes = [
 						<g class="tpart" style="--i:1">
 							<rect class="team-panel" x="40" y="96" width="320" height="196" rx="10"></rect>
 							<text class="th" x="54" y="113">MEETING FOLLOW-THROUGH</text>
-							<text class="tm" x="346" y="113" text-anchor="end">team · 6 bots</text>
+							<text class="tm" x="346" y="113" text-anchor="end">team · 6 agents</text>
 						</g>
 						{
 							bots.map((bot, index) => (
@@ -332,7 +332,7 @@ const runtimes = [
 						<text class="tm" x="200" y="312" text-anchor="middle">until a person decides.</text>
 					</g>
 
-					<!-- 8: one persona, several runtimes -->
+					<!-- 8: one package, several runtimes -->
 					<g class="sc-run" data-scenes="8">
 						<path class="ln" d="M200 60 V150 M70 150 V112 H330 V150"></path>
 						{

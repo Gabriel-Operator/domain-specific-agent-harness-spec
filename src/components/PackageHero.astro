@@ -1,0 +1,38 @@
+---
+import { Icon } from '@astrojs/starlight/components';
+
+const files = [
+  { name: 'SKILL.md', description: 'Instructions', icon: 'seti:markdown' },
+  { name: 'assets/', description: 'Domain model, teams, evals', icon: 'seti:folder' },
+  { name: 'references/', description: 'Registry and linked definitions', icon: 'seti:folder' },
+  { name: 'skills/', description: 'Reusable skills', icon: 'seti:folder' },
+] as const;
+---
+
+<div class="ap-hero">
+  <div class="ap-hero-copy">
+    <p class="ap-kicker"><span></span> Open specification <span class="ap-kicker-divider"></span> Draft 0.1</p>
+    <h1 id="_top" data-page-title>Portable packages<br class="ap-hero-break" /> <em>for AI agents.</em></h1>
+    <p class="ap-hero-lead">Put instructions, playbooks, data definitions, approvals, and evals in one versioned package that a compatible runtime can load.</p>
+    <div class="ap-hero-actions">
+      <a class="ap-button ap-button-primary" href="./specification/">Read the specification <Icon name="right-arrow" /></a>
+      <a class="ap-button ap-button-secondary" href="./examples/">Explore an example <Icon name="right-arrow" /></a>
+    </div>
+  </div>
+  <figure class="ap-package">
+    <div class="ap-package-bar">
+      <span><Icon name="seti:folder" /> <code>persona-lane/</code></span>
+      <span class="ap-package-tag">Example</span>
+    </div>
+    <ul>
+      {files.map(({ name, description, icon }) => (
+        <li>
+          <Icon name={icon} />
+          <code>{name}</code>
+          <span>{description}</span>
+        </li>
+      ))}
+    </ul>
+    <figcaption><Icon name="approve-check" /> Definitions in Git <span></span> State in the workspace</figcaption>
+  </figure>
+</div>

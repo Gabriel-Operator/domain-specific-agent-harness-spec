@@ -3,13 +3,13 @@
 const published = 'https://gabriel-operator.github.io/persona-spec/';
 const home = import.meta.env.SITE ? new URL(import.meta.env.BASE_URL, import.meta.env.SITE).href : published;
 const index = new URL('llms.txt', home.endsWith('/') ? home : `${home}/`).href;
-const instruction = `Read ${index} and the pages it lists before you write or review a persona.`;
+const instruction = `Read ${index} and the pages it lists before you write or review an agent package.`;
 ---
 
 <div class="ps-prompt not-content" data-reveal>
 	<p class="ps-prompt-label">Coding agents</p>
-	<p class="ps-prompt-title">Give the specification to your coding agent</p>
-	<p class="ps-prompt-text">The specification is written to be read by a coding agent as well as by you. Paste this instruction to start.</p>
+	<p class="ps-prompt-title">Give your agent the draft</p>
+	<p class="ps-prompt-text">Copy this instruction into your coding agent to load the source docs.</p>
 	<div class="ps-prompt-command">
 		<code>{instruction}</code>
 		<button type="button" data-copy={instruction}>Copy</button>

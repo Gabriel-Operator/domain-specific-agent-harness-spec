@@ -1,5 +1,5 @@
 ---
-// The parts of a persona, each linking to its section of the specification.
+// The parts of a package, each linking to its section of the specification.
 const icons: Record<string, string> = {
 	folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
 	file: '<path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>',
@@ -37,7 +37,7 @@ const groups: { title: string; cards: Card[] }[] = [
 	{
 		title: 'The folder',
 		cards: [
-			{ icon: 'folder', title: 'Folder structure', text: 'One Git repository per persona, with every linked definition one level down.', anchor: '1-folder-structure-', status: 'Extracted' },
+			{ icon: 'folder', title: 'Folder structure', text: 'One Git repository per package, with every linked definition one level down.', anchor: '1-folder-structure-', status: 'Extracted' },
 			{ icon: 'file', title: 'SKILL.md', text: 'A valid Agent Skills file: name, description and instructions.', anchor: '2-skillmd-', status: 'Extracted' },
 			{ icon: 'shield', title: 'Definitions only', text: 'No records, credentials, local identifiers or scripts in a definition file.', anchor: '3-definitions-only-', status: 'Extracted' },
 			{ icon: 'key', title: 'Resource keys', text: 'A stable identity for every definition, the same in every installation.', anchor: '4-resource-keys-', status: 'Extracted' },
@@ -51,7 +51,7 @@ const groups: { title: string; cards: Card[] }[] = [
 			{ icon: 'table', title: 'Lists', text: 'Collections of records and their columns.', anchor: '6-definition-files-', status: 'Extracted' },
 			{ icon: 'states', title: 'Pipelines', text: 'State machines that move records from stage to stage.', anchor: '6-definition-files-', status: 'Extracted' },
 			{ icon: 'steps', title: 'Workflows', text: 'Playbooks: the ordered steps of a piece of work.', anchor: '6-definition-files-', status: 'Extracted' },
-			{ icon: 'feed', title: 'Data feeds', text: 'Sources the persona may read, each with its own definition.', anchor: '6-definition-files-', status: 'Extracted' },
+			{ icon: 'feed', title: 'Data feeds', text: 'Sources the package may read, each with its own definition.', anchor: '6-definition-files-', status: 'Extracted' },
 			{ icon: 'check', title: 'Evals', text: 'Requirements, what implements them and the cases that verify them.', anchor: '62-evals', status: 'Extracted' },
 			{ icon: 'app', title: 'Chat app', text: 'The app people use: pages, navigation, actions and data points.', anchor: '6-definition-files-', status: 'Extracted' },
 		],
@@ -71,8 +71,8 @@ const groups: { title: string; cards: Card[] }[] = [
 		cards: [
 			{ icon: 'gauge', title: 'Capability report', text: 'A runtime states which steps it can execute and blocks the rest.', anchor: '71-capability-report-', status: 'Extracted' },
 			{ icon: 'plug', title: 'Binding', text: 'The workspace supplies the model, the credentials and the people.', anchor: '72-binding-', status: 'Proposed' },
-			{ icon: 'team', title: 'Teams', text: 'Several agents with roles working on one playbook.', anchor: '8-not-yet-specified-', status: 'Planned' },
-			{ icon: 'gate', title: 'Governance', text: 'Rules a persona must follow, and approval before an effect.', anchor: '8-not-yet-specified-', status: 'Planned' },
+			{ icon: 'team', title: 'Team orchestration', text: 'How agents coordinate work across playbooks.', anchor: '8-not-yet-specified-', status: 'Planned' },
+			{ icon: 'gate', title: 'Governance', text: 'Rules a package must follow, and approval before an effect.', anchor: '8-not-yet-specified-', status: 'Planned' },
 			{ icon: 'signal', title: 'Signals and routines', text: 'Work that starts from an event or a schedule.', anchor: '8-not-yet-specified-', status: 'Planned' },
 		],
 	},
