@@ -1,38 +1,40 @@
 ---
 import { Icon } from '@astrojs/starlight/components';
 
-const files = [
-  { name: 'SKILL.md', description: 'Instructions', icon: 'seti:markdown' },
-  { name: 'assets/', description: 'Domain model, teams, evals', icon: 'seti:folder' },
-  { name: 'references/', description: 'Registry and linked definitions', icon: 'seti:folder' },
-  { name: 'skills/', description: 'Reusable skills', icon: 'seti:folder' },
-] as const;
+const { siteTitle } = Astro.locals.starlightRoute;
 ---
 
 <div class="ap-hero">
-  <div class="ap-hero-copy">
-    <p class="ap-kicker"><span></span> Open specification <span class="ap-kicker-divider"></span> Draft 0.1</p>
-    <h1 id="_top" data-page-title>Portable packages<br class="ap-hero-break" /> <em>for AI agents.</em></h1>
-    <p class="ap-hero-lead">Put instructions, playbooks, data definitions, approvals, and evals in one versioned package that a compatible runtime can load.</p>
-    <div class="ap-hero-actions">
-      <a class="ap-button ap-button-primary" href="./specification/">Read the specification <Icon name="right-arrow" /></a>
-      <a class="ap-button ap-button-secondary" href="./examples/">Explore an example <Icon name="right-arrow" /></a>
-    </div>
-  </div>
-  <figure class="ap-package">
-    <div class="ap-package-bar">
-      <span><Icon name="seti:folder" /> <code>persona-lane/</code></span>
-      <span class="ap-package-tag">Example</span>
-    </div>
-    <ul>
-      {files.map(({ name, description, icon }) => (
-        <li>
-          <Icon name={icon} />
-          <code>{name}</code>
-          <span>{description}</span>
-        </li>
-      ))}
-    </ul>
-    <figcaption><Icon name="approve-check" /> Definitions in Git <span></span> State in the workspace</figcaption>
-  </figure>
+  <h1 id="_top" data-page-title>{siteTitle}</h1>
+  <p>Package instructions, workflows, and data definitions for an AI agent or team in a Git repository.</p>
+  <button type="button" class="ap-search" data-hero-search hidden aria-haspopup="dialog">
+    <Icon name="magnifier" />
+    <span>Search documentation…</span>
+    <kbd aria-hidden="true"></kbd>
+  </button>
+  <nav class="ap-topics" aria-label="Popular topics">
+    <span>Popular topics</span>
+    <a href="./specification/#1-folder-structure-">Folder structure</a>
+    <a href="./specification/#5-registry-">Registry</a>
+    <a href="./standards/#vocabulary">Glossary</a>
+  </nav>
 </div>
+
+<script>
+  // Share the header's Starlight search dialog and Pagefind index.
+  await customElements.whenDefined('site-search');
+  const trigger = document.querySelector<HTMLButtonElement>('[data-hero-search]');
+  const open = document.querySelector<HTMLButtonElement>('site-search [data-open-modal]');
+  const dialog = document.querySelector<HTMLDialogElement>('site-search dialog');
+
+  if (trigger && open && dialog) {
+    trigger.hidden = false;
+    const key = trigger.querySelector('kbd');
+    if (key) key.textContent = open.querySelector('kbd')?.textContent?.trim() || 'Ctrl K';
+    trigger.addEventListener('click', (event) => {
+      // Starlight listens for outside clicks after it opens the dialog.
+      event.stopPropagation();
+      open.click();
+    });
+  }
+</script>

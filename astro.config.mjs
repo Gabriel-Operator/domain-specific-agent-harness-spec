@@ -23,22 +23,24 @@ export default defineConfig({
 			lastUpdated: true,
 			customCss: ['./src/styles/site.css', './src/styles/docs.css'],
 			components: {
+				Header: './src/components/SpecHeader.astro',
 				Hero: './src/components/PackageHero.astro',
+				PageTitle: './src/components/SpecPageTitle.astro',
 				SiteTitle: './src/components/SpecSiteTitle.astro',
 			},
 			// Lets the styles hide animated parts before they scroll into view, and only when scripts run.
 			head: [{ tag: 'script', content: "document.documentElement.classList.add('ps-js')" }],
 			sidebar: [
+				{ label: 'Overview', link: '/' },
 				{
-					label: 'Read the draft',
+					label: 'Reference',
 					items: [
-						{ label: 'Overview', link: '/' },
 						{ label: 'Specification', slug: 'specification' },
 						{ label: 'Apps and connectors', slug: 'apps' },
 					],
 				},
 				{
-					label: 'Learn the format',
+					label: 'Guides',
 					items: [
 						{ label: 'Examples', slug: 'examples' },
 						{ label: 'Terms and standards', slug: 'standards' },

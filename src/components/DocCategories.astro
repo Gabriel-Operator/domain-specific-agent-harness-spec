@@ -1,0 +1,41 @@
+---
+import { Icon } from '@astrojs/starlight/components';
+---
+
+<div class="ap-categories not-content">
+  <a class="ap-category" href="./specification/">
+    <div class="ap-category-preview" aria-hidden="true">
+      <div class="ap-mini ap-mini-tree">
+        <span><Icon name="seti:folder" /> persona-lane/</span>
+        <span><Icon name="seti:markdown" /> SKILL.md</span>
+        <span><Icon name="seti:json" /> registry.json</span>
+      </div>
+    </div>
+    <strong>Specification <Icon name="right-arrow" /></strong>
+    <p>Package structure, definition files, and runtime requirements.</p>
+  </a>
+  <a class="ap-category" href="./apps/">
+    <div class="ap-category-preview" aria-hidden="true">
+      <div class="ap-mini-flow">
+        <div><Icon name="puzzle" /> Connector</div>
+        <span></span>
+        <div><Icon name="rocket" /> Agent</div>
+        <span></span>
+        <div><Icon name="document" /> List</div>
+      </div>
+    </div>
+    <strong>Apps and connectors <Icon name="right-arrow" /></strong>
+    <p>Connect services to playbooks and share records through apps.</p>
+  </a>
+  <a class="ap-category" href="./examples/">
+    <div class="ap-category-preview" aria-hidden="true">
+      <div class="ap-mini ap-mini-run">
+        <span><Icon name="approve-check-circle" /> Research prospect</span>
+        <span><Icon name="approve-check-circle" /> Draft outreach</span>
+        <span><Icon name="warning" /> Await approval</span>
+      </div>
+    </div>
+    <strong>Examples <Icon name="right-arrow" /></strong>
+    <p>Follow a team of agents through a real prospecting workflow.</p>
+  </a>
+</div>

@@ -714,218 +714,6 @@
 	fill: var(--ps-warn);
 }
 
-/* ---------- Anatomy cards ---------- */
-
-.ps-anatomy {
-	margin-top: 1.5rem;
-}
-
-.ps-anatomy h3 {
-	margin: 2rem 0 0.8rem;
-	font-family: var(--ps-display);
-	font-size: var(--sl-text-xl);
-	font-weight: 500;
-	color: var(--sl-color-white);
-}
-
-.ps-cards {
-	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
-	gap: 0.75rem;
-}
-
-.ps-card {
-	display: block;
-	padding: 0.95rem 1.05rem 1.05rem;
-	border: 1px solid var(--ps-line);
-	border-radius: 12px;
-	background: var(--ps-surface);
-	color: inherit;
-	text-decoration: none;
-	transition:
-		border-color 0.2s ease,
-		opacity 0.6s ease,
-		transform 0.6s ease;
-}
-
-.ps-card:hover {
-	border-color: var(--ps-accent);
-}
-
-.ps-card-head {
-	display: flex;
-	align-items: center;
-	gap: 0.55rem;
-}
-
-.ps-card-head svg {
-	flex: none;
-	width: 1.1rem;
-	height: 1.1rem;
-	fill: none;
-	stroke: var(--ps-muted);
-	stroke-width: 1.6;
-	stroke-linecap: round;
-	stroke-linejoin: round;
-	transition: stroke 0.2s ease;
-}
-
-.ps-card:hover .ps-card-head svg {
-	stroke: var(--ps-accent);
-}
-
-.ps-card-title {
-	flex: 1;
-	font-weight: 600;
-	color: var(--sl-color-white);
-}
-
-.ps-card-title code {
-	font-family: var(--ps-mono);
-	font-size: 0.92em;
-}
-
-.ps-card p {
-	margin: 0.5rem 0 0;
-	font-size: var(--sl-text-sm);
-	line-height: 1.5;
-	color: var(--ps-muted);
-}
-
-/* ---------- Author, import, bind and run ---------- */
-
-.ps-flow {
-	display: grid;
-	grid-template-columns: 1fr 2.6rem 1fr 2.6rem 1fr;
-	align-items: stretch;
-	margin-top: 1.5rem;
-}
-
-.ps-flow-step {
-	padding: 1.1rem 1.15rem 1.25rem;
-	border: 1px solid var(--ps-line);
-	border-radius: 12px;
-	background: var(--ps-surface);
-}
-
-.ps-flow-art {
-	display: block;
-	width: 100%;
-	height: 4.5rem;
-	margin-bottom: 0.9rem;
-	border-radius: 8px;
-	background: var(--ps-panel);
-}
-
-.ps-flow-step h3 {
-	display: flex;
-	align-items: baseline;
-	gap: 0.55rem;
-	margin: 0;
-	font-size: var(--sl-text-lg);
-	font-weight: 600;
-	color: var(--sl-color-white);
-}
-
-.ps-flow-step h3 span {
-	font-family: var(--ps-mono);
-	font-size: 0.72rem;
-	font-weight: 400;
-	color: var(--ps-muted);
-}
-
-.ps-flow-step p {
-	margin: 0.45rem 0 0;
-	font-size: var(--sl-text-sm);
-	line-height: 1.55;
-	color: var(--sl-color-gray-2);
-}
-
-.ps-flow-link {
-	position: relative;
-	align-self: center;
-	height: 2px;
-	background-image: linear-gradient(90deg, var(--ps-accent) 50%, transparent 50%);
-	background-size: 10px 2px;
-	animation: ps-dash 0.9s linear infinite;
-}
-
-.ps-flow-link::after {
-	content: '';
-	position: absolute;
-	right: 2px;
-	top: 50%;
-	width: 7px;
-	height: 7px;
-	border-top: 2px solid var(--ps-accent);
-	border-right: 2px solid var(--ps-accent);
-	transform: translateY(-50%) rotate(45deg);
-}
-
-@keyframes ps-dash {
-	to {
-		background-position: 10px 0;
-	}
-}
-
-.ps-flow-art .f-file {
-	fill: var(--ps-row);
-}
-
-.ps-flow-art .f-line {
-	fill: none;
-	stroke: var(--ps-line-strong);
-	stroke-width: 1.4;
-}
-
-.ps-flow-art .f-dot {
-	fill: var(--ps-panel);
-	stroke: var(--ps-line-strong);
-	stroke-width: 1.4;
-}
-
-.ps-flow-art .f-dot.on {
-	fill: var(--ps-accent);
-	stroke: var(--ps-accent);
-}
-
-.ps-flow-art .f-ok {
-	fill: none;
-	stroke: var(--ps-ok);
-	stroke-width: 1.8;
-	stroke-linecap: round;
-	stroke-linejoin: round;
-}
-
-.ps-flow-art .f-accent {
-	fill: var(--ps-accent-soft);
-	stroke: var(--ps-accent);
-	stroke-width: 1.2;
-}
-
-.ps-flow-art text {
-	font-family: var(--ps-mono);
-	font-size: 8px;
-	fill: var(--ps-muted);
-}
-
-.ps-flow-art .pop {
-	transform-box: fill-box;
-	transform-origin: center;
-}
-
-.ps-js .ps-flow:not(.is-in) .pop {
-	opacity: 0;
-	transform: scale(0.5);
-}
-
-.ps-flow .pop {
-	transition:
-		opacity 0.4s ease,
-		transform 0.5s cubic-bezier(0.3, 1.5, 0.5, 1);
-	transition-delay: calc(var(--i, 0) * 160ms + 500ms);
-}
-
 /* ---------- Layers ---------- */
 
 .ps-layers {
@@ -1752,8 +1540,8 @@ html:not(.ps-js) .tm-screen + .tm-screen {
 	gap: 0.2rem;
 	padding: 0.05rem 0.4rem 0.05rem 0;
 	border-radius: 999px;
-	background: #7c3aed;
-	color: #fff;
+	background: var(--sl-color-bg-accent);
+	color: var(--sl-color-text-invert);
 	font-size: 0.68rem;
 	font-weight: 600;
 	animation: tm-cursor 6s ease-in-out infinite;
@@ -1763,8 +1551,8 @@ html:not(.ps-js) .tm-screen + .tm-screen {
 	width: 0.9rem;
 	height: 0.9rem;
 	margin-left: -0.3rem;
-	fill: #7c3aed;
-	stroke: #fff;
+	fill: var(--sl-color-bg-accent);
+	stroke: var(--sl-color-text-invert);
 	stroke-width: 1;
 }
 
@@ -2278,77 +2066,6 @@ html:not(.ps-js) .ps-walk button {
 	}
 }
 
-/* ---------- Give it to a coding agent ---------- */
-
-.ps-prompt {
-	margin-top: 1.5rem;
-	padding: 1.1rem 1.2rem 1.2rem;
-	border: 1px solid var(--ps-line);
-	border-radius: 12px;
-	background: var(--ps-surface);
-}
-
-.ps-prompt-label {
-	margin: 0;
-	font-family: var(--ps-mono);
-	font-size: 0.7rem;
-	letter-spacing: 0.08em;
-	text-transform: uppercase;
-	color: var(--ps-muted);
-}
-
-.ps-prompt-title {
-	margin: 0.35rem 0 0;
-	font-family: var(--ps-display);
-	font-size: var(--sl-text-xl);
-	font-weight: 500;
-	color: var(--sl-color-white);
-}
-
-.ps-prompt-text {
-	margin: 0.3rem 0 0;
-	font-size: var(--sl-text-sm);
-	color: var(--sl-color-gray-2);
-}
-
-.ps-prompt-command {
-	display: flex;
-	align-items: center;
-	gap: 0.75rem;
-	margin-top: 0.9rem;
-	padding: 0.6rem 0.6rem 0.6rem 0.9rem;
-	border: 1px solid var(--ps-line);
-	border-radius: 9px;
-	background: var(--ps-panel);
-}
-
-.ps-prompt-command code {
-	flex: 1;
-	min-width: 0;
-	font-family: var(--ps-mono);
-	font-size: 0.8rem;
-	line-height: 1.5;
-	color: var(--sl-color-white);
-	overflow-wrap: anywhere;
-}
-
-.ps-prompt-command button {
-	flex: none;
-	padding: 0.4rem 0.85rem;
-	border: 0;
-	border-radius: 7px;
-	background: var(--sl-color-text-accent);
-	color: var(--sl-color-black);
-	font: inherit;
-	font-size: var(--sl-text-sm);
-	font-weight: 600;
-	cursor: pointer;
-}
-
-.ps-prompt-command button:hover {
-	filter: brightness(1.08);
-}
-
 /* ---------- Narrow screens ---------- */
 
 @media (max-width: 50rem) {
@@ -2359,7 +2076,7 @@ html:not(.ps-js) .ps-walk button {
 
 	.ps-story-stage {
 		order: -1;
-		top: var(--sl-nav-height);
+		top: calc(var(--sl-nav-height) + var(--sl-mobile-toc-height));
 		z-index: 2;
 		margin-inline: calc(var(--sl-content-pad-x, 1rem) * -1);
 		padding: 0.75rem var(--sl-content-pad-x, 1rem) 0.6rem;
@@ -2375,31 +2092,8 @@ html:not(.ps-js) .ps-walk button {
 		margin-top: 0.6rem;
 	}
 
-	/* Shorter chapters, so the text of the scene on the stage is always in view below it. */
-	.ps-chapter,
-		.ps-story[data-ready] .ps-chapter {
-		opacity: 0.45;
-	}
-
-	.ps-flow {
-		grid-template-columns: minmax(0, 1fr);
-	}
-
-	.ps-flow-link {
-		justify-self: center;
-		width: 2px;
-		height: 2rem;
-		background-image: linear-gradient(180deg, var(--ps-accent) 50%, transparent 50%);
-		background-size: 2px 10px;
-		animation-name: ps-dash-down;
-	}
-
-	.ps-flow-link::after {
-		right: auto;
-		left: 50%;
-		top: auto;
-		bottom: 2px;
-		transform: translateX(-50%) rotate(135deg);
+	.ps-chapter {
+		min-height: 12rem;
 	}
 
 	.ps-layer {
@@ -2454,10 +2148,6 @@ html:not(.ps-js) .ps-walk button {
 		grid-template-columns: minmax(0, 1fr);
 	}
 
-	.ps-prompt-command {
-		flex-direction: column;
-		align-items: stretch;
-	}
 }
 
 @keyframes ps-dash-down {
@@ -2470,7 +2160,6 @@ html:not(.ps-js) .ps-walk button {
 
 @media (prefers-reduced-motion: reduce) {
 	.ps-js [data-reveal],
-	.ps-js .ps-flow:not(.is-in) .pop,
 	.ps-js .ps-layers:not(.is-in) .ps-layer,
 	.ps-js .ps-capability:not(.is-in) li,
 	.ps-js .ps-tree:not(.is-in) .ps-tree-box {
@@ -2481,12 +2170,10 @@ html:not(.ps-js) .ps-walk button {
 	.ps-story *,
 	.ps-loop *,
 	.ps-tree *,
-	.ps-flow *,
 	.ps-layers *,
 	.ps-registry *,
 	.ps-registry *::before,
 	.ps-capability *,
-	.ps-card,
 	[data-reveal] {
 		transition: none !important;
 		animation: none !important;

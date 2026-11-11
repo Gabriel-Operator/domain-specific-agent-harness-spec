@@ -5,59 +5,34 @@ template: splash
 hero: {}
 ---
 
-import { Icon } from '@astrojs/starlight/components';
-import Anatomy from '../../components/Anatomy.astro';
 import CopyPrompt from '../../components/CopyPrompt.astro';
-import Flow from '../../components/Flow.astro';
+import DocCategories from '../../components/DocCategories.astro';
 
-<nav class="ap-guide not-content" aria-label="Documentation">
-  <a href="./specification/">
-    <span class="ap-guide-index">01 / Reference</span>
-    <strong>Specification <Icon name="right-arrow" /></strong>
-    <span>Folder layout, pinned definitions, and runtime rules.</span>
-  </a>
-  <a href="./apps/">
-    <span class="ap-guide-index">02 / Integration</span>
-    <strong>Apps &amp; connectors <Icon name="right-arrow" /></strong>
-    <span>How agents use services and share records with people.</span>
-  </a>
-  <a href="./examples/">
-    <span class="ap-guide-index">03 / Walkthrough</span>
-    <strong>Examples <Icon name="right-arrow" /></strong>
-    <span>Follow a prospect from research to onboarding in Lane.</span>
-  </a>
-  <a href="./standards/">
-    <span class="ap-guide-index">04 / Ecosystem</span>
-    <strong>Terms &amp; standards <Icon name="right-arrow" /></strong>
-    <span>Where Agent Skills, MCP, and A2A fit.</span>
-  </a>
-</nav>
+## Explore the documentation
+
+<DocCategories />
 
 ## Package, agent, workspace
 
-<div class="ap-terms not-content">
-  <div><span>01 / Definition</span><strong>Package</strong><p>The folder you review, version, and share. Gabriel Operator calls this a <em>persona</em>.</p></div>
-  <div><span>02 / Execution</span><strong>Agent</strong><p>The worker that follows instructions, uses tools, and can run a playbook. A package can define a team of agents.</p></div>
-  <div><span>03 / Installation</span><strong>Workspace</strong><p>The environment where the package is installed. It holds accounts, records, permissions, and run history.</p></div>
-</div>
+- **Package.** The Git repository you version and share. Gabriel Operator calls this a *persona*.
+- **Agent.** The worker that uses instructions and tools. A package can define a team of agents.
+- **Workspace.** An installation that holds accounts, records, permissions, and run history.
+
+See [Terms and standards](./standards/) for the glossary and how Agent Skills, MCP, and A2A fit.
 
 <span id="anatomy-of-a-persona"></span>
 
 ## Inside the package
 
-The root [Agent Skills](https://agentskills.io/specification) file provides instructions. JSON definitions describe the work and the data it uses. The registry pins the Git revision and fingerprint of each linked definition.
-
-<Anatomy />
+[**`SKILL.md`**](./specification/#2-skillmd-) provides instructions. [**Definition files**](./specification/#6-definition-files-) describe the data and workflows. The [**registry**](./specification/#5-registry-) pins the Git revision and fingerprint of each linked definition.
 
 <span id="how-does-a-persona-work"></span>
 
 ## From Git to a running workspace
 
-A compatible runtime checks the package on import, supplies what the installation needs, and reports which steps it can execute.
+A runtime [checks the package on import](./specification/#5-registry-), binds what the installation needs, and [reports which steps it can execute](./specification/#71-capability-report-).
 
-<Flow />
-
-The draft comes from packages running on **Gabriel Operator**. The [Portable Persona Runtime](https://github.com/Gabriel-Operator/portable-persona-runtime) is a self-hosted implementation. Check each runtime's capability report before running a package.
+Draft 0.1 comes from packages running on **Gabriel Operator**. The [Portable Persona Runtime](https://github.com/Gabriel-Operator/portable-persona-runtime) is a self-hosted implementation.
 
 <span id="get-started"></span>
 

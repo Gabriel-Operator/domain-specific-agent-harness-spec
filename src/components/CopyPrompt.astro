@@ -1,4 +1,6 @@
 ---
+import { Code } from '@astrojs/starlight/components';
+
 // An instruction a reader can paste into a coding agent. The address follows wherever the site is published.
 const published = 'https://gabriel-operator.github.io/persona-spec/';
 const home = import.meta.env.SITE ? new URL(import.meta.env.BASE_URL, import.meta.env.SITE).href : published;
@@ -6,28 +8,4 @@ const index = new URL('llms.txt', home.endsWith('/') ? home : `${home}/`).href;
 const instruction = `Read ${index} and the pages it lists before you write or review an agent package.`;
 ---
 
-<div class="ps-prompt not-content" data-reveal>
-	<p class="ps-prompt-label">Coding agents</p>
-	<p class="ps-prompt-title">Give your agent the draft</p>
-	<p class="ps-prompt-text">Copy this instruction into your coding agent to load the source docs.</p>
-	<div class="ps-prompt-command">
-		<code>{instruction}</code>
-		<button type="button" data-copy={instruction}>Copy</button>
-	</div>
-</div>
-
-<script>
-	import '../scripts/reveal.ts';
-
-	for (const button of document.querySelectorAll<HTMLButtonElement>('.ps-prompt-command button')) {
-		button.addEventListener('click', async () => {
-			try {
-				await navigator.clipboard.writeText(button.dataset.copy ?? '');
-				button.textContent = 'Copied';
-			} catch {
-				button.textContent = 'Select and copy';
-			}
-			window.setTimeout(() => (button.textContent = 'Copy'), 1800);
-		});
-	}
-</script>
+<Code code={instruction} lang="text" wrap />

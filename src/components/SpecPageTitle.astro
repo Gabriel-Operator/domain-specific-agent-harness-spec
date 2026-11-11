@@ -1,0 +1,15 @@
+---
+import DefaultPageTitle from '@astrojs/starlight/components/PageTitle.astro';
+import { Icon } from '@astrojs/starlight/components';
+
+const { entry, hasSidebar, siteTitleHref } = Astro.locals.starlightRoute;
+---
+
+{hasSidebar && (
+  <nav class="ap-breadcrumb" aria-label="Breadcrumb" data-pagefind-ignore>
+    <a href={siteTitleHref}><Icon name="open-book" /> Documentation</a>
+    <Icon name="right-caret" />
+    <span aria-current="page">{entry.data.title}</span>
+  </nav>
+)}
+<DefaultPageTitle />
