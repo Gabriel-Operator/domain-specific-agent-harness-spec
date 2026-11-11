@@ -1,0 +1,252 @@
+---
+title: Specification
+description: The draft format for a persona. Folder layout, registry, definition files and runtime rules.
+---
+
+import { Aside, Badge, FileTree } from '@astrojs/starlight/components';
+
+<Aside type="caution" title="Draft 0.1">
+  Nothing on this page is frozen. Each section carries one of three labels.
+
+  - <Badge text="Extracted" variant="success" /> describes files as personas use them today.
+  - <Badge text="Proposed" variant="caution" /> is new in this draft and not yet implemented.
+  - <Badge text="Planned" variant="note" /> is not written yet.
+</Aside>
+
+The words MUST, MUST NOT, SHOULD and MAY are used as defined in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
+
+## 1. Folder structure <Badge text="Extracted" variant="success" />
+
+A persona is a Git repository with this layout:
+
+<FileTree>
+
+- persona-name/
+  - SKILL.md Required
+  - assets/
+    - chat-app.json
+    - ontology.json
+    - persona-evals.json
+    - data-feeds/
+      - catalog.json
+  - references/
+    - registry.json Required
+    - lists/ One linked repository per list
+    - pipelines/ One linked repository per pipeline
+    - workflows/ One linked repository per workflow
+  - skills/ Optional Agent Skills
+  - tests/ Optional acceptance tests
+
+</FileTree>
+
+Every linked definition under `references/` is its own Git repository, linked directly from the persona. A linked repository MUST NOT link further repositories of its own.
+
+## 2. `SKILL.md` <Badge text="Extracted" variant="success" />
+
+The root `SKILL.md` MUST be a valid [Agent Skills](https://agentskills.io/specification) file: YAML frontmatter with `name` and `description`, followed by Markdown instructions.
+
+```markdown
+---
+name: persona-archer
+description: Plans and produces marketing campaigns for hospitality venues. Use when someone needs a campaign, an ad or a product explainer.
+---
+
+# Archer
+
+Instructions an agent follows when it works as, or on, this persona.
+```
+
+A persona MAY carry more skills under `skills/`. Each one is an ordinary Agent Skill.
+
+## 3. Definitions only <Badge text="Extracted" variant="success" />
+
+A persona repository holds definitions. It never holds what a running persona produces.
+
+A definition file MUST NOT contain:
+
+- Records, conversation history, run state or any other runtime data.
+- Credentials, tokens or service addresses.
+- Database identifiers from any one installation. A page ID, user ID, command ID or action ID is local to the runtime that created it.
+- Scripts or styles: `javascript`, `script`, `css`, `tailwind`.
+
+Definition files that could be confused with runtime data declare the rule explicitly:
+
+```json
+{ "runtimeDataPolicy": "definitions_only" }
+```
+
+A runtime allocates its own identifiers when it imports a persona and keeps them in its own storage.
+
+## 4. Resource keys <Badge text="Extracted" variant="success" />
+
+Every definition has a `resourceKey`. It is the definition's identity across installations.
+
+- A resource key is lowercase and dot-separated, and starts with the kind of definition.
+- A resource key MUST stay the same when the definition changes. Version suffixes such as `-v2` mark a deliberately new definition.
+- Definitions refer to each other by resource key, never by a local identifier.
+
+```text
+list.archer.brand-identities
+pipeline.archer.instagram-campaign-v2
+workflow.archer.cinematic-ad-v1
+ontology.persona.archer
+```
+
+## 5. Registry <Badge text="Extracted" variant="success" />
+
+`references/registry.json` lists every linked definition and pins the exact content the persona was published with.
+
+```json
+{
+  "schemaVersion": 2,
+  "updatedAt": 1794264496707,
+  "repos": [
+    {
+      "kind": "list",
+      "resourceKey": "list.archer.brand-identities",
+      "displayName": "Archer brand identities",
+      "path": "references/lists/list-archer-brand-identities",
+      "repositoryUrl": "https://github.com/example/list-archer-brand-identities",
+      "branch": "main",
+      "assetPath": "assets/list.json",
+      "definitionFingerprint": "<sha-256 of the definition>",
+      "revision": "<git commit>"
+    }
+  ]
+}
+```
+
+| Field | Description |
+| --- | --- |
+| `kind` | `list`, `pipeline` or `workflow`. |
+| `resourceKey` | The definition's identity. See [Resource keys](#4-resource-keys-). |
+| `displayName` | A name for people. |
+| `path` | Where the linked repository sits inside the persona. |
+| `repositoryUrl`, `branch` | Where the linked repository comes from. |
+| `assetPath` | The definition file inside the linked repository. |
+| `definitionFingerprint` | SHA-256 of the definition, as hexadecimal. |
+| `revision` | The Git commit the persona is pinned to. |
+
+Rules:
+
+- A publish step computes `definitionFingerprint` and `revision`. Authors MUST NOT edit them by hand.
+- A runtime MUST check each fingerprint before it uses a definition, and MUST refuse a definition that does not match.
+- A reference to a resource key that the registry does not resolve MUST fail before the persona is activated. A runtime MUST NOT guess.
+
+The exact byte form that the fingerprint is computed over is <Badge text="Planned" variant="note" />.
+
+## 6. Definition files <Badge text="Extracted" variant="success" />
+
+Every definition file has a `schemaVersion` and a `resourceKey`.
+
+| Definition | File | Describes |
+| --- | --- | --- |
+| Chat app | `assets/chat-app.json` | The app people use: pages, navigation, actions and data points. |
+| Ontology | `assets/ontology.json` | The domain model: entities, attributes and relationships. |
+| Data feed catalog | `assets/data-feeds/catalog.json` | Sources the persona may read. Each feed has its own definition and workflow. |
+| Evals | `assets/persona-evals.json` | Requirements, what implements them and the cases that verify them. |
+| List | `assets/list.json` in a linked repository | A collection of records and its columns. |
+| Pipeline | `assets/pipeline.json` in a linked repository | A state machine over records. |
+| Workflow | `assets/workflow.json` in a linked repository | A playbook: the ordered steps of a piece of work. |
+
+JSON Schemas for each file are <Badge text="Planned" variant="note" />.
+
+### 6.1 Ontology
+
+The ontology names the things the persona works with. Lists, feeds, evals and playbooks all refer to it, so the persona means the same thing everywhere.
+
+```json
+{
+  "schemaVersion": 1,
+  "resourceKey": "ontology.persona.archer",
+  "version": "0.3.0",
+  "name": "Archer ontology",
+  "entities": [
+    {
+      "type": "InstagramCampaign",
+      "description": "Durable existing campaign record.",
+      "attributes": {
+        "identity": { "type": "string", "required": true },
+        "source_url": { "type": "string" },
+        "stage": { "type": "string" }
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "type": "BRAND_PLANS",
+      "from": "BrandIdentity",
+      "to": "InstagramCampaign",
+      "direction": "directed",
+      "cardinality": { "from": "one", "to": "many" }
+    }
+  ]
+}
+```
+
+### 6.2 Evals
+
+A requirement states something the persona must do. It names what implements it and which cases verify it.
+
+```json
+{
+  "id": "shared-instagram-campaign-journey",
+  "category": "command_outcome",
+  "description": "Every surface uses the same guided campaign journey, from source review through image approval.",
+  "implementedBy": [
+    { "kind": "workflow", "resourceRef": "workflow.archer.instagram-campaign-v2" }
+  ],
+  "verifiedBy": ["original-direction-golden", "missing-instagram-url"]
+}
+```
+
+A case sets up fixtures, runs a command and asserts on the outcome. An assertion can require that nothing left the system:
+
+```json
+{
+  "id": "original-direction-golden",
+  "category": "golden",
+  "runAs": "author",
+  "commandRef": "instagram-campaign",
+  "requirementIds": ["shared-instagram-campaign-journey"],
+  "assertions": [
+    {
+      "type": "pipeline_stage",
+      "resourceRef": "pipeline.archer.instagram-campaign-v2",
+      "stage": "reference_pending_selection"
+    },
+    { "type": "no_external_side_effect" }
+  ]
+}
+```
+
+A suite groups cases. A suite with `"requiredForProduction": true` MUST pass before the persona is released.
+
+## 7. Runtime rules
+
+### 7.1 Capability report <Badge text="Extracted" variant="success" />
+
+A runtime does not have to support every part of a persona. Before it runs one, it MUST report which steps it can execute and every step it cannot.
+
+- A step the runtime cannot execute becomes `blocked`. The runtime MUST NOT replace it with a different operation, and MUST NOT send it to another service without the person asking.
+- Reconnecting or synchronising MUST NOT run a blocked step, and MUST NOT repeat one that already completed.
+
+### 7.2 Binding <Badge text="Proposed" variant="caution" />
+
+A persona states what it needs. The workspace that runs it supplies the rest.
+
+- **Model.** A persona declares the capabilities it needs, such as structured output or tool use. It SHOULD NOT name one vendor's model. The workspace binds a model that meets the requirement.
+- **Credentials.** A persona declares a slot for each account it needs. Values are supplied at run time and never enter a definition.
+- **People.** A persona declares roles, such as who approves a step. The workspace assigns people to them.
+
+## 8. Not yet specified <Badge text="Planned" variant="note" />
+
+These parts exist in running personas and will be specified in later drafts:
+
+- Playbook steps and the rules for composing them.
+- Teams: several agents with roles working on one playbook, including agents that run elsewhere.
+- Governance: rules a persona must follow, and approval before an effect.
+- Signals and routines: work that starts from an event or a schedule.
+- Access: workspace members, roles and scoped tokens.
+- Surfaces: landing pages, mobile and voice.
+- Which definitions a registry must contain.

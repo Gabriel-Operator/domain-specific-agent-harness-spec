@@ -1,0 +1,53 @@
+---
+title: Other standards
+description: How the persona format relates to Agent Skills, the Model Context Protocol and the Standard Agent Specification.
+---
+
+A persona format should not redefine what other open formats already define well. This page says what the specification builds on, what it sits beside and where it differs.
+
+## Agent Skills
+
+[Agent Skills](https://agentskills.io) is the base format. A persona folder is an Agent Skill, and a persona carries more skills under `skills/`.
+
+| | Agent Skills | Persona Spec |
+| --- | --- | --- |
+| Unit | A skill: instructions for one kind of task | A persona: a whole role |
+| Required file | `SKILL.md` | `SKILL.md` and `references/registry.json` |
+| Form | Markdown with YAML frontmatter | The same, plus JSON definition files |
+| Adds | | Domain model, records, playbooks, approval and evals |
+
+Both formats are declarative. Neither asks a runtime to execute the author's code in order to load a definition.
+
+## Model Context Protocol
+
+The [Model Context Protocol](https://modelcontextprotocol.io) connects a running agent to tools and data. This specification describes the persona before it runs.
+
+The two meet at run time. A runtime MAY expose a running persona as a Model Context Protocol server, and a persona's playbooks MAY call tools from other servers. Gabriel Operator does both.
+
+## Standard Agent Specification
+
+The [Standard Agent Specification](https://standardagentspec.org) defines how an agent executes: providers, models, prompts, tools, threads and hooks. It sits one layer below a persona.
+
+The two differ in three ways:
+
+- **Form.** Standard Agents are TypeScript, shipped as npm packages. Personas are JSON and Markdown in Git.
+- **Model.** A Standard Agent is coupled to a model. A persona states what it needs and the workspace binds the model.
+- **Scope.** A Standard Agent is an agent. A persona is a role, which may be carried out by one agent or by a team.
+
+The concepts map as follows.
+
+| Standard Agent Specification | Persona Spec |
+| --- | --- |
+| Providers, models | Capability requirements, bound by the workspace |
+| Prompts | `SKILL.md` and the instructions of each team member |
+| Tools | Playbooks, data feeds and connected accounts |
+| Effects | Signals and routines |
+| Handlers | Deterministic playbook steps and pipeline transitions |
+| Agents, subagents | Teams |
+| Threads | Conversations, records and files, kept by the runtime |
+| Hooks | Governance rules and approvals, declared as policy |
+| Users | Workspace members and roles |
+| Packaging | A Git repository with a registry of fingerprints |
+| No equivalent | Ontology, lists and pipelines, evals, surfaces |
+
+An exporter that turns a persona's agents into a Standard Agent package is planned.
