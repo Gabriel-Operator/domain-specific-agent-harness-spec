@@ -1,6 +1,7 @@
 ---
 // The scroll story on the home page. The text scrolls on the left; the stage on the right stays in view and moves
 // to the scene that matches the chapter being read. Every part of the stage lists its scenes in `data-scenes`.
+// File names, keys, bots and fingerprints are taken from one persona, Lane.
 const chapters = [
 	{
 		title: 'What does it take to hand <span class="ps-accent">real work</span> to an AI?',
@@ -32,6 +33,13 @@ const chapters = [
 		],
 	},
 	{
+		title: 'Give it a <span class="ps-accent">team</span>.',
+		body: [
+			'One file declares the teams: the bots and the playbook each one runs, the service each may call, and the apps people use to follow the work.',
+			'An app with its own interface is built in a team and kept in a registry, so any team can install it.',
+		],
+	},
+	{
 		title: 'Bind it at <span class="ps-accent">run time</span>.',
 		body: [
 			'A definition never names a model account, a credential or a person.',
@@ -54,14 +62,17 @@ const chapters = [
 	},
 ];
 
+// The registry pins the three linked kinds. The other files are part of the folder itself.
 const folderRows = [
 	{ y: 102, label: 'SKILL.md' },
-	{ y: 132, label: 'assets/ontology.json' },
-	{ y: 162, label: 'assets/persona-evals.json' },
-	{ y: 192, label: 'references/lists/' },
-	{ y: 222, label: 'references/pipelines/' },
-	{ y: 252, label: 'references/workflows/' },
+	{ y: 129, label: 'assets/ontology.json' },
+	{ y: 156, label: 'assets/persona-evals.json' },
+	{ y: 183, label: 'assets/studio-teams.json' },
+	{ y: 210, label: 'references/lists/', pin: 'bacf41' },
+	{ y: 237, label: 'references/pipelines/', pin: '2bd6ad' },
+	{ y: 264, label: 'references/workflows/', pin: '44ac30' },
 ];
+const pinned = folderRows.filter((row) => row.pin);
 
 const chips = [
 	{ label: 'Domain model', x: 28, y: 72, w: 108, rot: -6, dx: -18, dy: -16, ix: 70, iy: 70 },
@@ -71,17 +82,25 @@ const chips = [
 	{ label: 'Records', x: 158, y: 314, w: 84, rot: 2, dx: 0, dy: 18, ix: 0, iy: -76 },
 ];
 
+// Three of the team's six bots, in hand-off order, each with the service its playbook may call.
+const bots = [
+	{ x: 54, label: 'meeting-watcher', needs: 'calendar' },
+	{ x: 154, label: 'brief-researcher', needs: 'mail' },
+	{ x: 254, label: 'briefing-caller', needs: 'briefing' },
+];
+
 const plugs = [
 	{ y: 112, label: 'Model', note: 'meets what it needs' },
 	{ y: 182, label: 'Accounts', note: 'fill credential slots' },
 	{ y: 252, label: 'People', note: 'take its roles' },
 ];
 
+// The playbook `pilot-follow-through`: its send step needs approval, so the run waits before it.
 const steps = [
-	{ x: 22, label: 'Plan', cls: 'n1' },
-	{ x: 116, label: 'Draft', cls: 'n2' },
-	{ x: 210, label: 'Approve', cls: 'gate' },
-	{ x: 304, label: 'Publish', cls: 'n4' },
+	{ x: 22, label: 'Analyze', cls: 'n1' },
+	{ x: 116, label: 'Approve', cls: 'gate' },
+	{ x: 210, label: 'Send', cls: 'n3' },
+	{ x: 304, label: 'Result', cls: 'n4' },
 ];
 
 const runtimes = [
@@ -148,39 +167,39 @@ const runtimes = [
 					}
 				</g>
 
-				<!-- 3 to 5: the persona folder -->
-				<g class="sc-folder" data-scenes="3 4 5">
+				<!-- 3, 4 and 6: the persona folder -->
+				<g class="sc-folder" data-scenes="3 4 6">
 					<g class="folder-inner">
 						<path
 							class="bx"
-							d="M88 68 H176 Q182 68 185 73 L192 84 Q194 88 199 88 H310 Q320 88 320 98 V328 Q320 338 310 338 H90 Q80 338 80 328 V76 Q80 68 88 68 Z"
+							d="M88 68 H176 Q182 68 185 73 L192 84 Q194 88 199 88 H310 Q320 88 320 98 V330 Q320 340 310 340 H90 Q80 340 80 330 V76 Q80 68 88 68 Z"
 						></path>
-						<text class="th" x="92" y="83">persona-archer/</text>
+						<text class="th" x="92" y="83">persona-lane/</text>
 						{
 							folderRows.map((row, index) => (
 								<g class="frow" style={`--i:${index}`}>
-									<rect class="rw" x="94" y={row.y} width="212" height="24" rx="4" />
-									<text x="104" y={row.y + 16}>
+									<rect class="rw" x="94" y={row.y} width="212" height="22" rx="4" />
+									<text x="104" y={row.y + 15}>
 										{row.label}
 									</text>
 								</g>
 							))
 						}
-						<g class="frow reg-row" style="--i:6">
-							<path class="ln" d="M94 286 H306"></path>
-							<rect class="rw" x="94" y="296" width="212" height="24" rx="4"></rect>
-							<text x="104" y="312">references/registry.json</text>
+						<g class="frow reg-row" style={`--i:${folderRows.length}`}>
+							<path class="ln" d="M94 294 H306"></path>
+							<rect class="rw" x="94" y="302" width="212" height="22" rx="4"></rect>
+							<text x="104" y="317">references/registry.json</text>
 						</g>
 
-						<!-- 4 and 5: the registry pins each linked definition -->
-						<g class="sc-pins" data-scenes="4 5">
-							<path class="pin" d="M87 308 V204 M87 204 H94 M87 234 H94 M87 264 H94 M87 308 H94"></path>
+						<!-- 4 and 6: the registry pins each linked definition -->
+						<g class="sc-pins" data-scenes="4 6">
+							<path class="pin" d="M87 313 V221 M87 221 H94 M87 248 H94 M87 275 H94 M87 313 H94"></path>
 							{
-								['c9bea2', '61fcf3', '1c7d09'].map((hash, index) => (
+								pinned.map((row, index) => (
 									<g class="tag" style={`--i:${index}`}>
-										<rect x="242" y={196 + index * 30} width="58" height="16" rx="8" />
-										<text x="271" y={207 + index * 30} text-anchor="middle">
-											✓ {hash}
+										<rect x="242" y={row.y + 3} width="58" height="16" rx="8" />
+										<text x="271" y={row.y + 14} text-anchor="middle">
+											✓ {row.pin}
 										</text>
 									</g>
 								))
@@ -189,8 +208,72 @@ const runtimes = [
 					</g>
 				</g>
 
-				<!-- 5: what the workspace supplies -->
-				<g class="sc-bind" data-scenes="5">
+				<!-- 5: the team file opened: bots, the services they may call, apps, and the registry outside the folder -->
+				<g transform="translate(0 8)">
+					<g class="sc-team" data-scenes="5">
+						<g class="tpart" style="--i:0">
+							<rect class="bx" x="128" y="26" width="144" height="34" rx="8"></rect>
+							<path class="ln" d="M141 38 h5 l2 2 h7 v9 h-14 z"></path>
+							<text x="164" y="47">persona-lane/</text>
+							<path class="ln" d="M200 60 V76"></path>
+							<text class="tm" x="200" y="88" text-anchor="middle">assets/studio-teams.json</text>
+						</g>
+						<g class="tpart" style="--i:1">
+							<rect class="team-panel" x="40" y="96" width="320" height="196" rx="10"></rect>
+							<text class="th" x="54" y="113">MEETING FOLLOW-THROUGH</text>
+							<text class="tm" x="346" y="113" text-anchor="end">team · 6 bots</text>
+						</g>
+						{
+							bots.map((bot, index) => (
+								<g class="tpart" style={`--i:${index + 2}`}>
+									{index > 0 && (
+										<text class="tm" x={bot.x - 4} y="138" text-anchor="middle">
+											›
+										</text>
+									)}
+									<g class="bot">
+										<rect x={bot.x} y="122" width="92" height="24" rx="6" />
+										<text class="t8" x={bot.x + 46} y="138" text-anchor="middle">
+											{bot.label}
+										</text>
+									</g>
+									<path class="ln" d={`M${bot.x + 46} 146 V156`} />
+									<g class="req">
+										<rect x={bot.x + 12} y="156" width="68" height="18" rx="9" />
+										<text class="t8" x={bot.x + 46} y="168" text-anchor="middle">
+											{bot.needs}
+										</text>
+									</g>
+								</g>
+							))
+						}
+						<text class="th tpart" style="--i:5" x="200" y="188" text-anchor="middle">CONNECTOR REQUIREMENTS</text>
+						<g class="tpart" style="--i:6">
+							<rect class="rw" x="54" y="198" width="292" height="24" rx="4"></rect>
+							<text x="64" y="214">Meeting follow-through</text>
+							<text class="tm" x="336" y="214" text-anchor="end">app · board</text>
+						</g>
+						<g class="tpart" style="--i:7">
+							<rect class="rw" x="54" y="228" width="292" height="24" rx="4"></rect>
+							<text x="64" y="244">list.lane.meeting-cycles</text>
+							<text class="tm" x="336" y="244" text-anchor="end">list</text>
+						</g>
+						<g class="tpart slot" style="--i:8">
+							<rect x="54" y="258" width="292" height="24" rx="4"></rect>
+							<text x="64" y="274">Installed apps</text>
+							<text class="tm ta" x="336" y="274" text-anchor="end">from the registry</text>
+						</g>
+						<g class="tpart registry" style="--i:9">
+							<path class="feed" d="M200 312 V292"></path>
+							<rect x="110" y="312" width="180" height="36" rx="8"></rect>
+							<text x="200" y="327" text-anchor="middle">App registry</text>
+							<text class="tm" x="200" y="340" text-anchor="middle" style="font-size:7.5px">outside the folder</text>
+						</g>
+					</g>
+				</g>
+
+				<!-- 6: what the workspace supplies -->
+				<g class="sc-bind" data-scenes="6">
 					<text class="th" x="338" y="100" text-anchor="middle">WORKSPACE</text>
 					{
 						plugs.map((plug, index) => (
@@ -210,77 +293,77 @@ const runtimes = [
 					}
 				</g>
 
-				<!-- Scenes 6 and 7 sit lower so they are centred on the stage. -->
+				<!-- Scenes 7 and 8 sit lower so they are centred on the stage. -->
 				<g transform="translate(0 30)">
-				<!-- 6 and 7: the folder, small, above what runs it -->
-				<g class="sc-mini" data-scenes="6 7">
-					<rect class="bx" x="128" y="26" width="144" height="34" rx="8"></rect>
-					<path class="ln" d="M141 38 h5 l2 2 h7 v9 h-14 z"></path>
-					<text x="164" y="47">persona-archer/</text>
-				</g>
-
-				<!-- 6: a playbook that waits for a person -->
-				<g class="sc-play" data-scenes="6">
-					<path class="ln" d="M200 60 V92"></path>
-					<text class="tm" x="200" y="108" text-anchor="middle">workflow.archer.instagram-campaign-v2</text>
-					<path class="ln" d="M59 240 H341"></path>
-					{
-						steps.map((step) => (
-							<g class={step.cls}>
-								<path class="ln" d={`M${step.x + 37} 204 V240`} />
-								<rect class="bx" x={step.x} y="164" width="74" height="40" rx="8" />
-								<text x={step.x + 37} y="188" text-anchor="middle">
-									{step.label}
-								</text>
-								<circle class="stop" cx={step.x + 37} cy="240" r="3.5" />
-							</g>
-						))
-					}
-					<circle class="runner" cx="59" cy="240" r="6.5"></circle>
-					<g class="ask">
-						<rect x="203" y="124" width="88" height="26" rx="13"></rect>
-						<text x="247" y="141" text-anchor="middle">Approve?</text>
+					<!-- 7 and 8: the folder, small, above what runs it -->
+					<g class="sc-mini" data-scenes="7 8">
+						<rect class="bx" x="128" y="26" width="144" height="34" rx="8"></rect>
+						<path class="ln" d="M141 38 h5 l2 2 h7 v9 h-14 z"></path>
+						<text x="164" y="47">persona-lane/</text>
 					</g>
-					<g class="okd">
-						<rect x="203" y="124" width="88" height="26" rx="13"></rect>
-						<text x="247" y="141" text-anchor="middle">✓ Approved</text>
-					</g>
-					<text class="tm" x="200" y="296" text-anchor="middle">The run waits at the gate</text>
-					<text class="tm" x="200" y="312" text-anchor="middle">until a person decides.</text>
-				</g>
 
-				<!-- 7: one persona, several runtimes -->
-				<g class="sc-run" data-scenes="7">
-					<path class="ln" d="M200 60 V150 M70 150 V112 H330 V150"></path>
-					{
-						runtimes.map((runtime, column) => (
-							<g>
-								<rect class="bx" x={runtime.x} y="150" width="112" height="112" rx="9" />
-								<text x={runtime.x + 56} y="174" text-anchor="middle">
-									{runtime.label}
-								</text>
-								{[0, 1, 2, 3].map((square) => (
-									<g class={`sq${runtime.blocked === square ? ' blocked' : ''}`} style={`--i:${column * 4 + square}`}>
-										<rect x={runtime.x + 15 + square * 22} y="188" width="16" height="16" rx="3" />
-										{runtime.blocked === square ? (
-											<path d={`M${runtime.x + 19 + square * 22} 196 h8`} />
-										) : (
-											<path d={`M${runtime.x + 19 + square * 22} 196.5 l2.6 2.6 l4.6 -5.4`} />
-										)}
-									</g>
-								))}
-								<text class="tm" x={runtime.x + 56} y="228" text-anchor="middle">
-									{runtime.line}
-								</text>
-								<text class={runtime.blocked < 0 ? 'tm' : 'tm tw'} x={runtime.x + 56} y="244" text-anchor="middle">
-									{runtime.blocked < 0 ? 'can run' : '1 blocked'}
-								</text>
-							</g>
-						))
-					}
-					<text class="tm" x="200" y="300" text-anchor="middle">Each runtime reports what it can run.</text>
-					<text class="tm" x="200" y="316" text-anchor="middle">A blocked step is never replaced.</text>
-				</g>
+					<!-- 7: a playbook that waits for a person -->
+					<g class="sc-play" data-scenes="7">
+						<path class="ln" d="M200 60 V92"></path>
+						<text class="tm" x="200" y="108" text-anchor="middle">playbook · pilot-follow-through</text>
+						<path class="ln" d="M59 240 H341"></path>
+						{
+							steps.map((step) => (
+								<g class={step.cls}>
+									<path class="ln" d={`M${step.x + 37} 204 V240`} />
+									<rect class="bx" x={step.x} y="164" width="74" height="40" rx="8" />
+									<text x={step.x + 37} y="188" text-anchor="middle">
+										{step.label}
+									</text>
+									<circle class="stop" cx={step.x + 37} cy="240" r="3.5" />
+								</g>
+							))
+						}
+						<circle class="runner" cx="59" cy="240" r="6.5"></circle>
+						<g class="ask">
+							<rect x="109" y="124" width="88" height="26" rx="13"></rect>
+							<text x="153" y="141" text-anchor="middle">Approve?</text>
+						</g>
+						<g class="okd">
+							<rect x="109" y="124" width="88" height="26" rx="13"></rect>
+							<text x="153" y="141" text-anchor="middle">✓ Approved</text>
+						</g>
+						<text class="tm" x="200" y="296" text-anchor="middle">The run waits before Send</text>
+						<text class="tm" x="200" y="312" text-anchor="middle">until a person decides.</text>
+					</g>
+
+					<!-- 8: one persona, several runtimes -->
+					<g class="sc-run" data-scenes="8">
+						<path class="ln" d="M200 60 V150 M70 150 V112 H330 V150"></path>
+						{
+							runtimes.map((runtime, column) => (
+								<g>
+									<rect class="bx" x={runtime.x} y="150" width="112" height="112" rx="9" />
+									<text x={runtime.x + 56} y="174" text-anchor="middle">
+										{runtime.label}
+									</text>
+									{[0, 1, 2, 3].map((square) => (
+										<g class={`sq${runtime.blocked === square ? ' blocked' : ''}`} style={`--i:${column * 4 + square}`}>
+											<rect x={runtime.x + 15 + square * 22} y="188" width="16" height="16" rx="3" />
+											{runtime.blocked === square ? (
+												<path d={`M${runtime.x + 19 + square * 22} 196 h8`} />
+											) : (
+												<path d={`M${runtime.x + 19 + square * 22} 196.5 l2.6 2.6 l4.6 -5.4`} />
+											)}
+										</g>
+									))}
+									<text class="tm" x={runtime.x + 56} y="228" text-anchor="middle">
+										{runtime.line}
+									</text>
+									<text class={runtime.blocked < 0 ? 'tm' : 'tm tw'} x={runtime.x + 56} y="244" text-anchor="middle">
+										{runtime.blocked < 0 ? 'can run' : '1 blocked'}
+									</text>
+								</g>
+							))
+						}
+						<text class="tm" x="200" y="300" text-anchor="middle">Each runtime reports what it can run.</text>
+						<text class="tm" x="200" y="316" text-anchor="middle">A blocked step is never replaced.</text>
+					</g>
 				</g>
 			</svg>
 		</div>

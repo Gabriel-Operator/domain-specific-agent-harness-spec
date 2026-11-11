@@ -396,7 +396,7 @@ h1#_top,
 	transform: none;
 }
 
-.ps-story:is([data-scene='3'], [data-scene='4'], [data-scene='5'], [data-scene='6'], [data-scene='7']) .chip {
+.ps-story:is([data-scene='3'], [data-scene='4'], [data-scene='5'], [data-scene='6'], [data-scene='7'], [data-scene='8']) .chip {
 	transform: translate(var(--ix), var(--iy)) scale(0.5);
 	transition-delay: 0ms;
 }
@@ -428,7 +428,7 @@ h1#_top,
 	transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.ps-story[data-scene='5'] .folder-inner {
+.ps-story[data-scene='6'] .folder-inner {
 	transform: translate(-58px, 0) scale(0.84);
 }
 
@@ -436,7 +436,7 @@ h1#_top,
 	transition: stroke 0.4s ease;
 }
 
-.ps-story:is([data-scene='4'], [data-scene='5']) .reg-row .rw {
+.ps-story:is([data-scene='4'], [data-scene='6']) .reg-row .rw {
 	stroke: var(--ps-accent);
 }
 
@@ -478,6 +478,77 @@ h1#_top,
 .ps-svg .tag text {
 	font-size: 8.5px;
 	fill: var(--ps-ok);
+}
+
+/* The team file opened: bots, the service each may call, apps, and the registry outside the folder. */
+.ps-svg .t8 {
+	font-size: 8.5px;
+}
+
+.ps-svg .team-panel {
+	fill: var(--ps-panel);
+	stroke: var(--ps-accent);
+	stroke-width: 1.2;
+}
+
+.ps-svg .bot rect {
+	fill: var(--ps-accent-soft);
+	stroke: var(--ps-accent);
+	stroke-width: 1.2;
+}
+
+.ps-svg .req rect {
+	fill: var(--ps-panel);
+	stroke: var(--ps-line-strong);
+	stroke-width: 1.2;
+	stroke-dasharray: 3 2;
+}
+
+.ps-svg .req text {
+	fill: var(--ps-muted);
+}
+
+.ps-svg .slot rect,
+.ps-svg .registry rect {
+	fill: var(--ps-accent-soft);
+	stroke: var(--ps-accent);
+	stroke-width: 1.2;
+	stroke-dasharray: 4 3;
+}
+
+.ps-svg .registry rect {
+	fill: var(--ps-panel);
+}
+
+.ps-svg .feed {
+	fill: none;
+	stroke: var(--ps-accent);
+	stroke-width: 1.4;
+	stroke-dasharray: 4 4;
+}
+
+.ps-story[data-ready] .tpart {
+	opacity: 0;
+	transform: translateY(8px);
+	transition:
+		opacity 0.4s ease,
+		transform 0.5s ease;
+}
+
+.ps-story[data-ready] .sc-team.is-on .tpart {
+	opacity: 1;
+	transform: none;
+	transition-delay: calc(var(--i) * 80ms + 120ms);
+}
+
+.ps-story .sc-team.is-on .feed {
+	animation: ps-feed 0.8s linear infinite;
+}
+
+@keyframes ps-feed {
+	to {
+		stroke-dashoffset: -8;
+	}
 }
 
 /* What the workspace supplies. */
@@ -556,7 +627,7 @@ h1#_top,
 }
 
 .ps-story .sc-play .runner {
-	transform: translateX(188px);
+	transform: translateX(94px);
 }
 
 .ps-story .sc-play.is-on .runner {
@@ -567,8 +638,8 @@ h1#_top,
 	animation: ps-step-1 9s linear infinite;
 }
 
-.ps-story .sc-play.is-on .n2 .bx {
-	animation: ps-step-2 9s linear infinite;
+.ps-story .sc-play.is-on .n3 .bx {
+	animation: ps-step-3 9s linear infinite;
 }
 
 .ps-story .sc-play.is-on .gate .bx {
@@ -599,10 +670,10 @@ h1#_top,
 		transform: translateX(0);
 	}
 	18%,
-	24% {
+	48% {
 		transform: translateX(94px);
 	}
-	34%,
+	58%,
 	64% {
 		transform: translateX(188px);
 	}
@@ -636,13 +707,13 @@ h1#_top,
 	}
 }
 
-@keyframes ps-step-2 {
+@keyframes ps-step-3 {
 	0%,
-	17% {
+	57% {
 		fill: var(--ps-panel);
 		stroke: var(--ps-line-strong);
 	}
-	19%,
+	59%,
 	96% {
 		fill: var(--ps-accent-soft);
 		stroke: var(--ps-accent);
@@ -655,25 +726,25 @@ h1#_top,
 
 @keyframes ps-step-gate {
 	0%,
-	33% {
+	17% {
 		fill: var(--ps-panel);
 		stroke: var(--ps-warn);
 	}
-	36%,
-	44% {
+	20%,
+	28% {
 		fill: var(--ps-warn-soft);
 		stroke: var(--ps-warn);
 	}
-	50% {
+	34% {
 		fill: var(--ps-panel);
 		stroke: var(--ps-warn);
 	}
-	56%,
-	61% {
+	40%,
+	45% {
 		fill: var(--ps-warn-soft);
 		stroke: var(--ps-warn);
 	}
-	64%,
+	48%,
 	96% {
 		fill: var(--ps-ok-soft);
 		stroke: var(--ps-ok);
@@ -703,14 +774,14 @@ h1#_top,
 
 @keyframes ps-ask {
 	0%,
-	33% {
+	17% {
 		opacity: 0;
 	}
-	36%,
-	61% {
+	20%,
+	45% {
 		opacity: 1;
 	}
-	63%,
+	47%,
 	100% {
 		opacity: 0;
 	}
@@ -718,10 +789,10 @@ h1#_top,
 
 @keyframes ps-okd {
 	0%,
-	62% {
+	46% {
 		opacity: 0;
 	}
-	64%,
+	48%,
 	96% {
 		opacity: 1;
 	}
