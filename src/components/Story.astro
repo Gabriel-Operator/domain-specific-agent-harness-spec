@@ -1,0 +1,344 @@
+---
+// The scroll story on the home page. The text scrolls on the left; the stage on the right stays in view and moves
+// to the scene that matches the chapter being read. Every part of the stage lists its scenes in `data-scenes`.
+const chapters = [
+	{
+		title: 'What does it take to hand <span class="ps-accent">real work</span> to an AI?',
+		body: ['Scroll to see how a persona is put together.'],
+	},
+	{
+		title: 'Start with an assistant.',
+		body: ['A model, a prompt and a few tools. That is enough to answer questions.'],
+	},
+	{
+		title: 'A role needs <span class="ps-accent">more</span>.',
+		body: [
+			'To do a job it has to know the domain, keep records, follow a procedure, ask before it acts and prove it still works.',
+			'Today those parts live in a platform’s database and settings screens. You cannot review a change to them, and you cannot take them with you.',
+		],
+	},
+	{
+		title: 'Put the whole role in a <span class="ps-accent">folder</span>.',
+		body: [
+			'A persona is a Git repository: a <code>SKILL.md</code> and a set of declarative definition files.',
+			'There is no code to compile and no build step. A change is a pull request anyone can read.',
+		],
+	},
+	{
+		title: 'Pin every definition.',
+		body: [
+			'Each linked definition has a stable resource key. The registry records its fingerprint and the commit it was published from.',
+			'A runtime checks the fingerprint first and refuses anything that does not match.',
+		],
+	},
+	{
+		title: 'Bind it at <span class="ps-accent">run time</span>.',
+		body: [
+			'A definition never names a model account, a credential or a person.',
+			'The workspace that runs the persona supplies them, so one persona works for many teams and on many models.',
+		],
+	},
+	{
+		title: 'Ask before acting.',
+		body: [
+			'A playbook can stop at a step until a person decides.',
+			'A runtime that cannot enforce that holds the step. It does not carry on without the answer.',
+		],
+	},
+	{
+		title: 'Run it <span class="ps-accent">where you need it</span>.',
+		body: [
+			'Hosted, on your own hardware, or offline on a device.',
+			'Each runtime reports which steps it can execute and blocks the rest. It never swaps in something else.',
+		],
+	},
+];
+
+const folderRows = [
+	{ y: 102, label: 'SKILL.md' },
+	{ y: 132, label: 'assets/ontology.json' },
+	{ y: 162, label: 'assets/persona-evals.json' },
+	{ y: 192, label: 'references/lists/' },
+	{ y: 222, label: 'references/pipelines/' },
+	{ y: 252, label: 'references/workflows/' },
+];
+
+const chips = [
+	{ label: 'Domain model', x: 28, y: 72, w: 108, rot: -6, dx: -18, dy: -16, ix: 70, iy: 70 },
+	{ label: 'Playbooks', x: 264, y: 68, w: 92, rot: 5, dx: 18, dy: -16, ix: -66, iy: 72 },
+	{ label: 'Approvals', x: 8, y: 188, w: 92, rot: 3, dx: -20, dy: 0, ix: 88, iy: 0 },
+	{ label: 'Tests', x: 304, y: 190, w: 72, rot: -4, dx: 20, dy: 0, ix: -84, iy: 0 },
+	{ label: 'Records', x: 158, y: 314, w: 84, rot: 2, dx: 0, dy: 18, ix: 0, iy: -76 },
+];
+
+const plugs = [
+	{ y: 112, label: 'Model', note: 'meets what it needs' },
+	{ y: 182, label: 'Accounts', note: 'fill credential slots' },
+	{ y: 252, label: 'People', note: 'take its roles' },
+];
+
+const steps = [
+	{ x: 22, label: 'Plan', cls: 'n1' },
+	{ x: 116, label: 'Draft', cls: 'n2' },
+	{ x: 210, label: 'Approve', cls: 'gate' },
+	{ x: 304, label: 'Publish', cls: 'n4' },
+];
+
+const runtimes = [
+	{ x: 14, label: 'Hosted', blocked: -1, line: '4 of 4 steps' },
+	{ x: 144, label: 'Self-hosted', blocked: -1, line: '4 of 4 steps' },
+	{ x: 274, label: 'Offline', blocked: 3, line: '3 of 4 steps' },
+];
+---
+
+<section class="ps-story ps-wide not-content" data-scene="0" aria-label="How a persona is put together">
+	<div class="ps-story-text">
+		{
+			chapters.map((chapter, index) => (
+				<article class="ps-chapter" data-chapter={index}>
+					<h3 set:html={chapter.title} />
+					{chapter.body.map((paragraph) => (
+						<p set:html={paragraph} />
+					))}
+				</article>
+			))
+		}
+	</div>
+
+	<div class="ps-story-stage" aria-hidden="true">
+		<div class="ps-stage">
+			<svg class="ps-svg" viewBox="0 0 400 400" focusable="false">
+				<!-- 0: the question -->
+				<g class="sc-q" data-scenes="0">
+					<text class="q" x="200" y="242" text-anchor="middle">?</text>
+				</g>
+
+				<!-- 1 and 2: an assistant -->
+				<g class="sc-assistant" data-scenes="1 2">
+					<rect class="bx" x="125" y="136" width="150" height="128" rx="9"></rect>
+					<text class="th" x="138" y="156">ASSISTANT</text>
+					{
+						['Prompt', 'Tools', 'Model'].map((label, index) => (
+							<g>
+								<rect class="rw" x="138" y={166 + index * 30} width="124" height="24" rx="4" />
+								<text x="200" y={182 + index * 30} text-anchor="middle">
+									{label}
+								</text>
+							</g>
+						))
+					}
+				</g>
+
+				<!-- 2: the parts a role needs, still loose -->
+				<g class="sc-loose">
+					{
+						chips.map((chip, index) => (
+							<g
+								class="chip"
+								style={`--i:${index}; --dx:${chip.dx}px; --dy:${chip.dy}px; --ix:${chip.ix}px; --iy:${chip.iy}px`}
+							>
+								<g transform={`rotate(${chip.rot} ${chip.x + chip.w / 2} ${chip.y + 13})`}>
+									<rect class="ch" x={chip.x} y={chip.y} width={chip.w} height="26" rx="13" />
+									<text x={chip.x + chip.w / 2} y={chip.y + 17} text-anchor="middle">
+										{chip.label}
+									</text>
+								</g>
+							</g>
+						))
+					}
+				</g>
+
+				<!-- 3 to 5: the persona folder -->
+				<g class="sc-folder" data-scenes="3 4 5">
+					<g class="folder-inner">
+						<path
+							class="bx"
+							d="M88 68 H176 Q182 68 185 73 L192 84 Q194 88 199 88 H310 Q320 88 320 98 V328 Q320 338 310 338 H90 Q80 338 80 328 V76 Q80 68 88 68 Z"
+						></path>
+						<text class="th" x="92" y="83">persona-archer/</text>
+						{
+							folderRows.map((row, index) => (
+								<g class="frow" style={`--i:${index}`}>
+									<rect class="rw" x="94" y={row.y} width="212" height="24" rx="4" />
+									<text x="104" y={row.y + 16}>
+										{row.label}
+									</text>
+								</g>
+							))
+						}
+						<g class="frow reg-row" style="--i:6">
+							<path class="ln" d="M94 286 H306"></path>
+							<rect class="rw" x="94" y="296" width="212" height="24" rx="4"></rect>
+							<text x="104" y="312">references/registry.json</text>
+						</g>
+
+						<!-- 4 and 5: the registry pins each linked definition -->
+						<g class="sc-pins" data-scenes="4 5">
+							<path class="pin" d="M87 308 V204 M87 204 H94 M87 234 H94 M87 264 H94 M87 308 H94"></path>
+							{
+								['c9bea2', '61fcf3', '1c7d09'].map((hash, index) => (
+									<g class="tag" style={`--i:${index}`}>
+										<rect x="242" y={196 + index * 30} width="58" height="16" rx="8" />
+										<text x="271" y={207 + index * 30} text-anchor="middle">
+											✓ {hash}
+										</text>
+									</g>
+								))
+							}
+						</g>
+					</g>
+				</g>
+
+				<!-- 5: what the workspace supplies -->
+				<g class="sc-bind" data-scenes="5">
+					<text class="th" x="338" y="100" text-anchor="middle">WORKSPACE</text>
+					{
+						plugs.map((plug, index) => (
+							<>
+								<path class="wire" style={`--i:${index}`} d={`M243 ${plug.y + 20} H288`} />
+								<g class="plug" style={`--i:${index}`}>
+									<rect x="288" y={plug.y} width="100" height="40" rx="8" />
+									<text x="338" y={plug.y + 17} text-anchor="middle">
+										{plug.label}
+									</text>
+									<text class="tm" x="338" y={plug.y + 31} text-anchor="middle" style="font-size:7.5px">
+										{plug.note}
+									</text>
+								</g>
+							</>
+						))
+					}
+				</g>
+
+				<!-- Scenes 6 and 7 sit lower so they are centred on the stage. -->
+				<g transform="translate(0 30)">
+				<!-- 6 and 7: the folder, small, above what runs it -->
+				<g class="sc-mini" data-scenes="6 7">
+					<rect class="bx" x="128" y="26" width="144" height="34" rx="8"></rect>
+					<path class="ln" d="M141 38 h5 l2 2 h7 v9 h-14 z"></path>
+					<text x="164" y="47">persona-archer/</text>
+				</g>
+
+				<!-- 6: a playbook that waits for a person -->
+				<g class="sc-play" data-scenes="6">
+					<path class="ln" d="M200 60 V92"></path>
+					<text class="tm" x="200" y="108" text-anchor="middle">workflow.archer.instagram-campaign-v2</text>
+					<path class="ln" d="M59 240 H341"></path>
+					{
+						steps.map((step) => (
+							<g class={step.cls}>
+								<path class="ln" d={`M${step.x + 37} 204 V240`} />
+								<rect class="bx" x={step.x} y="164" width="74" height="40" rx="8" />
+								<text x={step.x + 37} y="188" text-anchor="middle">
+									{step.label}
+								</text>
+								<circle class="stop" cx={step.x + 37} cy="240" r="3.5" />
+							</g>
+						))
+					}
+					<circle class="runner" cx="59" cy="240" r="6.5"></circle>
+					<g class="ask">
+						<rect x="203" y="124" width="88" height="26" rx="13"></rect>
+						<text x="247" y="141" text-anchor="middle">Approve?</text>
+					</g>
+					<g class="okd">
+						<rect x="203" y="124" width="88" height="26" rx="13"></rect>
+						<text x="247" y="141" text-anchor="middle">✓ Approved</text>
+					</g>
+					<text class="tm" x="200" y="296" text-anchor="middle">The run waits at the gate</text>
+					<text class="tm" x="200" y="312" text-anchor="middle">until a person decides.</text>
+				</g>
+
+				<!-- 7: one persona, several runtimes -->
+				<g class="sc-run" data-scenes="7">
+					<path class="ln" d="M200 60 V150 M70 150 V112 H330 V150"></path>
+					{
+						runtimes.map((runtime, column) => (
+							<g>
+								<rect class="bx" x={runtime.x} y="150" width="112" height="112" rx="9" />
+								<text x={runtime.x + 56} y="174" text-anchor="middle">
+									{runtime.label}
+								</text>
+								{[0, 1, 2, 3].map((square) => (
+									<g class={`sq${runtime.blocked === square ? ' blocked' : ''}`} style={`--i:${column * 4 + square}`}>
+										<rect x={runtime.x + 15 + square * 22} y="188" width="16" height="16" rx="3" />
+										{runtime.blocked === square ? (
+											<path d={`M${runtime.x + 19 + square * 22} 196 h8`} />
+										) : (
+											<path d={`M${runtime.x + 19 + square * 22} 196.5 l2.6 2.6 l4.6 -5.4`} />
+										)}
+									</g>
+								))}
+								<text class="tm" x={runtime.x + 56} y="228" text-anchor="middle">
+									{runtime.line}
+								</text>
+								<text class={runtime.blocked < 0 ? 'tm' : 'tm tw'} x={runtime.x + 56} y="244" text-anchor="middle">
+									{runtime.blocked < 0 ? 'can run' : '1 blocked'}
+								</text>
+							</g>
+						))
+					}
+					<text class="tm" x="200" y="300" text-anchor="middle">Each runtime reports what it can run.</text>
+					<text class="tm" x="200" y="316" text-anchor="middle">A blocked step is never replaced.</text>
+				</g>
+				</g>
+			</svg>
+		</div>
+		<div class="ps-pips">
+			{chapters.map(() => <span class="ps-pip" />)}
+		</div>
+	</div>
+</section>
+
+<script>
+	// Moves each story to the scene of the chapter nearest the reader's eye line.
+	for (const story of document.querySelectorAll<HTMLElement>('.ps-story')) {
+		const chapters = [...story.querySelectorAll<HTMLElement>('.ps-chapter')];
+		const parts = [...story.querySelectorAll<SVGElement>('[data-scenes]')];
+		const pips = [...story.querySelectorAll<HTMLElement>('.ps-pip')];
+		const narrow = window.matchMedia('(max-width: 50rem)');
+		let current = -1;
+
+		const show = (scene: number) => {
+			if (scene === current) return;
+			current = scene;
+			story.dataset.scene = String(scene);
+			for (const part of parts) {
+				part.classList.toggle('is-on', (part.dataset.scenes ?? '').split(' ').includes(String(scene)));
+			}
+			chapters.forEach((chapter, index) => chapter.classList.toggle('is-active', index === scene));
+			pips.forEach((pip, index) => pip.classList.toggle('is-on', index <= scene));
+		};
+
+		const measure = () => {
+			// On a narrow screen the stage covers the top of the view, so a chapter takes over as soon as its
+			// heading comes into view below the stage.
+			const eyeLine = window.innerHeight * (narrow.matches ? 0.85 : 0.5);
+			let nearest = 0;
+			let distance = Infinity;
+			chapters.forEach((chapter, index) => {
+				const box = chapter.getBoundingClientRect();
+				const gap = eyeLine < box.top ? box.top - eyeLine : eyeLine > box.bottom ? eyeLine - box.bottom : 0;
+				if (gap < distance) {
+					distance = gap;
+					nearest = index;
+				}
+			});
+			show(nearest);
+		};
+
+		let frame = 0;
+		const schedule = () => {
+			if (frame) return;
+			frame = requestAnimationFrame(() => {
+				frame = 0;
+				measure();
+			});
+		};
+
+		story.dataset.ready = '';
+		measure();
+		window.addEventListener('scroll', schedule, { passive: true });
+		window.addEventListener('resize', schedule);
+	}
+</script>

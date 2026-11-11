@@ -22,6 +22,9 @@ export default defineConfig({
 			social: [{ icon: 'github', label: 'GitHub', href: REPOSITORY }],
 			editLink: { baseUrl: `${REPOSITORY}/edit/main/` },
 			lastUpdated: true,
+			customCss: ['./src/styles/site.css'],
+			// Lets the styles hide animated parts before they scroll into view, and only when scripts run.
+			head: [{ tag: 'script', content: "document.documentElement.classList.add('ps-js')" }],
 			sidebar: [
 				{ label: 'Overview', link: '/' },
 				{ label: 'Specification', slug: 'specification' },

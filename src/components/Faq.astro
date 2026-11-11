@@ -1,0 +1,40 @@
+---
+// Questions on the home page. Answers stay within what the draft specifies.
+const questions = [
+	[
+		'Is a persona an agent?',
+		'A persona is a role. A runtime may carry it out with one agent or with a team of them. The format describes the role and leaves the execution to the runtime.',
+	],
+	[
+		'Why not only Agent Skills?',
+		'A skill gives an agent instructions for one kind of task. A role also needs a domain model, records, playbooks, approval rules and tests. A persona is an Agent Skill with those definitions added, so every skills-compatible agent can still read it.',
+	],
+	[
+		'Why JSON and Markdown instead of code?',
+		'A definition can be reviewed in a pull request, checked against a fingerprint and loaded by a runtime written in any language, without executing anything its author wrote.',
+	],
+	[
+		'Which model does a persona use?',
+		'A persona states what it needs, such as structured output or tool use. The workspace that runs it binds a model that meets the requirement. This part of the draft is marked Proposed.',
+	],
+	[
+		'Does a runtime have to support everything?',
+		'No. It has to report which steps it can execute and block the rest. It must not replace a blocked step with a different operation.',
+	],
+	[
+		'Is the format stable?',
+		'Not yet. This is draft 0.1, extracted from personas that already run. Each section of the specification is marked Extracted, Proposed or Planned.',
+	],
+];
+---
+
+<div class="ps-faq not-content">
+	{
+		questions.map(([question, answer]) => (
+			<details name="ps-faq">
+				<summary>{question}</summary>
+				<p>{answer}</p>
+			</details>
+		))
+	}
+</div>

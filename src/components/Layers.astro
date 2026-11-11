@@ -1,0 +1,41 @@
+---
+// What a persona adds, what it builds on, and what runs it.
+const layers = [
+	{
+		kind: 'spec',
+		tag: 'This specification',
+		title: 'Definition files',
+		text: 'Ontology, lists, pipelines, workflows, data feeds, evals and the registry that pins them.',
+	},
+	{
+		kind: 'skills',
+		tag: 'Agent Skills',
+		title: 'SKILL.md',
+		text: 'Name, description and instructions. Any skills-compatible agent can discover and read it.',
+	},
+	{
+		kind: 'runtime',
+		tag: 'A runtime',
+		title: 'Binds and runs',
+		text: 'Supplies the model, the accounts and the people, and reports which steps it can execute.',
+	},
+];
+---
+
+<div class="ps-layers not-content" data-reveal="children">
+	{
+		layers.map((layer, index) => (
+			<div class="ps-layer" data-kind={layer.kind} style={`--i:${layers.length - 1 - index}`}>
+				<div class="ps-layer-tag">{layer.tag}</div>
+				<div>
+					<strong>{layer.title}</strong>
+					<span>{layer.text}</span>
+				</div>
+			</div>
+		))
+	}
+</div>
+
+<script>
+	import '../scripts/reveal.ts';
+</script>

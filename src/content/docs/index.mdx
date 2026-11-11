@@ -1,21 +1,41 @@
 ---
 title: Persona Spec
 description: An open format for packaging a complete AI persona as a portable, version-controlled folder.
+tableOfContents: false
 sidebar:
   label: Overview
 ---
 
-import { Aside, CardGrid, FileTree, LinkCard, Steps } from '@astrojs/starlight/components';
+import { CardGrid, FileTree, LinkCard } from '@astrojs/starlight/components';
+import Anatomy from '../../components/Anatomy.astro';
+import CopyPrompt from '../../components/CopyPrompt.astro';
+import Faq from '../../components/Faq.astro';
+import Flow from '../../components/Flow.astro';
+import Layers from '../../components/Layers.astro';
+import Principles from '../../components/Principles.astro';
+import Story from '../../components/Story.astro';
 
-<Aside type="caution" title="Draft 0.1">
-  This specification is an early draft. It is being extracted from personas that already run on Gabriel Operator. Sections are marked with their status, and the format can still change.
-</Aside>
+<p class="ps-home ps-hero">Persona Spec is an <span class="ps-accent">open format</span> for packaging a whole AI role as a portable, version-controlled folder.</p>
 
-## What is a persona?
+<p class="ps-lead">A persona carries who it is, what it knows about its domain, the work it can carry out, what it must ask a person first, and how you check that it still works.</p>
 
-A persona is a complete AI role packaged as a folder: who it is, what it knows about its domain, what work it can carry out, what it must ask a person before doing, and how you check that it still works.
+<p class="ps-status"><span class="ps-pill" data-status="draft">Draft 0.1</span> Extracted from personas that already run on Gabriel Operator. The format can still change.</p>
 
-At its core, a persona is a folder with a `SKILL.md` file and a set of declarative definition files. There is no code to compile and no build step.
+## Principles
+
+<p class="ps-lead">A persona is a <em>declarative</em> description of a role. Everything that belongs to one installation is supplied when it runs.</p>
+
+<Principles />
+
+## Why a persona format?
+
+<p class="ps-lead">A prompt and a list of tools describe an assistant. They do not describe a role someone can hand real work to, review like any other change, and move between runtimes.</p>
+
+<Story />
+
+## Anatomy of a persona
+
+<p class="ps-lead">At its core, a persona is a folder with a `SKILL.md` file and a set of declarative definition files.</p>
 
 <FileTree>
 
@@ -25,7 +45,7 @@ At its core, a persona is a folder with a `SKILL.md` file and a set of declarati
     - chat-app.json The app people use: pages, actions, data points
     - ontology.json The domain model: entities and relationships
     - persona-evals.json Requirements and the tests that verify them
-    - data-feeds/ Sources the persona may read, with provenance
+    - data-feeds/ Sources the persona may read
   - references/
     - registry.json Every linked definition, with a fingerprint and revision
     - lists/ Record collections
@@ -35,33 +55,25 @@ At its core, a persona is a folder with a `SKILL.md` file and a set of declarati
 
 </FileTree>
 
-## Why a persona format?
+Each part has a section in the specification. The label shows how settled it is.
 
-A prompt and a list of tools describe an assistant. They do not describe a role someone can hand real work to. A persona format packages the rest:
-
-- **A whole role, not only a prompt.** The domain model, the records, the playbooks, the guardrails and the tests travel together.
-- **Declarative, not code.** Definitions are JSON and Markdown. Anyone can read a change in a pull request, and any runtime can load one without executing the author's code.
-- **Bound at run time.** A definition never names a model account, a credential or a person. The workspace that runs the persona supplies those, so one persona works for many teams and on many models.
-- **Approval is part of the format.** A persona declares which effects need a person's decision first. A runtime that cannot enforce that holds the step.
-- **Tested before release.** Requirements point to what implements them and to the cases that verify them.
+<Anatomy />
 
 ## How does a persona work?
 
-<Steps>
+<p class="ps-lead">A persona goes from a Git repository to a running workspace in three steps.</p>
 
-1. **Author.** Definitions live in Git. Each linked definition has a stable resource key, and the registry records its fingerprint and revision.
-
-2. **Import.** A runtime reads the registry, checks each fingerprint and creates the lists, pipelines and workflows the persona declares.
-
-3. **Bind and run.** The workspace chooses the model, connects accounts and assigns people. The runtime reports which parts of the persona it can execute. Anything it cannot do safely is blocked, never silently replaced.
-
-</Steps>
+<Flow />
 
 ## Built on Agent Skills
 
 A persona folder is an [Agent Skill](https://agentskills.io). Its `SKILL.md` follows the Agent Skills format, so any skills-compatible agent can already discover a persona and read its instructions.
 
-This specification adds what a skill does not describe: the definition files, how they are identified and verified, and what a runtime must do with them. See [Other standards](./standards/) for how it relates to the Model Context Protocol and the Standard Agent Specification.
+This specification adds what a skill does not describe: the definition files, how they are identified and verified, and what a runtime must do with them.
+
+<Layers />
+
+See [Other standards](./standards/) for how the format relates to the Model Context Protocol and the Standard Agent Specification.
 
 ## Where do personas run?
 
@@ -71,13 +83,17 @@ This specification adds what a skill does not describe: the definition files, ho
 
 A runtime does not need to support every part of a persona. It must say which parts it supports.
 
-## Open development
+## Frequently asked questions
 
-The specification is developed in the open. Propose changes, report problems and follow the work on [GitHub](https://github.com/Gabriel-Operator/persona-spec).
+<Faq />
 
 ## Get started
+
+<CopyPrompt />
 
 <CardGrid>
   <LinkCard title="Specification" description="The draft format: folder layout, registry, definitions and runtime rules." href="./specification/" />
   <LinkCard title="Examples" description="Each concept shown through a persona that uses it." href="./examples/" />
+  <LinkCard title="Other standards" description="Agent Skills, the Model Context Protocol and the Standard Agent Specification." href="./standards/" />
+  <LinkCard title="Contribute on GitHub" description="Report a problem or propose a change to the specification." href="https://github.com/Gabriel-Operator/persona-spec" />
 </CardGrid>

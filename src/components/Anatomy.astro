@@ -1,0 +1,87 @@
+---
+// The parts of a persona, each linking to its section of the specification.
+const icons: Record<string, string> = {
+	folder: '<path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+	file: '<path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M14 3v5h5M9 13h6M9 17h4"/>',
+	shield: '<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/>',
+	key: '<circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3M21 12v2"/>',
+	registry: '<path d="M4 6h10M4 12h10M4 18h10M17 6l1.5 1.5L21 5M17 12l1.5 1.5L21 11M17 18l1.5 1.5L21 17"/>',
+	app: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18"/>',
+	graph: '<circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="8" r="2.5"/><circle cx="10" cy="18" r="2.5"/><path d="M8.4 6.5l7.2 1M7 8.3l2.2 7.3M16.4 10l-4.9 6"/>',
+	feed: '<circle cx="6" cy="18" r="1.5"/><path d="M5 11a8 8 0 0 1 8 8M5 5a14 14 0 0 1 14 14"/>',
+	check: '<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16 9.5"/>',
+	table: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M9 5v14"/>',
+	states: '<circle cx="5" cy="12" r="2.5"/><circle cx="19" cy="12" r="2.5"/><rect x="9.5" y="9.5" width="5" height="5" rx="1"/><path d="M7.5 12h2M14.5 12h2"/>',
+	steps: '<rect x="4" y="4" width="7" height="5" rx="1"/><rect x="13" y="15" width="7" height="5" rx="1"/><path d="M7.5 9v6.5a2 2 0 0 0 2 2H13"/>',
+	gauge: '<path d="M4 17a8 8 0 1 1 16 0M12 17l4-6"/>',
+	plug: '<path d="M9 3v5M15 3v5M7 8h10v3a5 5 0 0 1-10 0zM12 16v5"/>',
+	team: '<circle cx="9" cy="8" r="3"/><path d="M3 20c.6-3.5 2.9-5 6-5s5.4 1.5 6 5"/><circle cx="17.5" cy="9" r="2.3"/><path d="M17.5 14c2.2 0 3.4 1.3 3.8 4"/>',
+	gate: '<path d="M12 3l7 3v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6z"/><path d="M9 12l2 2 4-4"/>',
+	signal: '<path d="M13 3L5 13h6l-1 8 8-10h-6z"/>',
+};
+
+type Card = { icon: string; title: string; text: string; anchor: string; status: 'Extracted' | 'Proposed' | 'Planned' };
+
+const groups: { title: string; cards: Card[] }[] = [
+	{
+		title: 'The folder',
+		cards: [
+			{ icon: 'folder', title: 'Folder structure', text: 'One Git repository per persona, with every linked definition one level down.', anchor: '1-folder-structure-', status: 'Extracted' },
+			{ icon: 'file', title: 'SKILL.md', text: 'A valid Agent Skills file: name, description and instructions.', anchor: '2-skillmd-', status: 'Extracted' },
+			{ icon: 'shield', title: 'Definitions only', text: 'No records, credentials, local identifiers or scripts in a definition file.', anchor: '3-definitions-only-', status: 'Extracted' },
+			{ icon: 'key', title: 'Resource keys', text: 'A stable identity for every definition, the same in every installation.', anchor: '4-resource-keys-', status: 'Extracted' },
+			{ icon: 'registry', title: 'Registry', text: 'Every linked definition with its fingerprint and the commit it is pinned to.', anchor: '5-registry-', status: 'Extracted' },
+		],
+	},
+	{
+		title: 'Definitions',
+		cards: [
+			{ icon: 'graph', title: 'Ontology', text: 'The domain model: entities, attributes and relationships.', anchor: '61-ontology', status: 'Extracted' },
+			{ icon: 'table', title: 'Lists', text: 'Collections of records and their columns.', anchor: '6-definition-files-', status: 'Extracted' },
+			{ icon: 'states', title: 'Pipelines', text: 'State machines that move records from stage to stage.', anchor: '6-definition-files-', status: 'Extracted' },
+			{ icon: 'steps', title: 'Workflows', text: 'Playbooks: the ordered steps of a piece of work.', anchor: '6-definition-files-', status: 'Extracted' },
+			{ icon: 'feed', title: 'Data feeds', text: 'Sources the persona may read, each with its own definition.', anchor: '6-definition-files-', status: 'Extracted' },
+			{ icon: 'check', title: 'Evals', text: 'Requirements, what implements them and the cases that verify them.', anchor: '62-evals', status: 'Extracted' },
+			{ icon: 'app', title: 'Chat app', text: 'The app people use: pages, navigation, actions and data points.', anchor: '6-definition-files-', status: 'Extracted' },
+		],
+	},
+	{
+		title: 'Runtime',
+		cards: [
+			{ icon: 'gauge', title: 'Capability report', text: 'A runtime states which steps it can execute and blocks the rest.', anchor: '71-capability-report-', status: 'Extracted' },
+			{ icon: 'plug', title: 'Binding', text: 'The workspace supplies the model, the credentials and the people.', anchor: '72-binding-', status: 'Proposed' },
+			{ icon: 'team', title: 'Teams', text: 'Several agents with roles working on one playbook.', anchor: '8-not-yet-specified-', status: 'Planned' },
+			{ icon: 'gate', title: 'Governance', text: 'Rules a persona must follow, and approval before an effect.', anchor: '8-not-yet-specified-', status: 'Planned' },
+			{ icon: 'signal', title: 'Signals and routines', text: 'Work that starts from an event or a schedule.', anchor: '8-not-yet-specified-', status: 'Planned' },
+		],
+	},
+];
+---
+
+<div class="ps-anatomy ps-wide not-content">
+	{
+		groups.map((group) => (
+			<>
+				<h3>{group.title}</h3>
+				<div class="ps-cards">
+					{group.cards.map((card, index) => (
+						<a class="ps-card" href={`./specification/#${card.anchor}`} data-reveal style={`--i:${index % 3}`}>
+							<span class="ps-card-head">
+								<svg viewBox="0 0 24 24" aria-hidden="true" set:html={icons[card.icon]} />
+								<span class="ps-card-title">{card.title}</span>
+								<span class="ps-pill" data-status={card.status.toLowerCase()}>
+									{card.status}
+								</span>
+							</span>
+							<p>{card.text}</p>
+						</a>
+					))}
+				</div>
+			</>
+		))
+	}
+</div>
+
+<script>
+	import '../scripts/reveal.ts';
+</script>

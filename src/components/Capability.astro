@@ -1,0 +1,37 @@
+---
+// One playbook on two runtimes. The second cannot reach the network, so it blocks the step that needs it.
+const steps = ['Read the campaign list', 'Draft with the model', 'Ask for approval', 'Publish to the channel'];
+const runtimes = [
+	{ name: 'Connected runtime', summary: '4 of 4 steps', blocked: -1 },
+	{ name: 'Offline runtime', summary: '3 of 4 steps', blocked: 3 },
+];
+---
+
+<div class="ps-capability not-content" data-reveal="children">
+	{
+		runtimes.map((runtime) => (
+			<div class="ps-runtime">
+				<div class="ps-runtime-title">
+					{runtime.name}
+					<span>{runtime.summary}</span>
+				</div>
+				<ol>
+					{steps.map((step, index) => (
+						<li data-state={runtime.blocked === index ? 'blocked' : 'ready'} style={`--i:${index}`}>
+							<span>{step}</span>
+							<code>{runtime.blocked === index ? 'blocked' : 'ready'}</code>
+						</li>
+					))}
+				</ol>
+			</div>
+		))
+	}
+	<p class="ps-capability-note">
+		Illustration. The offline runtime reports the blocked step before the run starts, and reconnecting does not run it
+		on its own.
+	</p>
+</div>
+
+<script>
+	import '../scripts/reveal.ts';
+</script>

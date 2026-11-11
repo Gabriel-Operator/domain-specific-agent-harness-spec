@@ -1,0 +1,1510 @@
+/*
+ * Site styles: the palette, the home page layout, and every diagram.
+ * Diagrams read Starlight's own colour variables, so they follow the light and dark themes.
+ */
+
+/* ---------- Palette ---------- */
+
+:root {
+	--sl-color-accent-low: #0a3936;
+	--sl-color-accent: #0d9488;
+	--sl-color-accent-high: #8ef0de;
+
+	--ps-ok: #4ade80;
+	--ps-warn: #fbbf24;
+	--ps-display: 'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+	--ps-mono: var(--sl-font-system-mono);
+
+	--ps-ink: var(--sl-color-white);
+	--ps-muted: var(--sl-color-gray-3);
+	--ps-line: var(--sl-color-gray-5);
+	--ps-line-strong: var(--sl-color-gray-4);
+	--ps-panel: var(--sl-color-black);
+	--ps-surface: var(--sl-color-gray-6);
+	--ps-row: color-mix(in srgb, var(--sl-color-gray-5) 62%, var(--sl-color-gray-6));
+	--ps-accent: var(--sl-color-text-accent);
+	--ps-accent-soft: color-mix(in srgb, var(--sl-color-accent) 24%, var(--ps-panel));
+	--ps-ok-soft: color-mix(in srgb, var(--ps-ok) 18%, var(--ps-panel));
+	--ps-warn-soft: color-mix(in srgb, var(--ps-warn) 18%, var(--ps-panel));
+}
+
+:root[data-theme='light'] {
+	--sl-color-accent-low: #d5f5ef;
+	--sl-color-accent: #0f766e;
+	--sl-color-accent-high: #134e4a;
+
+	--ps-ok: #15803d;
+	--ps-warn: #b45309;
+}
+
+/* ---------- Type ---------- */
+
+h1#_top,
+.sl-markdown-content h2 {
+	font-family: var(--ps-display);
+	font-weight: 500;
+	letter-spacing: -0.01em;
+}
+
+.ps-hero {
+	margin: 0;
+	font-family: var(--ps-display);
+	font-size: clamp(1.9rem, 1.15rem + 2.7vw, 3rem);
+	font-weight: 500;
+	line-height: 1.14;
+	letter-spacing: -0.015em;
+	color: var(--sl-color-white);
+	text-wrap: balance;
+}
+
+.ps-accent {
+	color: var(--ps-accent);
+}
+
+.ps-lead {
+	font-size: var(--sl-text-lg);
+	line-height: 1.6;
+	color: var(--sl-color-gray-2);
+}
+
+.ps-lead em {
+	font-style: normal;
+	color: var(--ps-accent);
+}
+
+.ps-status {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 0.6rem;
+	font-size: var(--sl-text-sm);
+	color: var(--ps-muted);
+}
+
+.ps-pill {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.1rem 0.55rem;
+	border: 1px solid var(--ps-line-strong);
+	border-radius: 999px;
+	font-family: var(--ps-mono);
+	font-size: 0.72rem;
+	letter-spacing: 0.02em;
+	white-space: nowrap;
+	color: var(--ps-muted);
+}
+
+.ps-pill[data-status='extracted'] {
+	border-color: color-mix(in srgb, var(--ps-ok) 55%, transparent);
+	color: var(--ps-ok);
+}
+
+.ps-pill[data-status='proposed'],
+.ps-pill[data-status='draft'] {
+	border-color: color-mix(in srgb, var(--ps-warn) 55%, transparent);
+	color: var(--ps-warn);
+}
+
+/* ---------- Home page layout ---------- */
+
+/* The home page is wider than a document page so the story has room for two columns. */
+:root:has(.ps-home) {
+	--sl-content-width: 60rem;
+}
+
+:root:has(.ps-home) .sl-markdown-content > :not(.ps-wide) {
+	max-width: 46rem;
+}
+
+/* The page title stays for screen readers and search; the hero statement replaces it visually. */
+:root:has(.ps-home) main > .content-panel:first-child {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	overflow: hidden;
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+:root:has(.ps-home) main > .content-panel + .content-panel {
+	border-top: 0;
+}
+
+:root:has(.ps-home) .sl-markdown-content h2 {
+	margin-top: 4.5rem;
+	font-size: clamp(1.6rem, 1.3rem + 1vw, 2.1rem);
+}
+
+/* ---------- Reveal on scroll ---------- */
+
+.ps-js [data-reveal=''] {
+	opacity: 0;
+	transform: translateY(14px);
+	transition:
+		opacity 0.6s ease,
+		transform 0.6s ease;
+	transition-delay: calc(var(--i, 0) * 70ms);
+}
+
+.ps-js [data-reveal=''].is-in {
+	opacity: 1;
+	transform: none;
+}
+
+/* ---------- Principles ---------- */
+
+.ps-principles {
+	margin: 1.5rem 0 0;
+	padding: 0;
+	list-style: none;
+	border: 1px solid var(--ps-line);
+	border-radius: 12px;
+	background: var(--ps-surface);
+	overflow: hidden;
+}
+
+.ps-principles li {
+	display: grid;
+	grid-template-columns: 1.5rem 1fr;
+	gap: 0.75rem;
+	align-items: baseline;
+	padding: 0.85rem 1.1rem;
+	color: var(--sl-color-white);
+	font-weight: 500;
+}
+
+.ps-principles li + li {
+	border-top: 1px solid var(--ps-line);
+}
+
+.ps-principles .n {
+	font-family: var(--ps-mono);
+	font-size: 0.72rem;
+	color: var(--ps-muted);
+}
+
+.ps-principles small {
+	display: block;
+	margin-top: 0.15rem;
+	font-size: var(--sl-text-sm);
+	font-weight: 400;
+	color: var(--ps-muted);
+}
+
+/* ---------- Scroll story ---------- */
+
+.ps-story {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 26.5rem);
+	gap: 3.5rem;
+	margin-top: 3rem;
+	padding-top: 2.5rem;
+	border-top: 1px solid var(--ps-line);
+}
+
+.ps-chapter {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	min-height: 72vh;
+	padding-block: 2rem;
+}
+
+.ps-chapter:first-child {
+	justify-content: flex-start;
+	min-height: 58vh;
+	padding-top: 0.5rem;
+}
+
+.ps-chapter h3 {
+	margin: 0;
+	font-family: var(--ps-display);
+	font-size: clamp(1.45rem, 1.1rem + 1.2vw, 1.95rem);
+	font-weight: 500;
+	line-height: 1.2;
+	letter-spacing: -0.01em;
+	color: var(--sl-color-white);
+	text-wrap: balance;
+}
+
+.ps-chapter p {
+	margin: 0.9rem 0 0;
+	max-width: 30rem;
+	line-height: 1.6;
+	color: var(--sl-color-gray-2);
+}
+
+.ps-chapter code {
+	padding: 0.1em 0.35em;
+	border-radius: 4px;
+	background: var(--sl-color-bg-inline-code);
+	font-family: var(--ps-mono);
+	font-size: 0.88em;
+}
+
+.ps-story[data-ready] .ps-chapter {
+	opacity: 0.28;
+	transition: opacity 0.45s ease;
+}
+
+.ps-story[data-ready] .ps-chapter.is-active {
+	opacity: 1;
+}
+
+.ps-story-stage {
+	position: sticky;
+	/* Centred in the space under the navigation bar, so the stage sits beside the chapter being read. */
+	top: max(calc(var(--sl-nav-height) + 1.5rem), calc((100vh + var(--sl-nav-height) - 28.5rem) / 2));
+	align-self: start;
+}
+
+.ps-stage {
+	position: relative;
+	aspect-ratio: 1;
+	max-height: calc(100vh - var(--sl-nav-height) - 6rem);
+	margin-inline: auto;
+	border: 1px solid var(--ps-line);
+	border-radius: 16px;
+	background-color: color-mix(in srgb, var(--ps-surface) 45%, var(--ps-panel));
+	background-image: radial-gradient(circle, var(--ps-line) 0.9px, transparent 1.2px);
+	background-size: 14px 14px;
+	overflow: hidden;
+}
+
+.ps-svg {
+	display: block;
+	width: 100%;
+	height: 100%;
+}
+
+.ps-pips {
+	display: flex;
+	justify-content: center;
+	gap: 0.35rem;
+	margin-top: 0.9rem;
+}
+
+.ps-pip {
+	width: 1.1rem;
+	height: 3px;
+	border-radius: 2px;
+	background: var(--ps-line);
+	transition: background-color 0.3s ease;
+}
+
+.ps-pip.is-on {
+	background: var(--ps-accent);
+}
+
+/* Shapes and labels shared by every diagram drawn in SVG. */
+.ps-svg text {
+	font-family: var(--ps-mono);
+	font-size: 10.5px;
+	fill: var(--ps-ink);
+}
+
+.ps-svg .tm {
+	font-size: 9px;
+	fill: var(--ps-muted);
+}
+
+.ps-svg .th {
+	font-size: 8.5px;
+	letter-spacing: 0.09em;
+	fill: var(--ps-muted);
+}
+
+.ps-svg .ta {
+	fill: var(--ps-accent);
+}
+
+.ps-svg .bx {
+	fill: var(--ps-panel);
+	stroke: var(--ps-line-strong);
+	stroke-width: 1.2;
+}
+
+.ps-svg .rw {
+	fill: var(--ps-row);
+	stroke: transparent;
+	stroke-width: 1.2;
+}
+
+.ps-svg .ln {
+	fill: none;
+	stroke: var(--ps-line-strong);
+	stroke-width: 1.2;
+}
+
+.ps-svg .q {
+	font-family: var(--ps-display);
+	font-size: 120px;
+	fill: var(--ps-line-strong);
+}
+
+/* Every part of the stage lists the scenes it belongs to. The script switches it on. */
+.ps-story [data-scenes] {
+	opacity: 0;
+	transition:
+		opacity 0.5s ease,
+		transform 0.65s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.ps-story [data-scenes].is-on {
+	opacity: 1;
+}
+
+/* Without the script the stage shows the folder, the central idea. */
+.ps-story:not([data-ready]) [data-scenes~='3'] {
+	opacity: 1;
+}
+
+.ps-story .sc-assistant,
+.ps-story .sc-folder,
+.ps-story .sc-mini,
+.ps-story .sc-q {
+	transform-origin: 200px 200px;
+}
+
+.ps-story .sc-q:not(.is-on),
+.ps-story .sc-assistant:not(.is-on) {
+	transform: scale(0.9);
+}
+
+.ps-story[data-ready] .sc-folder:not(.is-on) {
+	transform: scale(0.92);
+}
+
+.ps-story .sc-mini:not(.is-on) {
+	transform: translateY(40px);
+}
+
+/* Loose parts: they drift in from outside, then fall into the folder. */
+.ps-story .chip {
+	opacity: 0;
+	transform: translate(var(--dx), var(--dy));
+	transition:
+		opacity 0.5s ease,
+		transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+	transition-delay: calc(var(--i) * 70ms);
+}
+
+.ps-story[data-scene='2'] .chip {
+	opacity: 1;
+	transform: none;
+}
+
+.ps-story:is([data-scene='3'], [data-scene='4'], [data-scene='5'], [data-scene='6'], [data-scene='7']) .chip {
+	transform: translate(var(--ix), var(--iy)) scale(0.5);
+	transition-delay: 0ms;
+}
+
+.ps-svg .ch {
+	fill: var(--ps-panel);
+	stroke: var(--ps-line-strong);
+	stroke-width: 1.2;
+	stroke-dasharray: 4 3;
+}
+
+/* Folder rows arrive one after another. */
+.ps-story[data-ready] .frow {
+	opacity: 0;
+	transform: translateX(-8px);
+	transition:
+		opacity 0.4s ease,
+		transform 0.5s ease;
+}
+
+.ps-story[data-ready] .sc-folder.is-on .frow {
+	opacity: 1;
+	transform: none;
+	transition-delay: calc(var(--i) * 60ms + 180ms);
+}
+
+.ps-story .folder-inner {
+	transform-origin: 200px 200px;
+	transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.ps-story[data-scene='5'] .folder-inner {
+	transform: translate(-58px, 0) scale(0.84);
+}
+
+.ps-story .reg-row .rw {
+	transition: stroke 0.4s ease;
+}
+
+.ps-story:is([data-scene='4'], [data-scene='5']) .reg-row .rw {
+	stroke: var(--ps-accent);
+}
+
+.ps-story .pin {
+	fill: none;
+	stroke: var(--ps-accent);
+	stroke-width: 1.2;
+	stroke-dasharray: 160;
+	stroke-dashoffset: 160;
+	transition: stroke-dashoffset 0.9s ease 0.2s;
+}
+
+.ps-story .sc-pins.is-on .pin {
+	stroke-dashoffset: 0;
+}
+
+.ps-story .tag {
+	transform-box: fill-box;
+	transform-origin: center;
+	transform: scale(0.6);
+	opacity: 0;
+	transition:
+		opacity 0.35s ease,
+		transform 0.45s cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+
+.ps-story .sc-pins.is-on .tag {
+	transform: none;
+	opacity: 1;
+	transition-delay: calc(var(--i) * 140ms + 500ms);
+}
+
+.ps-svg .tag rect {
+	fill: var(--ps-ok-soft);
+	stroke: var(--ps-ok);
+	stroke-width: 1;
+}
+
+.ps-svg .tag text {
+	font-size: 8.5px;
+	fill: var(--ps-ok);
+}
+
+/* What the workspace supplies. */
+.ps-story .plug {
+	opacity: 0;
+	transform: translateX(34px);
+	transition:
+		opacity 0.45s ease,
+		transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.ps-story .sc-bind.is-on .plug {
+	opacity: 1;
+	transform: none;
+	transition-delay: calc(var(--i) * 130ms + 250ms);
+}
+
+.ps-svg .plug rect {
+	fill: var(--ps-accent-soft);
+	stroke: var(--ps-accent);
+	stroke-width: 1.2;
+}
+
+.ps-story .wire {
+	fill: none;
+	stroke: var(--ps-accent);
+	stroke-width: 1.2;
+	stroke-dasharray: 60;
+	stroke-dashoffset: 60;
+	transition: stroke-dashoffset 0.5s ease;
+}
+
+.ps-story .sc-bind.is-on .wire {
+	stroke-dashoffset: 0;
+	transition-delay: calc(var(--i) * 130ms + 650ms);
+}
+
+/* The playbook run. It loops while its scene is on. */
+.ps-svg .gate .bx {
+	stroke: var(--ps-warn);
+	stroke-dasharray: 4 3;
+}
+
+.ps-svg .stop {
+	fill: var(--ps-panel);
+	stroke: var(--ps-line-strong);
+	stroke-width: 1.2;
+}
+
+.ps-svg .runner {
+	fill: var(--ps-accent);
+}
+
+.ps-svg .ask rect {
+	fill: var(--ps-warn-soft);
+	stroke: var(--ps-warn);
+	stroke-width: 1.2;
+}
+
+.ps-svg .ask text {
+	fill: var(--ps-warn);
+}
+
+.ps-svg .okd rect {
+	fill: var(--ps-ok-soft);
+	stroke: var(--ps-ok);
+	stroke-width: 1.2;
+}
+
+.ps-svg .okd text {
+	fill: var(--ps-ok);
+}
+
+.ps-svg .okd {
+	opacity: 0;
+}
+
+.ps-story .sc-play .runner {
+	transform: translateX(188px);
+}
+
+.ps-story .sc-play.is-on .runner {
+	animation: ps-runner 9s linear infinite;
+}
+
+.ps-story .sc-play.is-on .n1 .bx {
+	animation: ps-step-1 9s linear infinite;
+}
+
+.ps-story .sc-play.is-on .n2 .bx {
+	animation: ps-step-2 9s linear infinite;
+}
+
+.ps-story .sc-play.is-on .gate .bx {
+	animation: ps-step-gate 9s linear infinite;
+}
+
+.ps-story .sc-play.is-on .n4 .bx {
+	animation: ps-step-4 9s linear infinite;
+}
+
+.ps-story .sc-play.is-on .ask {
+	animation: ps-ask 9s linear infinite;
+}
+
+.ps-story .sc-play.is-on .okd {
+	animation: ps-okd 9s linear infinite;
+}
+
+@keyframes ps-runner {
+	0% {
+		transform: translateX(0);
+		opacity: 0;
+	}
+	4% {
+		opacity: 1;
+	}
+	8% {
+		transform: translateX(0);
+	}
+	18%,
+	24% {
+		transform: translateX(94px);
+	}
+	34%,
+	64% {
+		transform: translateX(188px);
+	}
+	74% {
+		transform: translateX(282px);
+	}
+	94% {
+		transform: translateX(282px);
+		opacity: 1;
+	}
+	100% {
+		transform: translateX(282px);
+		opacity: 0;
+	}
+}
+
+@keyframes ps-step-1 {
+	0%,
+	7% {
+		fill: var(--ps-panel);
+		stroke: var(--ps-line-strong);
+	}
+	9%,
+	96% {
+		fill: var(--ps-accent-soft);
+		stroke: var(--ps-accent);
+	}
+	100% {
+		fill: var(--ps-panel);
+		stroke: var(--ps-line-strong);
+	}
+}
+
+@keyframes ps-step-2 {
+	0%,
+	17% {
+		fill: var(--ps-panel);
+		stroke: var(--ps-line-strong);
+	}
+	19%,
+	96% {
+		fill: var(--ps-accent-soft);
+		stroke: var(--ps-accent);
+	}
+	100% {
+		fill: var(--ps-panel);
+		stroke: var(--ps-line-strong);
+	}
+}
+
+@keyframes ps-step-gate {
+	0%,
+	33% {
+		fill: var(--ps-panel);
+		stroke: var(--ps-warn);
+	}
+	36%,
+	44% {
+		fill: var(--ps-warn-soft);
+		stroke: var(--ps-warn);
+	}
+	50% {
+		fill: var(--ps-panel);
+		stroke: var(--ps-warn);
+	}
+	56%,
+	61% {
+		fill: var(--ps-warn-soft);
+		stroke: var(--ps-warn);
+	}
+	64%,
+	96% {
+		fill: var(--ps-ok-soft);
+		stroke: var(--ps-ok);
+	}
+	100% {
+		fill: var(--ps-panel);
+		stroke: var(--ps-warn);
+	}
+}
+
+@keyframes ps-step-4 {
+	0%,
+	73% {
+		fill: var(--ps-panel);
+		stroke: var(--ps-line-strong);
+	}
+	75%,
+	96% {
+		fill: var(--ps-accent-soft);
+		stroke: var(--ps-accent);
+	}
+	100% {
+		fill: var(--ps-panel);
+		stroke: var(--ps-line-strong);
+	}
+}
+
+@keyframes ps-ask {
+	0%,
+	33% {
+		opacity: 0;
+	}
+	36%,
+	61% {
+		opacity: 1;
+	}
+	63%,
+	100% {
+		opacity: 0;
+	}
+}
+
+@keyframes ps-okd {
+	0%,
+	62% {
+		opacity: 0;
+	}
+	64%,
+	96% {
+		opacity: 1;
+	}
+	100% {
+		opacity: 0;
+	}
+}
+
+/* One persona, several runtimes. */
+.ps-svg .sq {
+	transform-box: fill-box;
+	transform-origin: center;
+}
+
+.ps-story .sq {
+	opacity: 0;
+	transform: scale(0.4);
+	transition:
+		opacity 0.3s ease,
+		transform 0.4s cubic-bezier(0.3, 1.5, 0.5, 1);
+}
+
+.ps-story .sc-run.is-on .sq {
+	opacity: 1;
+	transform: none;
+	transition-delay: calc(var(--i) * 70ms + 300ms);
+}
+
+.ps-svg .sq rect {
+	fill: var(--ps-ok-soft);
+	stroke: var(--ps-ok);
+	stroke-width: 1;
+}
+
+.ps-svg .sq path {
+	fill: none;
+	stroke: var(--ps-ok);
+	stroke-width: 1.5;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.ps-svg .sq.blocked rect {
+	fill: var(--ps-warn-soft);
+	stroke: var(--ps-warn);
+	stroke-dasharray: 3 2;
+}
+
+.ps-svg .sq.blocked path {
+	stroke: var(--ps-warn);
+}
+
+.ps-svg .tw {
+	fill: var(--ps-warn);
+}
+
+/* ---------- Anatomy cards ---------- */
+
+.ps-anatomy {
+	margin-top: 1.5rem;
+}
+
+.ps-anatomy h3 {
+	margin: 2rem 0 0.8rem;
+	font-family: var(--ps-display);
+	font-size: var(--sl-text-xl);
+	font-weight: 500;
+	color: var(--sl-color-white);
+}
+
+.ps-cards {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(15.5rem, 1fr));
+	gap: 0.75rem;
+}
+
+.ps-card {
+	display: block;
+	padding: 0.95rem 1.05rem 1.05rem;
+	border: 1px solid var(--ps-line);
+	border-radius: 12px;
+	background: var(--ps-surface);
+	color: inherit;
+	text-decoration: none;
+	transition:
+		border-color 0.2s ease,
+		opacity 0.6s ease,
+		transform 0.6s ease;
+}
+
+.ps-card:hover {
+	border-color: var(--ps-accent);
+}
+
+.ps-card-head {
+	display: flex;
+	align-items: center;
+	gap: 0.55rem;
+}
+
+.ps-card-head svg {
+	flex: none;
+	width: 1.1rem;
+	height: 1.1rem;
+	fill: none;
+	stroke: var(--ps-muted);
+	stroke-width: 1.6;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+	transition: stroke 0.2s ease;
+}
+
+.ps-card:hover .ps-card-head svg {
+	stroke: var(--ps-accent);
+}
+
+.ps-card-title {
+	flex: 1;
+	font-weight: 600;
+	color: var(--sl-color-white);
+}
+
+.ps-card-title code {
+	font-family: var(--ps-mono);
+	font-size: 0.92em;
+}
+
+.ps-card p {
+	margin: 0.5rem 0 0;
+	font-size: var(--sl-text-sm);
+	line-height: 1.5;
+	color: var(--ps-muted);
+}
+
+/* ---------- Author, import, bind and run ---------- */
+
+.ps-flow {
+	display: grid;
+	grid-template-columns: 1fr 2.6rem 1fr 2.6rem 1fr;
+	align-items: stretch;
+	margin-top: 1.5rem;
+}
+
+.ps-flow-step {
+	padding: 1.1rem 1.15rem 1.25rem;
+	border: 1px solid var(--ps-line);
+	border-radius: 12px;
+	background: var(--ps-surface);
+}
+
+.ps-flow-art {
+	display: block;
+	width: 100%;
+	height: 4.5rem;
+	margin-bottom: 0.9rem;
+	border-radius: 8px;
+	background: var(--ps-panel);
+}
+
+.ps-flow-step h3 {
+	display: flex;
+	align-items: baseline;
+	gap: 0.55rem;
+	margin: 0;
+	font-size: var(--sl-text-lg);
+	font-weight: 600;
+	color: var(--sl-color-white);
+}
+
+.ps-flow-step h3 span {
+	font-family: var(--ps-mono);
+	font-size: 0.72rem;
+	font-weight: 400;
+	color: var(--ps-muted);
+}
+
+.ps-flow-step p {
+	margin: 0.45rem 0 0;
+	font-size: var(--sl-text-sm);
+	line-height: 1.55;
+	color: var(--sl-color-gray-2);
+}
+
+.ps-flow-link {
+	position: relative;
+	align-self: center;
+	height: 2px;
+	background-image: linear-gradient(90deg, var(--ps-accent) 50%, transparent 50%);
+	background-size: 10px 2px;
+	animation: ps-dash 0.9s linear infinite;
+}
+
+.ps-flow-link::after {
+	content: '';
+	position: absolute;
+	right: 2px;
+	top: 50%;
+	width: 7px;
+	height: 7px;
+	border-top: 2px solid var(--ps-accent);
+	border-right: 2px solid var(--ps-accent);
+	transform: translateY(-50%) rotate(45deg);
+}
+
+@keyframes ps-dash {
+	to {
+		background-position: 10px 0;
+	}
+}
+
+.ps-flow-art .f-file {
+	fill: var(--ps-row);
+}
+
+.ps-flow-art .f-line {
+	fill: none;
+	stroke: var(--ps-line-strong);
+	stroke-width: 1.4;
+}
+
+.ps-flow-art .f-dot {
+	fill: var(--ps-panel);
+	stroke: var(--ps-line-strong);
+	stroke-width: 1.4;
+}
+
+.ps-flow-art .f-dot.on {
+	fill: var(--ps-accent);
+	stroke: var(--ps-accent);
+}
+
+.ps-flow-art .f-ok {
+	fill: none;
+	stroke: var(--ps-ok);
+	stroke-width: 1.8;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.ps-flow-art .f-accent {
+	fill: var(--ps-accent-soft);
+	stroke: var(--ps-accent);
+	stroke-width: 1.2;
+}
+
+.ps-flow-art text {
+	font-family: var(--ps-mono);
+	font-size: 8px;
+	fill: var(--ps-muted);
+}
+
+.ps-flow-art .pop {
+	transform-box: fill-box;
+	transform-origin: center;
+}
+
+.ps-js .ps-flow:not(.is-in) .pop {
+	opacity: 0;
+	transform: scale(0.5);
+}
+
+.ps-flow .pop {
+	transition:
+		opacity 0.4s ease,
+		transform 0.5s cubic-bezier(0.3, 1.5, 0.5, 1);
+	transition-delay: calc(var(--i, 0) * 160ms + 500ms);
+}
+
+/* ---------- Layers ---------- */
+
+.ps-layers {
+	display: grid;
+	gap: 0.5rem;
+	margin-top: 1.5rem;
+}
+
+.ps-layer {
+	display: grid;
+	grid-template-columns: 10.5rem 1fr;
+	gap: 1rem;
+	align-items: center;
+	padding: 0.9rem 1.1rem;
+	border: 1px solid var(--ps-line);
+	border-radius: 12px;
+	background: var(--ps-surface);
+}
+
+.ps-layer[data-kind='spec'] {
+	border-color: var(--ps-accent);
+	background: var(--ps-accent-soft);
+}
+
+.ps-layer[data-kind='runtime'] {
+	border-style: dashed;
+	background: transparent;
+}
+
+.ps-layer-tag {
+	font-family: var(--ps-mono);
+	font-size: 0.72rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--ps-muted);
+}
+
+.ps-layer strong {
+	display: block;
+	color: var(--sl-color-white);
+}
+
+.ps-layer span {
+	display: block;
+	margin-top: 0.15rem;
+	font-size: var(--sl-text-sm);
+	color: var(--sl-color-gray-2);
+}
+
+.ps-js .ps-layers:not(.is-in) .ps-layer {
+	opacity: 0;
+	transform: translateY(18px);
+}
+
+.ps-layers .ps-layer {
+	transition:
+		opacity 0.55s ease,
+		transform 0.55s ease;
+	transition-delay: calc(var(--i) * 170ms);
+}
+
+/* ---------- Registry diagram ---------- */
+
+.ps-registry {
+	display: grid;
+	gap: 0.6rem;
+	margin-top: 1.5rem;
+}
+
+.ps-registry-head,
+.ps-registry-row {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) 5.5rem minmax(0, 1fr);
+	align-items: center;
+}
+
+.ps-registry-head {
+	padding-inline: 0.2rem;
+	font-family: var(--ps-mono);
+	font-size: 0.72rem;
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
+	color: var(--ps-muted);
+}
+
+.ps-registry-cell {
+	min-width: 0;
+	padding: 0.65rem 0.85rem;
+	border: 1px solid var(--ps-line);
+	border-radius: 10px;
+	background: var(--ps-surface);
+	font-family: var(--ps-mono);
+	font-size: 0.78rem;
+	line-height: 1.5;
+}
+
+.ps-registry-cell b {
+	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-weight: 500;
+	color: var(--sl-color-white);
+}
+
+.ps-registry-cell i {
+	font-style: normal;
+	color: var(--ps-muted);
+}
+
+.ps-registry-check {
+	position: relative;
+	height: 2px;
+	background: var(--ps-line-strong);
+}
+
+.ps-registry-check::before {
+	content: '';
+	position: absolute;
+	inset: 0;
+	background: var(--ps-ok);
+	transform: scaleX(0);
+	transform-origin: left;
+	transition: transform 0.6s ease;
+	transition-delay: calc(var(--i) * 220ms + 200ms);
+}
+
+.ps-registry-check span {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	display: grid;
+	place-items: center;
+	width: 1.5rem;
+	height: 1.5rem;
+	border: 1px solid var(--ps-ok);
+	border-radius: 50%;
+	background: var(--ps-ok-soft);
+	color: var(--ps-ok);
+	font-size: 0.8rem;
+	transform: translate(-50%, -50%) scale(0);
+	transition: transform 0.4s cubic-bezier(0.3, 1.5, 0.5, 1);
+	transition-delay: calc(var(--i) * 220ms + 700ms);
+}
+
+.ps-registry.is-in .ps-registry-check::before,
+html:not(.ps-js) .ps-registry-check::before {
+	transform: none;
+}
+
+.ps-registry.is-in .ps-registry-check span,
+html:not(.ps-js) .ps-registry-check span {
+	transform: translate(-50%, -50%);
+}
+
+.ps-registry-row[data-state='refused'] .ps-registry-check::before {
+	background: var(--ps-warn);
+}
+
+.ps-registry-row[data-state='refused'] .ps-registry-check span {
+	border-color: var(--ps-warn);
+	background: var(--ps-warn-soft);
+	color: var(--ps-warn);
+}
+
+.ps-registry-row[data-state='refused'] .ps-registry-cell:last-child {
+	border-style: dashed;
+	border-color: var(--ps-warn);
+}
+
+.ps-registry-note {
+	font-size: var(--sl-text-sm);
+	color: var(--ps-muted);
+}
+
+/* ---------- Capability report ---------- */
+
+.ps-capability {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0.75rem;
+	margin-top: 1.5rem;
+}
+
+.ps-runtime {
+	padding: 0.95rem 1.05rem 1.05rem;
+	border: 1px solid var(--ps-line);
+	border-radius: 12px;
+	background: var(--ps-surface);
+}
+
+.ps-runtime-title {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	gap: 0.75rem;
+	font-weight: 600;
+	color: var(--sl-color-white);
+}
+
+.ps-runtime-title span {
+	font-family: var(--ps-mono);
+	font-size: 0.72rem;
+	font-weight: 400;
+	color: var(--ps-muted);
+}
+
+.ps-runtime ol {
+	display: grid;
+	gap: 0.4rem;
+	margin: 0.8rem 0 0;
+	padding: 0;
+	list-style: none;
+}
+
+.ps-runtime li {
+	display: grid;
+	grid-template-columns: 1.25rem 1fr auto;
+	gap: 0.55rem;
+	align-items: center;
+	padding: 0.4rem 0.6rem;
+	border: 1px solid var(--ps-line);
+	border-radius: 8px;
+	background: var(--ps-panel);
+	font-size: var(--sl-text-sm);
+	color: var(--sl-color-gray-2);
+	transition:
+		opacity 0.4s ease,
+		transform 0.4s ease;
+	transition-delay: calc(var(--i) * 110ms + 150ms);
+}
+
+.ps-runtime li::before {
+	content: '✓';
+	color: var(--ps-ok);
+	font-size: 0.8rem;
+}
+
+.ps-runtime li code {
+	font-family: var(--ps-mono);
+	font-size: 0.7rem;
+	color: var(--ps-ok);
+}
+
+.ps-runtime li[data-state='blocked'] {
+	border-style: dashed;
+	border-color: var(--ps-warn);
+	background: var(--ps-warn-soft);
+}
+
+.ps-runtime li[data-state='blocked']::before {
+	content: '—';
+	color: var(--ps-warn);
+}
+
+.ps-runtime li[data-state='blocked'] code {
+	color: var(--ps-warn);
+}
+
+.ps-js .ps-capability:not(.is-in) li {
+	opacity: 0;
+	transform: translateX(-8px);
+}
+
+.ps-capability-note {
+	grid-column: 1 / -1;
+	margin: 0;
+	font-size: var(--sl-text-sm);
+	color: var(--ps-muted);
+}
+
+/* ---------- Questions ---------- */
+
+.ps-faq {
+	margin-top: 1.25rem;
+	border-top: 1px solid var(--ps-line);
+}
+
+.ps-faq details {
+	border-bottom: 1px solid var(--ps-line);
+}
+
+.ps-faq summary {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 1rem;
+	padding: 0.95rem 0;
+	font-weight: 600;
+	color: var(--sl-color-white);
+	cursor: pointer;
+	list-style: none;
+}
+
+.ps-faq summary::-webkit-details-marker {
+	display: none;
+}
+
+.ps-faq summary::after {
+	content: '';
+	flex: none;
+	width: 0.5rem;
+	height: 0.5rem;
+	margin-right: 0.3rem;
+	border-right: 2px solid var(--ps-muted);
+	border-bottom: 2px solid var(--ps-muted);
+	transform: rotate(45deg);
+	transition: transform 0.25s ease;
+}
+
+.ps-faq details[open] summary::after {
+	transform: rotate(-135deg);
+}
+
+.ps-faq details p {
+	margin: 0 0 1rem;
+	max-width: 42rem;
+	line-height: 1.6;
+	color: var(--sl-color-gray-2);
+}
+
+/* ---------- Give it to a coding agent ---------- */
+
+.ps-prompt {
+	margin-top: 1.5rem;
+	padding: 1.1rem 1.2rem 1.2rem;
+	border: 1px solid var(--ps-line);
+	border-radius: 12px;
+	background: var(--ps-surface);
+}
+
+.ps-prompt-label {
+	margin: 0;
+	font-family: var(--ps-mono);
+	font-size: 0.7rem;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	color: var(--ps-muted);
+}
+
+.ps-prompt-title {
+	margin: 0.35rem 0 0;
+	font-family: var(--ps-display);
+	font-size: var(--sl-text-xl);
+	font-weight: 500;
+	color: var(--sl-color-white);
+}
+
+.ps-prompt-text {
+	margin: 0.3rem 0 0;
+	font-size: var(--sl-text-sm);
+	color: var(--sl-color-gray-2);
+}
+
+.ps-prompt-command {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-top: 0.9rem;
+	padding: 0.6rem 0.6rem 0.6rem 0.9rem;
+	border: 1px solid var(--ps-line);
+	border-radius: 9px;
+	background: var(--ps-panel);
+}
+
+.ps-prompt-command code {
+	flex: 1;
+	min-width: 0;
+	font-family: var(--ps-mono);
+	font-size: 0.8rem;
+	line-height: 1.5;
+	color: var(--sl-color-white);
+	overflow-wrap: anywhere;
+}
+
+.ps-prompt-command button {
+	flex: none;
+	padding: 0.4rem 0.85rem;
+	border: 0;
+	border-radius: 7px;
+	background: var(--sl-color-text-accent);
+	color: var(--sl-color-black);
+	font: inherit;
+	font-size: var(--sl-text-sm);
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.ps-prompt-command button:hover {
+	filter: brightness(1.08);
+}
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 50rem) {
+	.ps-story {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0;
+	}
+
+	.ps-story-stage {
+		order: -1;
+		top: var(--sl-nav-height);
+		z-index: 2;
+		margin-inline: calc(var(--sl-content-pad-x, 1rem) * -1);
+		padding: 0.75rem var(--sl-content-pad-x, 1rem) 0.6rem;
+		background: var(--sl-color-bg);
+		border-bottom: 1px solid var(--ps-line);
+	}
+
+	.ps-stage {
+		width: min(100%, 44vh, 21rem);
+	}
+
+	.ps-pips {
+		margin-top: 0.6rem;
+	}
+
+	/* Shorter chapters, so the text of the scene on the stage is always in view below it. */
+	.ps-chapter,
+	.ps-chapter:first-child {
+		justify-content: flex-start;
+		min-height: 46vh;
+		padding-block: 2.5rem 1rem;
+	}
+
+	.ps-story[data-ready] .ps-chapter {
+		opacity: 0.45;
+	}
+
+	.ps-flow {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.ps-flow-link {
+		justify-self: center;
+		width: 2px;
+		height: 2rem;
+		background-image: linear-gradient(180deg, var(--ps-accent) 50%, transparent 50%);
+		background-size: 2px 10px;
+		animation-name: ps-dash-down;
+	}
+
+	.ps-flow-link::after {
+		right: auto;
+		left: 50%;
+		top: auto;
+		bottom: 2px;
+		transform: translateX(-50%) rotate(135deg);
+	}
+
+	.ps-layer {
+		grid-template-columns: minmax(0, 1fr);
+		gap: 0.3rem;
+	}
+
+	.ps-registry-head {
+		display: none;
+	}
+
+	.ps-registry-row {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.ps-registry-check {
+		justify-self: center;
+		width: 2px;
+		height: 2.2rem;
+	}
+
+	.ps-registry-check::before {
+		transform: scaleY(0);
+		transform-origin: top;
+	}
+
+	.ps-capability {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.ps-prompt-command {
+		flex-direction: column;
+		align-items: stretch;
+	}
+}
+
+@keyframes ps-dash-down {
+	to {
+		background-position: 0 10px;
+	}
+}
+
+/* ---------- Reduced motion: show every final state, move nothing ---------- */
+
+@media (prefers-reduced-motion: reduce) {
+	.ps-js [data-reveal],
+	.ps-js .ps-flow:not(.is-in) .pop,
+	.ps-js .ps-layers:not(.is-in) .ps-layer,
+	.ps-js .ps-capability:not(.is-in) li {
+		opacity: 1;
+		transform: none;
+	}
+
+	.ps-story *,
+	.ps-flow *,
+	.ps-layers *,
+	.ps-registry *,
+	.ps-registry *::before,
+	.ps-capability *,
+	.ps-card,
+	[data-reveal] {
+		transition: none !important;
+		animation: none !important;
+	}
+
+	.ps-story .sc-play.is-on .ask {
+		opacity: 1;
+	}
+}

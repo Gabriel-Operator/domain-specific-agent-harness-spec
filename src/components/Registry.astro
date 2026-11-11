@@ -1,0 +1,42 @@
+---
+// How a runtime uses the registry: it compares each recorded fingerprint with the definition it fetched.
+const rows = [
+	{ key: 'list.archer.brand-identities', recorded: 'c9bea274…', file: 'assets/list.json', found: 'c9bea274…', ok: true },
+	{ key: 'pipeline.archer.instagram-campaign-v2', recorded: '61fcf381…', file: 'assets/pipeline.json', found: '61fcf381…', ok: true },
+	{ key: 'workflow.archer.cinematic-ad-v1', recorded: '1c7d09ee…', file: 'assets/workflow.json', found: 'a04b77d2…', ok: false },
+];
+---
+
+<div class="ps-registry not-content" data-reveal="children">
+	<div class="ps-registry-head">
+		<div>references/registry.json</div>
+		<div></div>
+		<div>Linked repository</div>
+	</div>
+	{
+		rows.map((row, index) => (
+			<div class="ps-registry-row" data-state={row.ok ? 'matched' : 'refused'}>
+				<div class="ps-registry-cell">
+					<b>{row.key}</b>
+					<i>fingerprint {row.recorded}</i>
+				</div>
+				<div class="ps-registry-check" style={`--i:${index}`}>
+					<span>{row.ok ? '✓' : '✕'}</span>
+				</div>
+				<div class="ps-registry-cell">
+					<b>{row.file}</b>
+					<i>
+						computed {row.found} {row.ok ? '' : '· refused'}
+					</i>
+				</div>
+			</div>
+		))
+	}
+	<p class="ps-registry-note">
+		Illustration. The third definition changed after the persona was published, so the runtime refuses it.
+	</p>
+</div>
+
+<script>
+	import '../scripts/reveal.ts';
+</script>

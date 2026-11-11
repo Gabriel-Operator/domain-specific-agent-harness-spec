@@ -4,6 +4,8 @@ description: The draft format for a persona. Folder layout, registry, definition
 ---
 
 import { Aside, Badge, FileTree } from '@astrojs/starlight/components';
+import Capability from '../../components/Capability.astro';
+import Registry from '../../components/Registry.astro';
 
 <Aside type="caution" title="Draft 0.1">
   Nothing on this page is frozen. Each section carries one of three labels.
@@ -133,6 +135,8 @@ Rules:
 - A runtime MUST check each fingerprint before it uses a definition, and MUST refuse a definition that does not match.
 - A reference to a resource key that the registry does not resolve MUST fail before the persona is activated. A runtime MUST NOT guess.
 
+<Registry />
+
 The exact byte form that the fingerprint is computed over is <Badge text="Planned" variant="note" />.
 
 ## 6. Definition files <Badge text="Extracted" variant="success" />
@@ -230,6 +234,8 @@ A runtime does not have to support every part of a persona. Before it runs one, 
 
 - A step the runtime cannot execute becomes `blocked`. The runtime MUST NOT replace it with a different operation, and MUST NOT send it to another service without the person asking.
 - Reconnecting or synchronising MUST NOT run a blocked step, and MUST NOT repeat one that already completed.
+
+<Capability />
 
 ### 7.2 Binding <Badge text="Proposed" variant="caution" />
 

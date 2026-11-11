@@ -1,0 +1,12 @@
+# Persona Spec
+
+> An open format for packaging a complete AI persona as a portable, version-controlled folder. A persona folder is an Agent Skill with declarative definition files added. Status: draft 0.1.
+
+Each link below is the raw source of one page.
+
+- [Introduction](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/README.md): What a persona is and how this repository is laid out.
+- [Specification](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/specification.mdx): Folder structure, SKILL.md, the definitions-only rule, resource keys, the registry, definition files and runtime rules.
+- [Examples](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/examples.mdx): Which persona illustrates each concept.
+- [Other standards](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/src/content/docs/standards.mdx): How the format relates to Agent Skills, the Model Context Protocol and the Standard Agent Specification.
+
+The specification builds on Agent Skills: https://agentskills.io/llms.txt

@@ -13,6 +13,9 @@ A persona folder is an [Agent Skill](https://agentskills.io). This specification
 | Path | Contents |
 | --- | --- |
 | `src/content/docs/` | The specification and the website pages |
+| `src/components/` | The diagrams and the scroll story on the home page |
+| `src/styles/site.css` | The palette and the styles of every diagram |
+| `public/llms.txt` | An index of the pages for coding agents |
 | `astro.config.mjs` | Site name, navigation and repository link |
 | `public/` | Static files |
 
