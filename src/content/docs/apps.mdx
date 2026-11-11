@@ -25,7 +25,7 @@ A runtime keeps them in step. When an agent or a person changes a record, every 
 
 A persona folder is neither one playbook nor one team. It holds a library of playbooks and one or more teams. A team owns its bots, its apps, and its lists and pipelines. Each bot runs one playbook from the library.
 
-An app with its own interface is different. It is a package of its own, outside the folder, and a team installs it. The same package can be installed into many teams, in more than one persona.
+An app with its own interface starts in a team, because a team needs it. Creating it registers a package in its creator's registry and installs it into that team. From the registry it can be installed into any other team, in any persona.
 
 <Hierarchy />
 
@@ -38,7 +38,7 @@ All of these are declared in one definition file, `assets/studio-teams.json`. Th
 | List | Shared records | `resources[]`, kind `list` |
 | Pipeline | The stages a record moves through | `resources[]`, kind `pipeline` |
 | App | A view over a list | `resources[]`, kind `app` |
-| App package | An app with its own interface | Not in the folder. It is its own package. See [packages and installations](#packages-and-installations-). |
+| App package | An app with its own interface | Created in a team, then kept in its creator's registry. See [packages and installations](#packages-and-installations-). |
 | Connection | A private, authenticated account | Never in a definition. The workspace holds it. |
 
 One distinction runs through this page. A **connector** is an operation contract. A **connection** is a private authenticated account. A definition holds the first and never the second.
@@ -252,11 +252,14 @@ The full format is the published [package schema](https://github.com/Gabriel-Ope
 
 ### Packages and installations <Badge text="Extracted" variant="success" />
 
-A package is its own unit. It is not part of a persona folder, and it does not belong to a team.
+An app starts in a team and then lives in a registry.
 
-- A package is registered to its creator's account. It has an identifier, numbered revisions and a fingerprint of its contents.
-- A team uses a package through an installation. An installation puts one revision of one package into one team.
-- The same package can be installed into any number of teams, in any persona, by the person who created it.
+1. **Create.** Someone builds the app in a team, because that team needs it.
+2. **Register.** Creating it registers a package in the creator's registry, with an identifier, numbered revisions and a fingerprint of its contents. The registry entry names no team and no persona.
+3. **Install.** The same step installs the package into the team it was built in. From the registry, its creator can install it into any other team, in any persona.
+4. **Share.** The creator chooses who else may open an installation: nobody, anyone signed in, or anyone with the link.
+
+So a package is its own unit. It is not part of a persona folder, and once it exists it is not tied to the team it started in. A team uses it through an installation, which puts one revision of one package into one team.
 
 | The package holds | An installation holds |
 | --- | --- |
@@ -275,6 +278,7 @@ Rules:
 - An installation of a custom package is visible only to the person who installed it. They choose who else may open it: nobody, anyone signed in, or anyone with the link.
 - Removing a package removes its installations in every team.
 - A persona MAY turn custom apps off for its teams.
+- A package MAY also be registered directly through the account's API, without starting in a team.
 
 Because a package lives outside the folder, a persona's definitions do not name the packages its teams have installed. Importing a persona brings its teams, playbooks, lists and views. It does not bring installed packages.
 

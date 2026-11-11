@@ -1,6 +1,7 @@
 ---
 // What a persona folder holds, and what sits outside it. The folder has a shared library of playbooks and one or more
-// teams. App packages are their own units: a team installs one, and the same package can serve many teams.
+// teams. An app with its own interface is built in a team, kept in its creator's registry, and installed from there
+// into any team.
 // The figures are from one persona's team file.
 const playbooks = ['meeting-watcher', 'brief-researcher', 'briefing-caller', 'meeting-scribe', 'pilot-research'];
 const playbookCount = 17;
@@ -25,9 +26,9 @@ const teams = [
 ];
 
 const packageFacts = [
-	['Its own unit', 'An identity, numbered revisions and a fingerprint.'],
-	['Belongs to its creator', 'Registered to an account, not to a persona or a team.'],
-	['Installed where it is used', 'Into any number of teams, in any persona.'],
+	['Starts in a team', 'Built there, because that team needs it.'],
+	['Kept in a registry', 'Its creator’s own, with numbered revisions and a fingerprint.'],
+	['Installed anywhere', 'Into any team, in any persona. Opened to others by sharing.'],
 ];
 ---
 
@@ -59,7 +60,7 @@ const packageFacts = [
 								))}
 								<div class="installed">
 									<dt>Installed apps</dt>
-									<dd>from packages ↓</dd>
+									<dd>built here, or from the registry ↓</dd>
 								</div>
 							</dl>
 						</div>
@@ -70,7 +71,7 @@ const packageFacts = [
 	</div>
 
 	<div class="ps-tree-box ps-tree-outside" style="--i:3">
-		<p class="ps-tree-title">App packages <span>outside the folder</span></p>
+		<p class="ps-tree-title">App registry <span>outside the folder</span></p>
 		<ul>
 			{
 				packageFacts.map(([title, text]) => (
