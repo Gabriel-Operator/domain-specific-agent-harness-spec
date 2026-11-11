@@ -10,10 +10,11 @@ A **persona** is a versioned Git definition of a role or team, including its ins
 
 ## How it works
 
-1. **Define a persona.** Describe the domain, its data, instructions, and rules. Create a team with roles for its agents.
-2. **Give the team a goal.** State the outcome and completion criteria. Draft a playbook from the goal or build a plan from registered playbooks.
-3. **Bind and run.** The workspace supplies the harness and authorized connector accounts. Agents run the playbooks and wait at steps that require approval.
-4. **Publish results.** Connector data and accepted agent changes become shared records that apps can display. A pipeline transition can start the next authorized playbook.
+1. **Map the organization’s apps.** With a domain specialist, inventory the apps people use, which records they own, and how the team can read or update them.
+2. **Define the ontology.** Give those records shared entity names, fields, and relationships. Map data from the source apps to the persona’s versioned definitions.
+3. **Build views and agents.** Custom apps read the mapped data and plot it. Agents read the same data and can update authorized source apps or the shared records a custom app displays.
+4. **Run a goal with the team.** The specialist sets the outcome and completion criteria. The workspace binds the harness and connector accounts, and the team runs reviewed playbooks.
+5. **Review and improve.** The domain specialist resolves anomalies, and protected actions receive their own approvals. Each decision gives the team evidence to propose better mappings, playbooks, or evals. The specialist reviews those changes before the next revision is adopted.
 
 [Read the illustrated story](https://gabriel-operator.github.io/persona-spec/#why-a-domain-specific-harness) to see where a single agent run falls short and how a team shares its rules and results.
 

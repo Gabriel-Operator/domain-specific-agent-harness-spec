@@ -2,10 +2,15 @@
 import { Icon } from '@astrojs/starlight/components';
 
 interface Props {
-  scene: 'draft' | 'fragments' | 'persona' | 'plan' | 'runtime' | 'app';
+  scene: 'draft' | 'fragments' | 'landscape' | 'persona' | 'paths' | 'plan' | 'runtime' | 'app' | 'learning';
 }
 
 const { scene } = Astro.props;
+const stageCounts = [
+  { name: 'Identified', count: 2 },
+  { name: 'Contacted', count: 1 },
+];
+const largestStage = Math.max(...stageCounts.map(({ count }) => count));
 ---
 
 <div class="hs-visual">
@@ -28,57 +33,89 @@ const { scene } = Astro.props;
     <>
       <div class="hs-stack">
         <div class="hs-tile"><Icon name="comment" /><span><strong>Research chat</strong><small>Northwind looks qualified</small></span></div>
-        <div class="hs-tile"><Icon name="database" /><span><strong>Prospects list</strong><small>Northwind · Identified</small></span></div>
-        <div class="hs-tile"><Icon name="email" /><span><strong>Inbox draft</strong><small>Edited after review</small></span></div>
+        <div class="hs-tile"><Icon name="database" /><span><strong>CRM</strong><small>Two records could match Northwind</small></span></div>
+        <div class="hs-tile"><Icon name="email" /><span><strong>Inbox draft</strong><small>Recipient depends on the match</small></span></div>
       </div>
-      <p class="hs-note hs-warning"><Icon name="warning" /> Which draft was approved?</p>
+      <p class="hs-note hs-warning"><Icon name="warning" /> Which record should the team use?</p>
     </>
+  )}
+
+  {scene === 'landscape' && (
+    <div class="hs-window">
+      <div class="hs-window-title"><Icon name="list-format" /> Lane’s app inventory · three examples</div>
+      <div class="hs-window-row"><strong>Notion</strong><span>Prospect identity and stage</span></div>
+      <div class="hs-window-row"><strong>Gmail</strong><span>Outreach threads and replies</span></div>
+      <div class="hs-window-row"><strong>Google Calendar</strong><span>Meetings and attendance</span></div>
+    </div>
   )}
 
   {scene === 'persona' && (
     <div class="hs-window">
-      <div class="hs-window-title"><Icon name="code-branch" /> Lane persona</div>
-      <div class="hs-window-row"><strong><code>SKILL.md</code></strong><span>Instructions and domain rules</span></div>
-      <div class="hs-window-row"><strong><code>assets/ontology.json</code></strong><span>Prospects, meetings, and pilots</span></div>
-      <div class="hs-window-row"><strong><code>assets/studio-teams.json</code></strong><span>Prospect to pilot team</span></div>
+      <div class="hs-window-title"><Icon name="code-branch" /> Lane ontology and source mappings</div>
+      <div class="hs-window-row"><strong>Prospect</strong><span>Mapped from a CRM record</span></div>
+      <div class="hs-window-row"><strong>Outreach</strong><span>Mapped from a Gmail thread · belongs to a prospect</span></div>
+      <div class="hs-window-row"><strong>Meeting</strong><span>Mapped from a calendar event · belongs to a prospect</span></div>
     </div>
+  )}
+
+  {scene === 'paths' && (
+    <>
+      <div class="hs-tile hs-emphasis"><Icon name="database" /><span><strong>Shared domain data</strong><small>Prospects, outreach, and meetings</small></span></div>
+      <div class="hs-down"><Icon name="down-arrow" /><span>Two ways to use it</span></div>
+      <div class="hs-pair">
+        <div class="hs-tile"><Icon name="analytics" /><span><strong>Custom app</strong><small>Read and chart prospect stages</small></span></div>
+        <div class="hs-tile"><Icon name="rocket" /><span><strong>Agent</strong><small>Read evidence and write to a source app or shared list</small></span></div>
+      </div>
+    </>
   )}
 
   {scene === 'plan' && (
     <>
-      <div class="hs-tile hs-emphasis"><Icon name="approve-check-circle" /><span><strong>Goal</strong><small>Qualify Northwind and prepare a follow-up</small></span></div>
-      <div class="hs-down"><Icon name="down-arrow" /><span>Draft or reuse playbooks</span></div>
+      <div class="hs-tile hs-emphasis"><Icon name="approve-check-circle" /><span><strong>Goal for Prospect to pilot</strong><small>Qualify Northwind and prepare a follow-up</small></span></div>
+      <div class="hs-down"><Icon name="down-arrow" /><span>Team runs its playbooks on the harness</span></div>
       <div class="hs-pair">
-        <div class="hs-tile"><Icon name="magnifier" /><span><strong>Research fit</strong><small>Exa search</small></span></div>
-        <div class="hs-tile"><Icon name="email" /><span><strong>Follow up</strong><small>Gmail send</small></span></div>
+        <div class="hs-tile"><Icon name="magnifier" /><span><strong>Research fit</strong><small>Read company evidence</small></span></div>
+        <div class="hs-tile"><Icon name="email" /><span><strong>Follow up</strong><small>Review before Gmail send</small></span></div>
       </div>
     </>
   )}
 
   {scene === 'runtime' && (
     <>
-      <div class="hs-stack">
-        <div class="hs-tile"><Icon name="code-branch" /><span><strong>Verify definitions</strong><small>Revision and fingerprint</small></span></div>
-        <div class="hs-tile"><Icon name="link" /><span><strong>Bind the workspace</strong><small>Harness and connector accounts</small></span></div>
-        <div class="hs-tile hs-emphasis"><Icon name="padlock" /><span><strong>Wait at the send step</strong><small>Review recipient and message</small></span></div>
-      </div>
-      <p class="hs-note"><Icon name="approve-check-circle" /> Publish only declared fields</p>
+      <div class="hs-tile"><Icon name="warning" /><span><strong>Anomaly raised by the agent</strong><small>Two prospects share the same domain</small></span></div>
+      <div class="hs-down"><Icon name="down-arrow" /><span>Hold work that depends on the match</span></div>
+      <div class="hs-tile hs-emphasis"><Icon name="approve-check-circle" /><span><strong>Domain specialist decides</strong><small>Confirm, correct, or reject the proposed match</small></span></div>
+      <p class="hs-note"><Icon name="padlock" /> Review the exact send separately</p>
     </>
   )}
 
   {scene === 'app' && (
     <>
       <div class="hs-pair">
-        <div class="hs-tile"><Icon name="puzzle" /><span><strong>Connector data</strong><small>Company evidence</small></span></div>
-        <div class="hs-tile"><Icon name="rocket" /><span><strong>Agent updates</strong><small>Approved outreach sent</small></span></div>
+        <div class="hs-tile"><Icon name="puzzle" /><span><strong>Source app</strong><small>Update the authorized CRM record</small></span></div>
+        <div class="hs-tile"><Icon name="database" /><span><strong>Shared list</strong><small>Publish Northwind as Contacted</small></span></div>
       </div>
-      <div class="hs-down"><Icon name="down-arrow" /><span>Publish to prospects list</span></div>
+      <div class="hs-down"><Icon name="down-arrow" /><span>Read shared records</span></div>
       <div class="hs-window">
-        <div class="hs-window-title"><Icon name="window" /> Pilot prospects</div>
-        <div class="hs-window-row hs-record">
-          <strong>Northwind</strong><span>Contacted</span>
+        <div class="hs-window-title"><Icon name="analytics" /> Custom chart · illustrative stage counts</div>
+        <div class="hs-chart">
+          {stageCounts.map(({ name, count }) => (
+            <div>
+              <span>{name}</span>
+              <i class="hs-chart-bar" style={{ width: `${(count / largestStage) * 100}%` }} aria-hidden="true"></i>
+              <strong>{count}</strong>
+            </div>
+          ))}
         </div>
       </div>
     </>
+  )}
+
+  {scene === 'learning' && (
+    <div class="hs-stack">
+      <div class="hs-tile"><Icon name="approve-check-circle" /><span><strong>Capture the expert decision</strong><small>Evidence and reason for the accepted match</small></span></div>
+      <div class="hs-tile"><Icon name="document" /><span><strong>Propose a rule and an eval</strong><small>Shared domain means ask before acting</small></span></div>
+      <div class="hs-tile hs-emphasis"><Icon name="code-branch" /><span><strong>Review and adopt a revision</strong><small>Apply the reviewed rule to future goals</small></span></div>
+    </div>
   )}
 </div>

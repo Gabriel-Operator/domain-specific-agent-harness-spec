@@ -157,7 +157,7 @@ JSON Schemas for each file are <Badge text="Planned" variant="note" />.
 
 ### 6.1 Ontology
 
-The ontology names the entities and relationships agents work with. Lists, feeds, evals, and playbooks can refer to the same domain model.
+The ontology names the entities and relationships agents work with. Start with the organization’s app inventory so the domain specialist can identify the source and meaning of each record. Feed and playbook mappings reference the ontology to document how source fields project onto it. Custom views, lists, and agents can then use the same domain model. See [mapping the organization’s apps](../concepts/personas-and-workspaces/#map-the-organizations-apps).
 
 ```json
 {
@@ -244,6 +244,16 @@ A persona states what it needs. The workspace that runs it supplies the rest.
 - **Model.** A persona declares the capabilities it needs, such as structured output or tool use. It SHOULD NOT name one vendor's model. The workspace binds a model that meets the requirement.
 - **Credentials.** A persona declares a slot for each account it needs. Values are supplied at run time and never enter a definition.
 - **People.** A persona declares roles, such as who approves a step. The workspace assigns people to them.
+
+### 7.3 Specialist review and improvement <Badge text="Proposed" variant="caution" />
+
+A team assigns a domain specialist to review outcomes and anomalies that need domain judgment. The workspace binds that responsibility to an authorized person.
+
+- When a run flags an anomaly that blocks a decision, the runtime SHOULD hold the affected work and present the proposed action and supporting evidence to the specialist. The specialist can confirm, correct, or reject the proposal.
+- For anomaly reviews and protected-action approvals, the runtime SHOULD record the decision, supporting evidence, reason when supplied, and definition revision in the workspace. A decision about an anomaly leaves the normal approval rules for protected effects in force.
+- The team MAY use those decisions to propose changes to definitions or evals. A change is reviewed before adoption as a new revision. Later runs use that revision with their current inputs, permissions, and approvals.
+
+See [learning from specialist review](../concepts/signals-and-evals/#learn-from-specialist-review) for the worked example.
 
 ## 8. Not yet specified <Badge text="Planned" variant="note" />
 

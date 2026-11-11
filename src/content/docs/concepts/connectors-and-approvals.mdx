@@ -15,6 +15,12 @@ A playbook declares which outside operations it needs. The workspace resolves ea
 
 A connector step can read, write, or start a process whose result arrives later. A read can contribute evidence to a goal. A write can have an external effect, such as sending an email. When a required operation lacks a valid connection, the runtime holds the affected work.
 
+## Anomalies and action approvals
+
+The team needs a domain specialist to resolve cases its playbooks cannot decide. If two CRM records share a domain, the agent presents both candidates, their source evidence, and the decision the run is waiting for. The specialist can confirm the correct record, supply a correction, or reject the proposed match. Work that depends on the match waits for that decision.
+
+Resolving the anomaly establishes which record to use. If the next step sends an email or changes a protected CRM field, its approval covers the exact proposed effect and uses the workspace’s normal permissions. Keep the decision and evidence with the run so the expert can review patterns and improve the rules. See [the improvement loop](../signals-and-evals/#learn-from-specialist-review).
+
 ## How it appears in Studio
 
 **Connectors** helps the team see which operations it needs and resolve missing setup. **Vault** handles account credentials and sensitive settings. **Approvals** presents the decisions that a run is waiting for. An approved action is tied to the reviewed details of that action. Editing the draft or changing the account can require another decision.

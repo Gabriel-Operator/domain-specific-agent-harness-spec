@@ -5,6 +5,17 @@ description: How connectors and agents publish shared data and how a team app di
 
 Connector results and agent outputs become shared work when a playbook publishes selected fields into a list. A **list** defines records and fields. A **pipeline** defines the stages and transitions of a record. An **app** renders those records for the team and can let a person act on them.
 
+## Two paths from the same data
+
+After mapping the organization’s apps to an ontology, a team can use the mapped data in either or both ways.
+
+| Path | Reads | Result |
+| --- | --- | --- |
+| **Custom app** | Authorized connector data or shared lists | A custom view, such as a chart of prospect counts by stage. |
+| **Agent** | Mapped records and other permitted evidence | A declared write back to an existing app, or publication to the shared list that a custom app reads. |
+
+A custom app can plot the current prospect stages while an agent uses a playbook to qualify a prospect. The agent can update an authorized CRM row and publish the accepted outcome to the shared list. The chart and the agent use the same meaning of prospect and stage. The connector and list bindings determine which records each path can access. Protected writes follow their own approval rules.
+
 ## Follow one record
 
 1. The research playbook reads evidence about Northwind from a connector and maps approved fields for publication.

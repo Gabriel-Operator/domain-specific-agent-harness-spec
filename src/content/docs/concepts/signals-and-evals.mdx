@@ -11,6 +11,14 @@ For a recruiting persona, a feed could read a hiring announcement and map it to 
 
 The draft lists [the feed catalog](../../specification/#6-definition-files-) as a definition file. Signal and schedule rules are [planned](../../specification/#8-not-yet-specified-). In Gabriel, feed observations, enabled schedules, approvals, and run receipts live in the workspace.
 
+## Learn from specialist review
+
+A domain specialist supplies the judgment a goal or playbook cannot capture in advance. The harness brings the evidence to the specialist and waits at the affected decision. Each approval provides evidence about what was acceptable in that run. Corrections and rejections help the team find where its source mapping, rule, or playbook needs to change.
+
+For the two Northwind records, the expert can explain why the shared website domain was insufficient and identify the stronger source. Save the proposed match, evidence, decision, reason if supplied, and definition revision in the workspace. Use that record to propose a new eval that expects the agent to ask for review when two prospects share a domain. The team can update the mapping or playbook, run the eval, and have the specialist review the change before an authorized owner adopts a new revision.
+
+Gabriel can capture a fully accepted goal run as a candidate procedure for the owner to review. Future runs use the adopted revision with their own inputs, grants, evidence, and effect approvals. See [the proposed review and improvement rules](../../specification/#73-specialist-review-and-improvement-) and the [team manager skill](../../skills/#persona-authoring-and-operations).
+
 ## Expected behavior and accepted results
 
 **Evals** connect a requirement to the definition that implements it and the cases that verify it. A test can require a draft and verify that the workflow has no external side effect. A production gate can require a suite to pass before release.

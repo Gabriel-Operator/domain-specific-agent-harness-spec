@@ -194,13 +194,9 @@
 
 .hs-warning, .hs-warning svg { color: var(--ps-warn); }
 
-.hs-record { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
-.hs-record span {
-  padding: 0.15rem 0.45rem;
-  border-radius: 0.3rem;
-  background: var(--sl-color-accent-low);
-  color: var(--ap-accent);
-}
+.hs-chart { display: grid; gap: 0.55rem; padding: 0.7rem 0.8rem; }
+.hs-chart > div { display: grid; grid-template-columns: 5.1rem minmax(0, 1fr) 1rem; align-items: center; gap: 0.55rem; }
+.hs-chart-bar { height: 0.5rem; border-radius: 0.2rem; background: var(--ap-accent); }
 
 @media (min-width: 54rem) and (min-height: 36rem) {
   .hs-story[data-hs-ready] {
@@ -209,7 +205,7 @@
     column-gap: clamp(1.8rem, 5vw, 5rem);
   }
 
-  [data-hs-ready] .hs-chapter { min-height: clamp(21rem, 55vh, 32rem); }
+  [data-hs-ready] .hs-chapter { min-height: clamp(19.5rem, 48vh, 29rem); }
 
   [data-hs-ready] .hs-inline {
     position: absolute;

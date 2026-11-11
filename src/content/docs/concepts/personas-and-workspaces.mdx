@@ -5,6 +5,22 @@ description: The versioned persona definition, the workspace it runs in, and how
 
 A **persona** describes the domain a team works in. It gives names and meanings to things such as prospects, meetings, and pilots, and declares the work the team can do. A **workspace** is an installation of that definition with its own members, records, connections, and run history. Two workspaces can load the same version of Lane and work with different accounts and prospects.
 
+## Map the organization’s apps
+
+Start with the domain specialist and the work the team needs to do. List the apps the organization uses, count them by process or team, and record which system is authoritative for each record. For each app, identify the record types, stable identifiers, fields, read and write operations, and the team or account that can grant access. Include gaps when an app offers a read but lacks a supported write.
+
+For Lane, the inventory might connect these records to a shared model.
+
+| App | Source record | Ontology entity |
+| --- | --- | --- |
+| Notion | Prospect row and current stage | Prospect |
+| Gmail | Outreach thread or reply | Outreach |
+| Google Calendar | Scheduled event | Meeting |
+
+The ontology gives each entity stable fields and defines relationships such as a prospect having multiple outreach messages and meetings. A feed or playbook mapping names the source fields and connects them to those definitions. The specialist confirms what the fields mean and which identifiers are safe to use when records from different systems refer to the same prospect. The workspace supplies the actual connections.
+
+See the [ontology contract](../../specification/#61-ontology) and the [two ways to use mapped data](../records-and-apps/#two-paths-from-the-same-data).
+
 ## The portable definition
 
 | Part | What it contributes |

@@ -1,6 +1,6 @@
 # Domain-Specific Agent Harness Spec
 
-> Draft 0.1 of a specification for giving an agent harness domain definitions and a team. A goal can lead to a new playbook or use registered playbooks. The runtime binds the harness and connector accounts. Selected connector data and agent updates reach apps through shared records.
+> Draft 0.1. Inventory the organization’s apps with a domain specialist and map their records to an ontology. Custom apps read and chart the mapped data. Agents read and update authorized apps or shared records while the team runs a goal on its harness. Specialist approvals and corrections provide evidence for reviewed improvements to definitions and evals.
 
 - [Overview](https://raw.githubusercontent.com/Gabriel-Operator/persona-spec/main/README.md): How personas, runtimes, and harnesses fit together.
 - [Homepage story](https://gabriel-operator.github.io/persona-spec/#why-a-domain-specific-harness): Why a team needs shared rules and how a domain-specific harness carries a goal from plan to published records.
