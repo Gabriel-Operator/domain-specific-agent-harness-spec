@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-labelledby="title description">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1050" width="1200" height="1050" role="img" aria-labelledby="title description">
   <title id="title">Domain-specific agent harness architecture</title>
-  <desc id="description">A workspace loads a versioned persona from Git. Inside a team, a goal invokes playbooks. The runtime and harness coordinate agent execution, connector access, and specialist review. Connectors use credentials from the vault and exchange data with source apps and custom apps. Review informs revisions. In the marketplace, Research combines with Verify to build a research analyst persona and with Draft to build a briefing writer persona. Complete personas can also be listed.</desc>
+  <desc id="description">A workspace loads a versioned persona from Git. Inside a team, a goal invokes playbooks. The runtime and harness coordinate agent execution, connector access, and specialist review. Connectors use credentials from the vault and exchange data with source apps and custom apps. For protected actions, the harness prepares a plan, rehearses in isolation where supported, obtains human approval, dispatches through an authorized connection, and records a live receipt. Review informs revisions. In the marketplace, Research combines with Verify to build a research analyst persona and with Draft to build a briefing writer persona. Complete personas can also be listed.</desc>
   <defs>
     <marker id="arrow" viewBox="0 0 9 9" refX="8" refY="4.5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
       <path d="M1 1 8 4.5 1 8" fill="none" stroke="#464646" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
@@ -19,7 +19,7 @@
     </style>
   </defs>
 
-  <rect x="0.5" y="0.5" width="1199" height="899" rx="16" fill="#fff" stroke="#d8d8d8"/>
+  <rect x="0.5" y="0.5" width="1199" height="1049" rx="16" fill="#fff" stroke="#d8d8d8"/>
   <text x="36" y="63" class="title">Domain-specific agent harness</text>
 
   <rect class="panel" x="36" y="102" width="250" height="245" rx="10"/>
@@ -75,29 +75,55 @@
   <text x="1024" y="377" class="name">Source apps</text>
   <text x="1024" y="399" class="detail">Read and update</text>
 
-  <rect class="panel" x="36" y="601" width="1128" height="263" rx="10"/>
-  <text x="56" y="639" class="heading">Marketplace</text>
-  <text x="56" y="674" class="detail">Playbook packages</text>
-  <text x="684" y="674" class="detail">Optional persona listings</text>
-
-  <rect class="node" x="56" y="690" width="239" height="41" rx="6"/>
-  <rect class="node" x="56" y="745" width="239" height="41" rx="6"/>
-  <rect class="node" x="56" y="800" width="239" height="41" rx="6"/>
-  <rect class="node" x="684" y="690" width="460" height="66" rx="8"/>
-  <rect class="node" x="684" y="775" width="460" height="66" rx="8"/>
-
+  <rect class="panel" x="36" y="601" width="1128" height="122" rx="10"/>
+  <text x="56" y="637" class="heading">Governed execution</text>
+  <text x="1144" y="636" class="detail" text-anchor="end">The harness controls protected actions</text>
+  <g class="node">
+    <rect x="56" y="656" width="192" height="44" rx="6"/>
+    <rect x="280" y="656" width="192" height="44" rx="6"/>
+    <rect x="504" y="656" width="192" height="44" rx="6"/>
+    <rect x="728" y="656" width="192" height="44" rx="6"/>
+    <rect x="952" y="656" width="192" height="44" rx="6"/>
+  </g>
   <g class="edge">
-    <path d="M295 710 H680"/>
-    <path d="M295 765 H482 V736 H680"/>
-    <path d="M482 765 V795 H680"/>
-    <path d="M295 820 H680"/>
+    <path d="M252 678 H276"/>
+    <path d="M476 678 H500"/>
+    <path d="M700 678 H724"/>
+    <path d="M924 678 H948"/>
+  </g>
+  <g class="name" text-anchor="middle">
+    <text x="152" y="685">Prepare plan</text>
+    <text x="376" y="685">Sandbox rehearsal</text>
+    <text x="600" y="685">Human approval</text>
+    <text x="824" y="685">Execute live</text>
+    <text x="1048" y="685">Record receipt</text>
   </g>
 
-  <text x="74" y="717" class="name">Verify</text>
-  <text x="74" y="772" class="name">Research</text>
-  <text x="74" y="827" class="name">Draft</text>
-  <text x="704" y="717" class="name">Research analyst persona</text>
-  <text x="704" y="739" class="detail">Research + Verify</text>
-  <text x="704" y="802" class="name">Briefing writer persona</text>
-  <text x="704" y="824" class="detail">Research + Draft</text>
+  <g transform="translate(0 150)">
+    <rect class="panel" x="36" y="601" width="1128" height="263" rx="10"/>
+    <text x="56" y="639" class="heading">Marketplace</text>
+    <text x="56" y="674" class="detail">Playbook packages</text>
+    <text x="684" y="674" class="detail">Optional persona listings</text>
+
+    <rect class="node" x="56" y="690" width="239" height="41" rx="6"/>
+    <rect class="node" x="56" y="745" width="239" height="41" rx="6"/>
+    <rect class="node" x="56" y="800" width="239" height="41" rx="6"/>
+    <rect class="node" x="684" y="690" width="460" height="66" rx="8"/>
+    <rect class="node" x="684" y="775" width="460" height="66" rx="8"/>
+
+    <g class="edge">
+      <path d="M295 710 H680"/>
+      <path d="M295 765 H482 V736 H680"/>
+      <path d="M482 765 V795 H680"/>
+      <path d="M295 820 H680"/>
+    </g>
+
+    <text x="74" y="717" class="name">Verify</text>
+    <text x="74" y="772" class="name">Research</text>
+    <text x="74" y="827" class="name">Draft</text>
+    <text x="704" y="717" class="name">Research analyst persona</text>
+    <text x="704" y="739" class="detail">Research + Verify</text>
+    <text x="704" y="802" class="name">Briefing writer persona</text>
+    <text x="704" y="824" class="detail">Research + Draft</text>
+  </g>
 </svg>

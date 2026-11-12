@@ -1,17 +1,18 @@
 ---
 title: Examples
-description: Tour Gabriel's Playbook Studio and follow a prospect from research to onboarding.
+description: Explore 17 persona architectures and follow Lane through Gabriel’s Playbook Studio.
 ---
 
 import { Aside } from '@astrojs/starlight/components';
 import Hierarchy from '../../components/Hierarchy.astro';
 import Loop from '../../components/Loop.astro';
+import PersonaArchitectures from '../../components/PersonaArchitectures.astro';
 import StudioTour from '../../components/StudioTour.astro';
 import Story from '../../components/Story.astro';
 
 Follow **Lane**, a persona for introductions and pilots, in Gabriel Operator’s Playbook Studio. The tour shows how one team works with its agents, connectors, approvals, and records.
 
-For a smaller example with downloadable files, see the [Meeting desk implementation](../implementation/#example-files).
+Compare how 17 workspaces handle human decisions and execution in the [persona architectures](#persona-architectures). For a smaller example with downloadable files, see the [Meeting desk implementation](../implementation/#example-files).
 
 <span id="a-persona-at-work-playbook-studio"></span>
 
@@ -84,23 +85,15 @@ The format covers the parts these features read: teams, playbooks, requirements,
 
 <span id="each-concept-in-a-persona"></span>
 
-## More examples by concept
+<span id="more-examples-by-concept"></span>
 
-| Concept | Persona | What it shows |
-| --- | --- | --- |
-| Teams | **Lane**, introductions | Two teams, one with six agents and one with seven, sharing a library of 17 playbooks. |
-| Connector requirements | **Lane**, introductions | Exa, Gmail, Google Calendar, Recall.ai and Notion, each with the operations a playbook may call. |
-| Apps over lists | **Lane**, introductions | A board and a grid, each a view over a list and its pipeline. |
-| Ontology | **Boli**, courses for ages 9 to 18 | A domain model of 32 entities. |
-| Data feeds | **Archer**, marketing | 24 feeds, each with its own definition and source workflow. |
-| Playbooks | **Archer**, marketing | Eight workflows, from a campaign journey to a cinematic ad. |
-| Approval before an effect | **Paya**, online shopping | Simulates the purchase, shows the exact plan and buys only after approval. |
-| Rehearsal | **Sherma**, form operations | Rehearses a form fill against a copy of the form before touching the real one. |
-| Rehearsal | **Emil**, logistics | Rehearses every customs and carrier portal run before a human-approved action. |
-| Pipelines | **Nest**, real estate | Three state machines: introductions, buyer property leads and seller leads. |
-| Signals | **Lina**, recruiting | Watches public hiring signals and drafts outreach for a person to approve. |
-| Evals | **Boli**, **Chakri**, **Nest** | 36, 30 and 29 cases tied to stated requirements. |
-| A governed domain | **Nora**, banking | Know-your-customer, credit and compliance work under explicit rules. |
+## Persona architectures
+
+Choose a persona to trace one workflow from input through preparation, human review, and outcome. The examples summarize the inspected workspace definitions and related validation notes. They identify what the workflow can prepare or rehearse and where a live operation depends on an approved connection or a human handoff.
+
+<PersonaArchitectures />
+
+See [governed execution](../concepts/governed-execution/) for the shared pattern.
 
 <span id="how-the-package-fits-together"></span>
 

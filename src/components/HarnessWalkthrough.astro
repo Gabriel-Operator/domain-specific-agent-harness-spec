@@ -108,13 +108,13 @@ const chapters: Chapter[] = [
   },
   {
     id: 'learn-from-approvals',
-    scene: 'review', label: 'Expert review',
-    title: 'Keep the domain specialist in the loop.',
+    scene: 'review', label: 'Governed execution',
+    title: 'Rehearse the change. Then approve it.',
     body: [
-      'When an anomaly or protected action needs judgment, the agent brings the evidence and proposed change to the specialist. They can approve, correct, or reject it.',
-      'Every decision is evidence for improvement. Record the reasoning, review the resulting changes to playbooks or domain rules, and use them in later runs. The harness grows around the expert’s knowledge.',
+      'When a playbook needs a decision, the specialist can clarify the scope or correct the plan. The harness can then rehearse the proposed action in a sandbox, with live effects disabled.',
+      'The specialist reviews the rehearsal and approves the exact effect. The harness rechecks it, runs it through an authorized connector, and records what happened. Decisions and receipts inform the next reviewed revision.',
     ],
-    link: { href: './concepts/signals-and-evals/#learn-from-specialist-review', text: 'How review improves the harness' },
+    link: { href: './concepts/governed-execution/', text: 'Human review and sandbox rehearsal' },
   },
   {
     id: 'reuse-a-playbook',
@@ -131,7 +131,7 @@ const chapters: Chapter[] = [
     title: 'This is a domain-specific harness.',
     body: [
       'A persona groups playbooks into teams around a domain model. Goals inside each team invoke the playbooks they need. A missing capability can guide a new playbook draft. Agents execute that work inside the harness.',
-      'Connectors move the data. The vault supplies account credentials. Custom apps make the data and results usable. Domain specialists guide the decisions and improvements.',
+      'Connectors move the data. The vault supplies account credentials. Custom apps make the data and results usable. Domain specialists guide decisions, review rehearsals, and approve protected effects. Run evidence helps them improve the harness.',
     ],
     link: { href: './specification/', text: 'Explore the specification' },
   },

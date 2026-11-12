@@ -1,0 +1,175 @@
+---
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+interface PersonaExample {
+  name: string;
+  domain: string;
+  workflow: string;
+  path: [input: string, preparation: string, review: string, outcome: string];
+  boundary: string;
+}
+
+const examples: PersonaExample[] = [
+  {
+    name: 'Lane', domain: 'Introductions and pilot outreach', workflow: 'Prospect to pilot · Studio team',
+    path: ['A member sets a prospect goal inside the team.', 'Research and matching playbooks assemble evidence. The outreach playbook drafts a message.', 'A member reviews the recipient, content, and acting account before sending. Meeting capture has its own consent and approval.', 'Authorized connector steps send or capture. The CRM steward updates the shared prospect record.'],
+    boundary: 'The outreach draft and evidence pack are previews. A send, capture, or protected CRM change has its own gate.',
+  },
+  {
+    name: 'Sherma', domain: 'Form operations', workflow: 'workflow.sherma.filer-v2',
+    path: ['A person provides a form URL and the information needed for the case.', 'Analyze the form, build a form twin, and rehearse the normalized answers against it.', 'The person fills gaps, corrects values, and confirms the exact reviewed answers in the Collect step.', 'The workflow moves to Fill and submit using the reviewed answers. The case pipeline tracks the result.'],
+    boundary: 'The form twin is the rehearsal. The committed form review can record the matching approval for that submission without repeating the same prompt.',
+  },
+  {
+    name: 'Nest', domain: 'Private real estate introductions', workflow: 'workflow.nest.request-introduction-v1',
+    path: ['A buyer or seller chooses their side and service mode.', 'Prepare a private brief and keep buyer and seller lead records in separate pipelines.', 'The person checks the brief and confirms what they are submitting.', 'The approved brief enters the private introduction lifecycle for follow-up.'],
+    boundary: 'This workflow shows a reviewed intake and private handoff. Sharing details with another party is a separate decision.',
+  },
+  {
+    name: 'Juno', domain: 'Mutual introductions', workflow: 'workflow.juno.send-introduction',
+    path: ['Participants supply and review their profiles.', 'Matching prepares one private introduction from the available profiles.', 'Collect mutual consent and approval for the proposed next action.', 'The introduction workflow can send the approved introduction and the experience can capture feedback.'],
+    boundary: 'The proposed match is a preview. Consent comes from the participants before the introduction.',
+  },
+  {
+    name: 'Lina', domain: 'Recruiting and hiring signals', workflow: 'workflow.kestrel.outreach-v1',
+    path: ['Start with a role or public hiring signal.', 'Research employers or candidates and prepare a brief and an outreach draft.', 'A recruiter checks the evidence and chooses the next action.', 'The reviewed result is recorded in the outreach pipeline for follow-up.'],
+    boundary: 'The guided journey shows an outreach decision. The linked workflow records the reviewed result. A live send needs its own authorized path.',
+  },
+  {
+    name: 'KAI', domain: 'Household grocery restocking', workflow: 'workflow.kai.restock-v1',
+    path: ['Capture inventory from a scan and confirm what is already in stock.', 'Calculate what needs replenishing and build a reviewable reorder list.', 'The shopper approves the reorder list before the order step.', 'The order step uses the configured ordering capability. Verify the result before updating inventory.'],
+    boundary: 'The cart is a preview. A completed order requires an authoritative result from the ordering system.',
+  },
+  {
+    name: 'Emil', domain: 'Customs and carrier portals', workflow: 'workflow.emil.rehearse-filing',
+    path: ['Gather approved shipment details for a portal run.', 'Build a portal twin, rehearse the filing flow, and surface exceptions.', 'A person checks the exceptions and approves the proposed handoff.', 'The workflow records a rehearsal receipt for the operator. A live filing needs an authorized submission path.'],
+    boundary: 'The linked workflow ends with a rehearsal receipt. A submission receipt must come from the live portal.',
+  },
+  {
+    name: 'Nora', domain: 'Banking case preparation', workflow: 'workflow.nora.prepare-case-pack-v1',
+    path: ['Start with the case scope and evidence available to an analyst.', 'Prepare a case pack and route it through the case review pipeline.', 'An analyst reviews the evidence and resolves exceptions.', 'The workflow produces a pack for analyst review.'],
+    boundary: 'This example covers preparation and review. Any customer or account change needs separate authority in the relevant system.',
+  },
+  {
+    name: 'Archer', domain: 'Marketing and creative production', workflow: 'workflow.archer.instagram-campaign-v2',
+    path: ['Choose a brand, product, and campaign event.', 'Research the campaign, generate creative, and review the optional video.', 'A publisher reviews the creative and approves publication.', 'The delivery step handles the approved campaign and the campaign pipeline tracks results.'],
+    boundary: 'Previewing generated media and approving its release are separate stages. Publishing depends on the connected destination.',
+  },
+  {
+    name: 'Cole', domain: 'Wardrobe and clothing exchange', workflow: 'workflow.cole.exchange-v1',
+    path: ['Choose an item, arrangement, condition, timing, and privacy preferences.', 'Prepare one private exchange proposal from the wardrobe context.', 'Review the proposal and record each participant’s consent separately.', 'The linked workflow produces a private exchange proposal for the participants to act on.'],
+    boundary: 'A match proposal is reviewable. It carries neither consent from the other party nor authority to transact.',
+  },
+  {
+    name: 'Boli', domain: 'Course authoring and learning', workflow: 'workflow.boli.build-a-class-learning-course',
+    path: ['A teacher supplies a topic or source and confirms the course brief.', 'Create lesson scripts, storyboards, an explainer, narration, questions, and an activity.', 'Review and refine the draft, then obtain adult approval before publication.', 'Publish the accepted course and track progress through the learning experience.'],
+    boundary: 'The course draft is a content preview. Publication and learner access have their own approval boundary.',
+  },
+  {
+    name: 'Chakri', domain: 'Recycling collection and settlement', workflow: 'workflow.chakri.sell-scrap',
+    path: ['Confirm source facts and the materials being sold.', 'Prepare a quote and pickup plan. The local experience can rehearse with synthetic data.', 'Review the quote and pickup separately. Later, confirm measured weights and review the payout draft.', 'Case stages track the collection and settlement. Live pickup and payout require provider bindings.'],
+    boundary: 'A synthetic rehearsal shows the decision path. Provider confirmation is required to record a real pickup or payout.',
+  },
+  {
+    name: 'Paya', domain: 'Online buying and payment', workflow: 'workflow.klok.buy',
+    path: ['Confirm the purchase brief, spending ceiling, and deadline.', 'Build and simulate an exact plan with merchant, quantity, total, delivery, and terms.', 'The card holder approves that plan. The checkout verifies its live facts and uses the Vault payment approval.', 'The runtime reconciles against a merchant order ID before reporting the purchase in the private ledger.'],
+    boundary: 'A changed price or delivery term stops the approved checkout. An uncertain payment is reconciled before retrying.',
+  },
+  {
+    name: 'Mirav', domain: 'Neighborhood activities and introductions', workflow: 'workflow.mirav.activity-planner-v1',
+    path: ['Start from a community activity or school workshop request.', 'Read community evidence and assemble a draft with venue, group, and supervision details.', 'An adult reviews the proposed plan and the information it uses.', 'The reviewed plan can feed the community activity records. An invitation or booking needs its own supported action.'],
+    boundary: 'The activity planner shows a reviewed draft. The preview contract and connector availability determine what can proceed.',
+  },
+  {
+    name: 'Fabio', domain: 'Factory production planning', workflow: 'workflow.fabio.replan-production',
+    path: ['Collect a planning request and the relevant production constraints.', 'Run the finite-capacity solver to compare schedules and explain their trade-offs.', 'An operator reviews the proposed production change.', 'A supported ERP action can dispatch an approved change. The planning workflow itself prepares and reviews the proposal.'],
+    boundary: 'The solver tests schedules. The workspace documents remaining live integration and acceptance work separately.',
+  },
+  {
+    name: 'Mila', domain: 'Property turnover and workforce operations', workflow: 'workflow.mila.plan-turnovers',
+    path: ['Confirm the property portfolio and date range.', 'Read bookings and availability, then plan the cleaning rota with capacity, deadlines, and travel constraints.', 'A manager reviews the proposed rota and assignments.', 'Turnover and approval records carry the plan forward. Live assignments or messages depend on the configured operational adapters.'],
+    boundary: 'Deterministic rota validation covers planning. Live use also needs current booking and worker data and a manager’s approval.',
+  },
+  {
+    name: 'Aria', domain: 'Company coordination and meeting follow-up', workflow: 'workflow.aria.meeting-debrief',
+    path: ['Confirm the meeting context and available notes or transcript.', 'Draft a debrief with decisions, owners, and proposed next actions.', 'A person reviews the debrief and corrects proposed assignments.', 'The reviewed output can inform the conversation-to-outcome pipeline and later playbooks.'],
+    boundary: 'A calendar signal can prepare a brief. Recording a meeting or sending follow-up requires its own consent or approval.',
+  },
+];
+const stages = ['Input', 'Preparation', 'Human decision', 'Outcome'];
+---
+
+<div class="persona-architectures">
+  <Tabs>
+    {examples.map(({ name, domain, workflow, path, boundary }) => (
+      <TabItem label={name}>
+        <article class="persona-case">
+          <header>
+            <p class="persona-domain"><strong>{domain}</strong></p>
+            <p class="persona-workflow">{workflow}</p>
+          </header>
+          <ol class="persona-flow">
+            {path.map((step, index) => (
+              <li><strong>{stages[index]}</strong><span>{step}</span></li>
+            ))}
+          </ol>
+          <p class="persona-boundary"><strong>Execution boundary.</strong> {boundary}</p>
+        </article>
+      </TabItem>
+    ))}
+  </Tabs>
+</div>
+
+<style>
+  .persona-architectures :global([role='tablist']) {
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
+  }
+
+  .persona-case {
+    padding: clamp(0.875rem, 3vw, 1.5rem);
+    border: 1px solid var(--ap-line);
+    border-radius: 0.625rem;
+  }
+
+  .persona-domain {
+    font-size: 1.25rem;
+    margin: 0;
+  }
+
+  .persona-workflow {
+    color: var(--ap-muted);
+    font-family: var(--sl-font-mono);
+    font-size: 0.8rem;
+    overflow-wrap: anywhere;
+    margin: 0.375rem 0 0;
+  }
+
+  .persona-flow {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    list-style: none;
+    padding: 0;
+    margin-block: 1rem;
+  }
+
+  .persona-flow li {
+    display: grid;
+    align-content: start;
+    gap: 0.25rem;
+    margin: 0;
+    padding: 0.875rem;
+    border: 1px solid var(--ap-line);
+    border-radius: 0.375rem;
+    background: var(--ap-surface);
+  }
+
+  .persona-boundary {
+    margin-block: 1rem 0;
+  }
+
+  @media (max-width: 35rem) {
+    .persona-flow { grid-template-columns: 1fr; }
+  }
+</style>

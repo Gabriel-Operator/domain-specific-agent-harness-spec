@@ -27,6 +27,8 @@ The team needs a domain specialist to resolve cases its playbooks cannot decide.
 
 Resolving the anomaly establishes which record to use. If the next step sends an email or changes a protected CRM field, its approval covers the exact proposed effect and uses the workspace’s normal permissions. Keep the decision and evidence with the run so the expert can review patterns and improve the rules. See [the improvement loop](../signals-and-evals/#learn-from-specialist-review).
 
+Before a protected effect, the playbook can rehearse the proposed change with a test connector or another isolated environment. Review the rehearsal evidence with the exact live proposal. See [governed execution](../governed-execution/) for when to repeat the rehearsal and what the runtime checks before dispatch.
+
 ## How it appears in Studio
 
 **Connectors** helps the team see which operations it needs and resolve missing setup. **Vault** handles account credentials and sensitive settings. **Approvals** presents the decisions that a run is waiting for. An approved action is tied to the reviewed details of that action. Editing the draft or changing the connector assignment can require another decision. Shared publication also requires an owner-approved destination and the member’s consent for the fields being shared.

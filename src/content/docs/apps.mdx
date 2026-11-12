@@ -126,7 +126,7 @@ An operation states its `effect`:
 Rules:
 
 - `values` maps operation arguments to JSON Pointers into the run context, for example `/input/from` or `/steps/read/meetings`. `outputFields` maps declared names to pointers into this step’s result. A runtime MUST NOT evaluate these mappings as code.
-- Gabriel pauses a `reason` step or connector read marked `"requiresApproval": true` for a person’s decision. Connector `write` and `process` operations always require exact effect approval. Use an explicit review step before publishing when the result needs a person’s decision.
+- Gabriel pauses a `reason` step or connector read marked `"requiresApproval": true` for a person’s decision. Connector `write` and `process` operations always require exact effect approval. Use an explicit review step before publishing when the result needs a person’s decision. See [governed execution](../concepts/governed-execution/) for how to rehearse an effect and recheck the approved proposal before dispatch.
 - A step MAY name a `completion`: a status operation the runtime checks until the work succeeds, fails or reaches a deadline.
 - A `publish_list` step names a logical publisher key and the fields it writes. The workspace owner binds that publisher to a permitted destination and field allow-list. Only allowed fields with the required grants reach the list.
 

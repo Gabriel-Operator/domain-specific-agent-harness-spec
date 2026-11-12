@@ -1,0 +1,25 @@
+---
+title: Governed execution
+description: How a human decision, a sandbox rehearsal, and a live action fit into a playbook run.
+---
+
+A team goal can run routine steps under its workspace policy. When a playbook reaches a decision that needs a person, it brings that person the evidence and holds the dependent work. Before a protected action takes effect, the person reviews the actual change the runtime will make.
+
+## From a request to a live result
+
+| Stage | What the harness does | Where a person comes in |
+| --- | --- | --- |
+| Prepare | Read authorized sources, check rules, and turn the request into a plan. Show estimated cost and any unknowns when an estimate is available. | Confirm the scope or resolve an ambiguity when the playbook needs judgment. A correction changes the plan. |
+| Rehearse | Exercise the plan against a test account, mocked connector, copied form, or other isolated environment. Keep live writes, notifications, and charges disabled. Record expected effects, checks, and gaps in coverage. | Inspect the result. A missing capability or a failed rehearsal can call for a revised plan or a manual handoff. |
+| Approve the effect | Show the proposed operation, its destination and acting account, the exact input or change, and the evidence that supports it. | An authorized person approves, rejects, or requests a correction. Confirming the scope earlier permits preparation within that scope. Approval here permits the reviewed effect. |
+| Execute and verify | Recheck inputs, destination, permissions, and relevant live facts. Dispatch the approved action through a supported connector and record its receipt and actual usage. | Review an uncertain result before any retry. Use corrections and outcomes to improve the playbook through [specialist review](../signals-and-evals/#learn-from-specialist-review). |
+
+For example, a form operator corrects an answer during intake. The harness rehearses the corrected values against the form twin, then presents the destination and the exact values for submission. If the form changes before dispatch, the harness holds the action and prepares a fresh proposal. A provider receipt is the evidence of submission.
+
+## What counts as rehearsal
+
+A sandbox is an isolated place to exercise behavior. Its value is the evidence it produces, such as field validation against a form twin or the expected record changes returned by a test connector. A mock only tests the behavior it models. A draft, a simulation graph in a Playground tab, and a release eval each provide different evidence. Label which one the person is seeing and what remains unverified.
+
+Gabriel has workflow-specific rehearsals and previews. Its managed execution layer also has a separate effect gate: supported REST, MCP, and integration adapters can hold irreversible or unclassified actions for exact human approval. Configurable AI reviewers can help check correctness and policy. The human gate remains in force regardless of AI review settings. When a provider cannot enforce the effect boundary, the runtime can hold the operation for a supported adapter or a person to take over.
+
+See the [proposed runtime contract](../../specification/#74-rehearsal-and-governed-execution-), [implementation checklist](../../implementation/#implement-the-review-and-rehearsal-boundary), and [persona examples](../../examples/#persona-architectures).

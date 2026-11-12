@@ -71,6 +71,12 @@ See [Records, pipelines, and apps](../concepts/records-and-apps/).
 | `media-execution` | Edit, caption, mix, and render existing media. |
 | `product-explainer-hardening` | Validate capture, provenance, and repeatable rendering for product explainers. |
 
+## Author a governed playbook
+
+Use `persona-playbooks` to define where a playbook prepares, asks for a decision, or records an outcome. In `workflow-builder`, use `action-confirmation` for an explicit human checkpoint and `action-take-control` when the person must complete an operation. Use fixture data or a test connector to rehearse; for supported data writers, `action-data-source-write` offers a dry run. `action-agent-card` is a concrete example that takes a simulated purchase plan, checks the real checkout against it, and waits for the card holder before a live charge.
+
+The [governed execution contract](../specification/#74-rehearsal-and-governed-execution-) describes what the harness must enforce. A skill helps the author express the workflow; the runtime controls the actual effect.
+
 ## Workflow actions
 
 These child references live under `workflow-builder/actions/`. Each describes one step type.

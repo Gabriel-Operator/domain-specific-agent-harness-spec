@@ -8,8 +8,9 @@
 - [Implementation guide](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/implementation/): Map the architecture to definition files, workspace behavior, and validated example JSON.
 - [Apps and connectors](https://raw.githubusercontent.com/Gabriel-Operator/domain-specific-agent-harness-spec/main/src/content/docs/apps.mdx): Connector requirements, steps, lists, pipelines, app packages, live sync, and presence.
 - [Concept reference](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/concepts/): Topic pages that map Gabriel Operator concepts and Studio views to the draft.
+- [Governed execution](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/concepts/governed-execution/): Human decisions, isolated rehearsal, exact effect approval, and live receipts.
 - [Skill catalogue](https://raw.githubusercontent.com/Gabriel-Operator/domain-specific-agent-harness-spec/main/src/content/docs/skills.mdx): Individual Gabriel Operator skills and child references.
-- [Examples](https://raw.githubusercontent.com/Gabriel-Operator/domain-specific-agent-harness-spec/main/src/content/docs/examples.mdx): Studio tour and a prospect workflow from research to onboarding.
+- [Examples](https://raw.githubusercontent.com/Gabriel-Operator/domain-specific-agent-harness-spec/main/src/content/docs/examples.mdx): Studio tour, a prospect workflow, and 17 persona architectures.
 - [Terms and standards](https://raw.githubusercontent.com/Gabriel-Operator/domain-specific-agent-harness-spec/main/src/content/docs/standards.mdx): Terminology, Agent Skills, MCP, A2A, and the Standard Agent Specification.
 
 - [Agent Skills specification](https://agentskills.io/specification): Format for the root SKILL.md and bundled skills.

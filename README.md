@@ -10,7 +10,7 @@ A **persona** is a versioned Git definition of a domain, its teams, and the play
 
 ## Architecture
 
-![Architecture diagram showing how a Git persona loads into a workspace, where a team goal invokes playbooks, agents use vault-backed connectors and custom apps, and specialist review informs revisions. A final marketplace panel shows how shared playbooks compose into two different personas.](public/architecture.svg)
+![Architecture diagram showing how a Git persona loads into a workspace, where a team goal invokes playbooks, agents use vault-backed connectors and custom apps, and the harness rehearses protected actions, asks for human approval, and records live receipts. A final marketplace panel shows how shared playbooks compose into two different personas.](public/architecture.svg)
 
 ## How it works
 
@@ -18,7 +18,7 @@ A **persona** is a versioned Git definition of a domain, its teams, and the play
 2. **Define the ontology.** Give those records shared entity names, fields, and relationships. Map data from the source apps to the persona’s versioned definitions.
 3. **Compose teams from playbooks.** Each playbook declares its inputs, outputs, connector operations, and approval rules. Teams group compatible playbooks around the work they do.
 4. **Run a team goal.** The goal selects and invokes the playbooks it needs. The runtime binds workspace resources and the harness runs agents. Connectors use accounts whose credentials are stored in the vault. Custom apps can display mapped data and agent results.
-5. **Review and improve.** The domain specialist resolves anomalies and reviews protected actions. Recorded decisions inform revisions to playbooks, mappings, and evals.
+5. **Rehearse, approve, and execute.** A person resolves decisions that need judgment. For a protected effect, the harness can rehearse the plan in isolation, present the exact action for approval, and record the live receipt after execution. Decisions and outcomes inform reviewed revisions to playbooks, mappings, and evals. [Governed execution](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/concepts/governed-execution/)
 6. **Share and recombine.** In the proposed marketplace, teams can mix and match playbook packages to build different personas. Authors can also list complete personas for others to adopt.
 
 [Follow the illustrated walkthrough](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/#why-a-domain-specific-harness).
@@ -73,7 +73,7 @@ The draft marks features **Extracted** (used in Gabriel today), **Proposed** (ne
 | [Apps and connectors](src/content/docs/apps.mdx) | Connector operations, shared records, app packages, and live sync |
 | [Concept reference](src/content/docs/concepts/index.mdx) | Personas, teams, goals, connectors, apps, and runtime behavior |
 | [Skill catalogue](src/content/docs/skills.mdx) | Gabriel Operator authoring skills and individual action, node, and component references |
-| [Examples](src/content/docs/examples.mdx) | A tour of the Lane team and its prospect workflow |
+| [Examples](src/content/docs/examples.mdx) | The Lane Studio tour and 17 persona architectures |
 | [Terms and standards](src/content/docs/standards.mdx) | Vocabulary and how Agent Skills, MCP, A2A, and Standard Agents fit |
 
 The format comes from [Gabriel Operator](https://github.com/Gabriel-Operator). The [Portable Persona Runtime installer](https://github.com/Gabriel-Operator/portable-persona-runtime) deploys published personas to a self-hosted runtime appliance. Check the runtime's capability report for the steps it can execute, especially offline.

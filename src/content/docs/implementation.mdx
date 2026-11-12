@@ -15,7 +15,7 @@ Start with the [architecture diagram](../#architecture-at-a-glance). Use the [fo
 | Goal, runtime, and harness | A team-scoped run captures its definition revisions and inputs. The runtime checks access and capabilities and uses the harness for supported steps. | [Runtime rules](../specification/#7-runtime-rules) |
 | Connector and vault | The playbook declares operations and account context. The workspace grants a connection, holds its credentials, and maps logical operations to permitted tools. | [Requirements and steps](../apps/#2-connector-requirements-) |
 | Records and apps | A publish step sends allowed fields to a bound destination. A team view reads a list. A custom interface is a separate package with workspace installation settings. | [Records, pipelines, and apps](../concepts/records-and-apps/) |
-| Specialist review | Approvals, corrections, receipts, and run evidence stay in the workspace. Reviewed changes to definitions or evals become new Git revisions. | [Review and improvement](../specification/#73-specialist-review-and-improvement-) |
+| Governed execution | The workspace records human decisions, rehearsal evidence, exact effect approvals, and live receipts. Reviewed changes to definitions or evals become new Git revisions. | [Rehearsal and governed execution](../specification/#74-rehearsal-and-governed-execution-) |
 | Marketplace | Playbook packages can be composed into personas. The shared listing and installation format is proposed. | [Publish and reuse](#publish-and-reuse) |
 
 ## Example files
@@ -42,7 +42,16 @@ These files illustrate the definition profile. Gabriel’s authoring tools gener
 
 Gabriel resolves private handoffs of the form `studio-output:<runId>#/summary` only when the source run is complete and its assignment was accepted in the same parent goal, team, workspace, and member scope. The workspace still checks whether the source allows shared publication.
 
-See the [Lane rehearsal](../examples/#one-prospect-end-to-end) for a larger example with connector reads, exact effect approval, shared publication, and handoffs.
+See the [Lane walkthrough](../examples/#one-prospect-end-to-end) for a larger example with connector reads, exact effect approval, shared publication, and handoffs.
+
+## Implement the review and rehearsal boundary
+
+1. **Declare where a person is needed.** Separate input confirmation or specialist judgment from approval to dispatch a protected effect. Route each decision to the person who has the relevant authority. An optional AI reviewer can provide evidence for either decision.
+2. **Exercise the proposed effect safely.** For Meeting desk, use a disposable workspace, synthetic meeting text, and a test publisher. Verify the summary field mapping and denied fields, then capture the proposed destination, allowed fields, and result. In a form playbook, use a copied form or a test endpoint with live submission disabled.
+3. **Build the live proposal.** Resolve the authorized production binding separately. Show the person the operation, exact proposed input, target, and acting account along with the rehearsal results and any gaps. Keep the decision attached to the proposal and its definition and policy revisions.
+4. **Revalidate and dispatch once.** Check current grants and material live facts. If the summary, destination, account, or policy changed, regenerate the affected evidence and obtain fresh approval. Reuse the durable result on a confirmed retry. When dispatch may already have happened, reconcile before trying again.
+
+The Meeting desk files show the existing Studio review and publish steps. The test publisher and durable evidence records are runtime setup. The draft does not define an additional portable JSON field for sandbox configuration.
 
 ## Review a revision
 

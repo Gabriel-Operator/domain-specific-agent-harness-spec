@@ -55,6 +55,7 @@ export default defineConfig({
 						{ label: 'Personas and workspaces', slug: 'concepts/personas-and-workspaces' },
 						{ label: 'Teams, goals, and playbooks', slug: 'concepts/teams-and-goals' },
 						{ label: 'Connectors and approvals', slug: 'concepts/connectors-and-approvals' },
+						{ label: 'Governed execution', slug: 'concepts/governed-execution' },
 						{ label: 'Records, pipelines, and apps', slug: 'concepts/records-and-apps' },
 						{ label: 'Runs and collaboration', slug: 'concepts/runs-and-collaboration' },
 						{ label: 'Signals, evidence, and evals', slug: 'concepts/signals-and-evals' },

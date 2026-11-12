@@ -354,6 +354,18 @@ A team assigns a domain specialist to review outcomes and anomalies that need do
 
 See [learning from specialist review](../concepts/signals-and-evals/#learn-from-specialist-review) for the worked example.
 
+### 7.4 Rehearsal and governed execution <Badge text="Proposed" variant="caution" />
+
+Human review belongs to the run. A playbook and workspace policy identify which decisions and effects require a person. Routine authorized work may proceed within that policy.
+
+- **Resolve decisions.** When the playbook or policy requires human judgment, the runtime MUST hold the affected step and its dependents until an authorized person resolves it. A decision that changes the plan MUST be reflected in any subsequent rehearsal or proposal.
+- **Isolate rehearsal.** The runtime SHOULD rehearse a proposed protected action where it can do so safely. When the playbook or policy requires rehearsal, the runtime MUST hold live dispatch until suitable evidence is available. Rehearsal MUST prevent production effects and identify the inputs, definition revision, expected effects, checks performed, and limitations.
+- **Bind approval to an exact effect.** Irreversible and policy-protected actions MUST wait for explicit authorization from the assigned human. A proposal MUST identify the run and step, operation, target, material inputs, relevant account and policy, and rehearsal evidence when available. Intake consent, an AI review, and approval to execute have distinct scopes.
+- **Recheck before dispatch.** The runtime MUST check current grants, verify that the effect still matches the reviewed proposal, and consume the approval once. Material changes to the proposal or required rehearsal invalidate the approval. Rejection, expiry, and unsupported effect boundaries hold dispatch.
+- **Record what happened.** The runtime MUST distinguish a rehearsal result from a live receipt. It MUST keep a durable record of the decision and dispatch outcome, and reconcile an uncertain result before retrying an effect that could already have happened.
+
+The draft defines the behavior. Gabriel’s managed effect gates and persona-specific rehearsals are separate implementation paths. Portable fields for rehearsal targets, approval evidence, and receipts are planned. See [governed execution](../concepts/governed-execution/) for the lifecycle and [persona architectures](../examples/#persona-architectures) for examples.
+
 ## 8. Not yet specified <Badge text="Planned" variant="note" />
 
 Connector requirements, apps, custom app packages, live sync and presence have their own page: [Apps and connectors](../apps/).
@@ -362,7 +374,7 @@ These parts exist in running installations and will be specified in later drafts
 
 - A common execution and orchestration contract across runtimes. The [Studio definition profile](#63-studio-definitions) and [connector step contract](../apps/#3-steps-that-use-a-connector-) describe the implemented Gabriel forms.
 - Playbook and persona marketplace listing formats, cross-runtime package resolution, and marketplace installation.
-- Governance: rules a persona must follow, and approval before an effect.
+- A portable schema for rehearsal environments, approval policies and evidence, and execution receipts. [Section 7.4](#74-rehearsal-and-governed-execution-) proposes the runtime behavior.
 - Signals and routines: work that starts from an event or a schedule.
 - Access: workspace members, roles and scoped tokens.
 - Surfaces: landing pages, mobile and voice.
