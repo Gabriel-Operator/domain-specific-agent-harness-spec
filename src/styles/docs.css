@@ -425,6 +425,12 @@ h1#_top { font-size: clamp(1.95rem, 1.75rem + 0.85vw, 2.4rem); }
 .ap-topic-index td:first-child a { display: block; }
 .ap-topic-index th:first-child { width: 29%; }
 
+.ap-execution-stages :is(th, td):first-child {
+  width: 16%;
+  min-width: 6rem;
+  overflow-wrap: normal;
+}
+
 .ap-architecture { margin-inline: 0; }
 .ap-architecture a { display: block; }
 .ap-architecture img { display: block; width: 100%; height: auto; }

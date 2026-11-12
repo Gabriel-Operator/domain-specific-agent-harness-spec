@@ -1,11 +1,14 @@
 ---
 title: Governed execution
 description: How a human decision, a sandbox rehearsal, and a live action fit into a playbook run.
+template: splash
 ---
 
 A team goal can run routine steps under its workspace policy. When a playbook reaches a decision that needs a person, it brings that person the evidence and holds the dependent work. Before a protected action takes effect, the person reviews the actual change the runtime will make.
 
 ## From a request to a live result
+
+<div class="ap-execution-stages">
 
 | Stage | What the harness does | Where a person comes in |
 | --- | --- | --- |
@@ -13,6 +16,8 @@ A team goal can run routine steps under its workspace policy. When a playbook re
 | Rehearse | Exercise the plan against a test account, mocked connector, copied form, or other isolated environment. Keep live writes, notifications, and charges disabled. Record expected effects, checks, and gaps in coverage. | Inspect the result. A missing capability or a failed rehearsal can call for a revised plan or a manual handoff. |
 | Approve the effect | Show the proposed operation, its destination and acting account, the exact input or change, and the evidence that supports it. | An authorized person approves, rejects, or requests a correction. Confirming the scope earlier permits preparation within that scope. Approval here permits the reviewed effect. |
 | Execute and verify | Recheck inputs, destination, permissions, and relevant live facts. Dispatch the approved action through a supported connector and record its receipt and actual usage. | Review an uncertain result before any retry. Use corrections and outcomes to improve the playbook through [specialist review](../signals-and-evals/#learn-from-specialist-review). |
+
+</div>
 
 For example, a form operator corrects an answer during intake. The harness rehearses the corrected values against the form twin, then presents the destination and the exact values for submission. If the form changes before dispatch, the harness holds the action and prepares a fresh proposal. A provider receipt is the evidence of submission.
 
