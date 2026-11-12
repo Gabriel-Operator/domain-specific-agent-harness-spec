@@ -105,15 +105,21 @@ const stages = ['Input', 'Preparation', 'Human decision', 'Outcome'];
       <TabItem label={name}>
         <article class="persona-case">
           <header>
-            <p class="persona-domain"><strong>{domain}</strong></p>
+            <h3 class="persona-domain">{domain}</h3>
             <p class="persona-workflow">{workflow}</p>
           </header>
-          <ol class="persona-flow">
+          <ol class="persona-flow" role="list">
             {path.map((step, index) => (
-              <li><strong>{stages[index]}</strong><span>{step}</span></li>
+              <li>
+                <h4>{stages[index]}</h4>
+                <p>{step}</p>
+              </li>
             ))}
           </ol>
-          <p class="persona-boundary"><strong>Execution boundary.</strong> {boundary}</p>
+          <section class="persona-boundary">
+            <h4>Execution boundary</h4>
+            <p>{boundary}</p>
+          </section>
         </article>
       </TabItem>
     ))}
@@ -146,30 +152,29 @@ const stages = ['Input', 'Preparation', 'Human decision', 'Outcome'];
   }
 
   .persona-flow {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.75rem;
     list-style: none;
     padding: 0;
-    margin-block: 1rem;
+    margin: 1rem 0 0;
   }
 
-  .persona-flow li {
-    display: grid;
-    align-content: start;
-    gap: 0.25rem;
+  .persona-flow li,
+  .persona-boundary {
+    border-top: 1px solid var(--ap-line);
     margin: 0;
-    padding: 0.875rem;
-    border: 1px solid var(--ap-line);
-    border-radius: 0.375rem;
-    background: var(--ap-surface);
+    padding-block: 0.875rem;
   }
 
   .persona-boundary {
-    margin-block: 1rem 0;
+    padding-block-end: 0;
   }
 
-  @media (max-width: 35rem) {
-    .persona-flow { grid-template-columns: 1fr; }
+  .persona-case h4 {
+    font-size: 1rem;
+    line-height: 1.35;
+    margin: 0;
+  }
+
+  .persona-case h4 + p {
+    margin: 0.375rem 0 0;
   }
 </style>

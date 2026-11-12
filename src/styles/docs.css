@@ -127,8 +127,8 @@ header.header .social-icons a:hover { color: var(--ap-accent); }
 }
 
 @media (max-width: 49.99rem) {
-  :root[data-has-hero] { --sl-nav-height: calc(var(--ap-header-row) + var(--ap-nav-row)); }
-  :root:not([data-has-hero]) .ap-top-nav { display: none; }
+  :root:not([data-has-sidebar]) { --sl-nav-height: calc(var(--ap-header-row) + var(--ap-nav-row)); }
+  :root[data-has-sidebar] .ap-top-nav { display: none; }
   header.header .right-group { display: flex; }
   header.header .social-icons, #starlight__sidebar .ap-theme-toggle { display: none; }
   header.header .title-wrapper { margin-inline-end: auto; }
