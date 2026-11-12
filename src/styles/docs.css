@@ -50,7 +50,10 @@
 
 :root ::backdrop { --sl-color-backdrop-overlay: #0009; }
 
-:root[data-has-hero] { --sl-content-width: 72rem; }
+:root:not([data-has-sidebar]) {
+  --sl-content-width: 100%;
+  --sl-content-pad-x: var(--sl-nav-pad-x);
+}
 
 @media (min-width: 50rem) {
   :root {
@@ -408,8 +411,6 @@ h1#_top { font-size: clamp(1.95rem, 1.75rem + 0.85vw, 2.4rem); }
 @media (max-width: 46rem) {
   .ap-reference-menu { grid-template-columns: minmax(0, 1fr); }
 }
-
-:root[data-has-hero] .sl-markdown-content > :is(p:not(.harness-intro), ul, .expressive-code) { max-width: 48rem; }
 
 @media print {
   .ap-top-nav, .ap-theme-toggle { display: none; }
