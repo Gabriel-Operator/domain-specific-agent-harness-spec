@@ -10,7 +10,7 @@ A **persona** is a versioned Git definition of a domain, its teams, and the play
 
 ## Architecture
 
-![Architecture diagram showing how a Git persona loads into a workspace, where a team goal invokes playbooks, agents use vault-backed connectors and custom apps, and the harness rehearses protected actions, asks for human approval, and records live receipts. A final marketplace panel shows how shared playbooks compose into two different personas.](public/architecture.svg)
+![Architecture diagram showing how a Git persona loads into a workspace, where a team goal invokes playbooks that use skills. The harness binds models for text, speech, and vision, coordinates vault-backed connectors and custom apps, and governs protected actions through rehearsal, approval, and live receipts. A final marketplace panel shows how shared playbooks compose into two different personas.](public/architecture.svg)
 
 ## How it works
 

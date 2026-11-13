@@ -1,6 +1,24 @@
 ---
 import { phaseFor, pieces, space, storyboard, type Frame, type PieceId, type Scene } from '../scripts/harness-storyboard';
 import { pieceStyle, wireStyle } from '../scripts/harness-motion';
+import { AudioLines, Image as ImageIcon, MessageSquareText, Mic, Plus, Speech, Video } from '@lucide/astro';
+
+const base = Astro.locals.starlightRoute.siteTitleHref;
+const providers = [
+  { name: 'Anthropic', logo: 'anthropic.png' },
+  { name: 'OpenAI', logo: 'openai.svg' },
+  { name: 'Gemini', logo: 'gemini.svg' },
+  { name: 'Grok', logo: 'grok.jpg' },
+  { name: 'Kimi K2', logo: 'kimi.png' },
+];
+const modalities = [
+  { name: 'Text', Icon: MessageSquareText },
+  { name: 'Speech → speech', Icon: AudioLines },
+  { name: 'Speech → text', Icon: Mic },
+  { name: 'Text → speech', Icon: Speech },
+  { name: 'Image / vision', Icon: ImageIcon },
+  { name: 'Video / audio', Icon: Video },
+];
 
 interface Props { scene?: Scene; }
 const { scene } = Astro.props;
@@ -28,6 +46,24 @@ const visiblePieces = (Object.keys(pieces) as PieceId[]).filter(id => !frame || 
               {shape === 'vault' && <svg class="hs-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="10" width="16" height="12" rx="2"/><path d="M7 10V7a5 5 0 0 1 10 0v3M12 15v3"/></svg>}
               {shape === 'expert' && <svg class="hs-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="7" r="4"/><path d="M4 22v-3a8 8 0 0 1 16 0v3M9 18l2 2 4-4"/></svg>}
               {title && <span class="hs-piece-title">{title}</span>}
+              {shape === 'providers' && (
+                <div class="hs-provider-marks">
+                  {providers.map(({ name, logo }) => (
+                    <span>
+                      <span class="hs-provider-mark" data-dark-mark={name === 'Kimi K2' ? '' : undefined}>
+                        <img src={base + 'model-marks/' + logo} width="28" height="28" alt="" />
+                      </span>
+                      {name}
+                    </span>
+                  ))}
+                  <span><span class="hs-provider-mark"><Plus size={24} /></span>Other models</span>
+                </div>
+              )}
+              {shape === 'modalities' && (
+                <div class="hs-modalities">
+                  {modalities.map(({ name, Icon }) => <span><Icon size={23} stroke-width={1.6} />{name}</span>)}
+                </div>
+              )}
               {(shape === 'module' || id === 'core' || id === 'skill') && <span class="hs-module-bars"><i></i><i></i><i></i><i></i></span>}
               {shape === 'app' && <div class="hs-app-content"><span class="hs-app-toolbar"><i></i><i></i><i></i></span><svg viewBox="0 0 160 75" fill="none"><path class="hs-chart-grid" d="M0 15h160M0 40h160M0 65h160"/><path class="hs-chart-area" d="M0 61L28 47L55 51L84 24L110 32L137 12L160 18V75H0Z"/><path class="hs-chart-line" d="M0 61L28 47L55 51L84 24L110 32L137 12L160 18"/></svg><span class="hs-app-rows"><i></i><i></i></span></div>}
             </div>

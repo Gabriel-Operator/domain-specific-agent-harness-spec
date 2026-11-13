@@ -423,5 +423,73 @@
 }
 
 .hs-scene[data-scene='basics'] [data-hs-piece='skill'] .hs-module-bars,
-.hs-scene[data-scene='contract'] [data-hs-piece='core'] .hs-module-bars { display: none; }
+.hs-scene[data-scene='contract'] [data-hs-piece='core'] .hs-module-bars,
+.hs-scene[data-scene='models'] [data-hs-piece='core'] .hs-module-bars { display: none; }
+
+.hs-piece:is([data-shape='providers'], [data-shape='modalities']) {
+  border: 1px solid var(--hs-edge);
+  background: var(--hs-panel);
+  box-shadow: 3px 3px 0 var(--hs-board), 4px 4px 0 var(--hs-edge);
+  padding: 11px 15px;
+}
+
+.hs-piece:is([data-shape='providers'], [data-shape='modalities']) > .hs-piece-title {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--hs-ink-board);
+  font-size: 17px;
+  font-weight: 650;
+  line-height: 1.15;
+}
+
+.hs-provider-marks {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+  text-align: center;
+}
+
+.hs-provider-marks > span {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hs-provider-mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--hs-edge);
+  border-radius: 8px;
+  background: #fff;
+  color: #171717;
+}
+
+.hs-provider-mark[data-dark-mark] { background: #101010; }
+.hs-provider-mark img { width: 28px; height: 28px; object-fit: contain; }
+
+.hs-modalities {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.hs-modalities > span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  border: 1px solid var(--hs-edge);
+  background: var(--hs-raised);
+  font-size: 16px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.hs-modalities svg { flex: none; }
 .hs-piece[data-hs-piece='operations'] { font-size: 12px; white-space: nowrap; }

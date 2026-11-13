@@ -40,7 +40,7 @@ const chapters: Chapter[] = [
     aliases: ['composed-architecture', 'where-the-spec-starts'],
     body: [
       'The Domain-Specific Agent Harness Spec proposes a shared way to define and compose workflows. Gabriel calls the reusable unit a playbook. It declares its inputs, steps, outputs, connector operations, and approval rules.',
-      'A playbook can use existing agent skills for instructions and domain knowledge. Its contract lets a team pass results between compatible playbooks and reuse their definitions in another workspace.',
+      'A playbook can use skills for instructions and domain knowledge. Its steps declare the capabilities they need. The workspace binds those capabilities when the playbook runs, so the team can reuse the same definition.',
     ],
     link: { href: './concepts/teams-and-goals/', text: 'The playbook contract' },
   },
@@ -65,6 +65,16 @@ const chapters: Chapter[] = [
       'A goal can use one playbook or several. Agents execute the selected work inside the harness, with inputs, outputs, and progress tied back to the goal.',
     ],
     link: { href: './concepts/teams-and-goals/#from-an-outcome-to-a-plan', text: 'From a goal to a plan' },
+  },
+  {
+    id: 'bind-models-and-modalities',
+    scene: 'models', label: 'Models and modalities',
+    title: 'Use any model that fits the step.',
+    body: [
+      'The harness binds models by capability. Anthropic Claude, OpenAI, Google Gemini, Grok, Moonshot Kimi K2, and other model families can serve a step when a compatible provider or gateway is configured.',
+      'The same playbook and skills can serve a typed or spoken request. Voice can run speech-to-speech or use speech-to-text, a text model, and text-to-speech. The harness can combine those paths with models that interpret images, video, or other audio.',
+    ],
+    link: { href: './concepts/models/', text: 'Model capabilities and binding' },
   },
   {
     id: 'create-a-missing-playbook',
@@ -130,7 +140,7 @@ const chapters: Chapter[] = [
     scene: 'complete', label: 'The complete harness',
     title: 'This is a domain-specific harness.',
     body: [
-      'A persona groups playbooks into teams around a domain model. Goals inside each team invoke the playbooks they need. A missing capability can guide a new playbook draft. Agents execute that work inside the harness.',
+      'A persona groups playbooks into teams around a domain model. Goals inside each team invoke the playbooks they need. A missing capability can guide a new playbook draft. Agents execute that work inside the harness, using the skills and model capabilities each step needs.',
       'Connectors move the data. The vault supplies account credentials. Custom apps make the data and results usable. Domain specialists guide decisions, review rehearsals, and approve protected effects. Run evidence helps them improve the harness.',
     ],
     link: { href: './specification/', text: 'Explore the specification' },

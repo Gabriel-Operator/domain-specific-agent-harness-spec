@@ -2,7 +2,7 @@ export const space = { width: 720, height: 560, perspective: 1200 };
 
 type Piece = {
   title?: string;
-  shape: 'frame' | 'strip' | 'module' | 'label' | 'cube' | 'vault' | 'app' | 'expert';
+  shape: 'frame' | 'strip' | 'module' | 'label' | 'cube' | 'vault' | 'app' | 'expert' | 'providers' | 'modalities';
   tone?: 'domain' | 'contract' | 'warning' | 'runtime';
   origin?: string;
 };
@@ -53,6 +53,10 @@ const catalog = {
   creation: { title: 'Draft the missing playbook', shape: 'label', tone: 'contract', origin: 'goal' },
   agents: { title: 'Agents execute the selected playbooks', shape: 'label', tone: 'contract' },
   harness: { title: 'Harness', shape: 'frame', tone: 'runtime' },
+  modelProviders: { title: 'Model providers and families', shape: 'providers', tone: 'runtime', origin: 'harness' },
+  modelBinding: { title: 'Model binding', shape: 'strip', tone: 'contract', origin: 'harness' },
+  playbookSkills: { title: 'Skills', shape: 'strip', origin: 'steps' },
+  modalities: { title: 'Input and output capabilities', shape: 'modalities', tone: 'runtime', origin: 'modelBinding' },
   connectors: { title: 'Connectors', shape: 'strip', tone: 'domain' },
   operations: { title: 'Read · write · share', shape: 'label', tone: 'domain' },
   services: { title: 'External services', shape: 'frame', tone: 'domain' },
@@ -182,6 +186,18 @@ export const storyboard = {
     poses: activeTeam,
     wires: [wire('goal', 'core'), wire('goal', 'playbookB'), wire('goal', 'playbookC')],
   },
+  models: {
+    caption: 'A model binding connects the same playbook and skills to models that support the required inputs and outputs.',
+    poses: {
+      modelProviders: at(360, 91, 646, 128, -4),
+      harness: at(360, 351, 646, 366, -12),
+      core: at(181, 263, 240, 104, 2),
+      playbookSkills: at(181, 278, 208, 41, 7),
+      modelBinding: at(539, 263, 240, 53, 7),
+      modalities: at(360, 419, 608, 164, 3),
+    },
+    wires: [wire('modelProviders', 'modelBinding'), wire('modalities', 'modelBinding'), wire('modelBinding', 'core')],
+  },
   missing: {
     caption: 'A goal can reveal a missing capability. The team can draft, review, and register a playbook for it.',
     poses: {
@@ -257,7 +273,7 @@ export const storyboard = {
     wires: [wire('package', 'referenceA'), wire('package', 'referenceB'), wire('referenceA', 'connectors', 'data'), wire('referenceB', 'connectorB', 'data'), wire('vault', 'connectors', 'auth'), wire('vaultB', 'connectorB', 'auth')],
   },
   complete: {
-    caption: 'Team goals invoke playbooks. The harness coordinates execution, data access, apps, and expert review.',
+    caption: 'Team goals invoke playbooks. The harness binds models and coordinates execution, data access, apps, and expert review.',
     poses: {
       harness: at(252, 280, 448, 446, -14),
       persona: at(158, 236, 224, 280, -8),
@@ -265,6 +281,7 @@ export const storyboard = {
       team: at(158, 266, 194, 190, -4),
       core: at(158, 308, 153, 66, 3),
       goal: at(158, 226, 153, 28, 6),
+      modelBinding: at(374, 174, 166, 38, 5),
       connectors: at(378, 308, 154, 38, 5),
       vault: at(378, 426, 112, 70, 6),
       expert: at(158, 426, 184, 68, 5),
@@ -272,7 +289,7 @@ export const storyboard = {
       records: at(597, 214, 154, 38, 4),
       app: at(597, 398, 186, 142, 6),
     },
-    wires: [wire('goal', 'core'), wire('core', 'connectors', 'data'), wire('connectors', 'records', 'data'), wire('connectors', 'app', 'data'), wire('vault', 'connectors', 'auth'), wire('expert', 'core', 'review')],
+    wires: [wire('goal', 'core'), wire('core', 'connectors', 'data'), wire('connectors', 'records', 'data'), wire('connectors', 'app', 'data'), wire('vault', 'connectors', 'auth'), wire('expert', 'core', 'review'), wire('modelBinding', 'core')],
   },
   marketplace: {
     caption: 'The same Research playbook serves two personas. Both personas can also be listed in the marketplace.',
