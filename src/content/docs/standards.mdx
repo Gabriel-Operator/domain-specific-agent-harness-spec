@@ -6,6 +6,24 @@ template: splash
 
 A **persona** is the versioned definition of a domain, its teams, and the playbooks they use. A **runtime** imports it and coordinates work. An **agent harness** runs the model and tool loop for an agent. These terms describe responsibilities that an implementation can put in the same process or in separate services.
 
+## Manifesto
+
+<figure>
+  <a href="../persona-manifesto.webp" aria-label="Open the Domain-Specific Harness Manifesto poster at full size">
+    <img src="../persona-manifesto.webp" alt="The Domain-Specific Harness Manifesto, credited to Gabriel Operator and Vipin Tanna. Its principles are described below." width="1536" height="1024" decoding="async" />
+  </a>
+  <figcaption>A domain-specific harness applies deterministic playbook rules to non-deterministic model outputs in pursuit of a team goal.</figcaption>
+</figure>
+
+- **Persona.** The harness takes its domain and team definitions from the persona.
+- **Team.** The harness runs each goal within its team’s scope, using the playbooks that team makes available.
+- **Playbook.** The harness follows the playbook’s rules for inputs, actions, and approvals.
+- **Agent.** The harness runs the agent loop with context, models, and permitted tools.
+
+Playbooks should be **vendor-agnostic**, **domain-specific**, **model-coupled**, **composable**, and **portable**. A playbook declares the model capabilities its steps need. The workspace can bind one multimodal model or several specialized models, such as a text model for reasoning, a vision model for interpreting images, and image or video models for generation. Declared inputs and outputs let teams compose playbooks, and versioned packages let workspaces reuse those definitions with their own compatible bindings.
+
+Adapted from the [Standard Agent Specification’s core principles](https://standardagentspec.org/#core-principles).
+
 ## Vocabulary
 
 | Term | Meaning in this specification |
