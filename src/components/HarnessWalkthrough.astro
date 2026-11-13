@@ -51,7 +51,7 @@ const chapters: Chapter[] = [
     aliases: ['map-the-ontology'],
     body: [
       'A persona brings together teams. Each team contains its goals and the playbooks they use. The domain ontology maps the organization’s apps and data into shared concepts, so those teams agree on what the work means.',
-      'The persona defines the composition. Its workspace supplies the accounts, data, and history used when it runs.',
+      'A persona can work with text, speech, images, video, and audio. A spoken request can use speech-to-speech directly or use speech-to-text, a text model, and text-to-speech.',
     ],
     link: { href: './concepts/personas-and-workspaces/', text: 'Personas and workspaces' },
   },
@@ -59,22 +59,12 @@ const chapters: Chapter[] = [
     id: 'how-it-works',
     scene: 'goals', label: 'Goals invoke playbooks',
     title: 'The goal chooses the work.',
-    aliases: ['how-does-a-persona-work', 'goal-to-playbook'],
+    aliases: ['how-does-a-persona-work', 'goal-to-playbook', 'bind-models-and-modalities'],
     body: [
       'Create a goal inside a team. The goal selects and invokes the playbooks that belong to that team, in the order the outcome and their dependencies require.',
-      'A goal can use one playbook or several. Agents execute the selected work inside the harness, with inputs, outputs, and progress tied back to the goal.',
+      'Agents run the selected playbooks and skills inside the harness. The workspace binds models to the capabilities each step needs through a compatible provider or gateway. Anthropic, OpenAI, Gemini, Grok, and Kimi K2 are examples.',
     ],
     link: { href: './concepts/teams-and-goals/#from-an-outcome-to-a-plan', text: 'From a goal to a plan' },
-  },
-  {
-    id: 'bind-models-and-modalities',
-    scene: 'models', label: 'Models and modalities',
-    title: 'Use any model that fits the step.',
-    body: [
-      'The harness binds models by capability. Anthropic Claude, OpenAI, Google Gemini, Grok, Moonshot Kimi K2, and other model families can serve a step when a compatible provider or gateway is configured.',
-      'The same playbook and skills can serve a typed or spoken request. Voice can run speech-to-speech or use speech-to-text, a text model, and text-to-speech. The harness can combine those paths with models that interpret images, video, or other audio.',
-    ],
-    link: { href: './concepts/models/', text: 'Model capabilities and binding' },
   },
   {
     id: 'create-a-missing-playbook',

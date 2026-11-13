@@ -2,7 +2,8 @@ export const space = { width: 720, height: 560, perspective: 1200 };
 
 type Piece = {
   title?: string;
-  shape: 'frame' | 'strip' | 'module' | 'label' | 'cube' | 'vault' | 'app' | 'expert' | 'providers' | 'modalities';
+  shape: 'frame' | 'strip' | 'module' | 'label' | 'cube' | 'vault' | 'app' | 'expert';
+  headerIcons?: 'providers' | 'modalities';
   tone?: 'domain' | 'contract' | 'warning' | 'runtime';
   origin?: string;
 };
@@ -37,14 +38,14 @@ const catalog = {
   verifyPackage: { title: 'Verify', shape: 'cube', tone: 'contract', origin: 'playbookB' },
   researchPackage: { title: 'Research', shape: 'cube', tone: 'contract', origin: 'core' },
   draftPackage: { title: 'Draft', shape: 'cube', tone: 'contract', origin: 'playbookC' },
-  researchPersona: { title: 'Research analyst persona', shape: 'frame', tone: 'domain', origin: 'persona' },
-  briefingPersona: { title: 'Briefing writer persona', shape: 'frame', tone: 'domain', origin: 'persona' },
+  researchPersona: { title: 'Research analyst persona', shape: 'frame', headerIcons: 'modalities', tone: 'domain', origin: 'persona' },
+  briefingPersona: { title: 'Briefing writer persona', shape: 'frame', headerIcons: 'modalities', tone: 'domain', origin: 'persona' },
   verifyReference: { title: 'Verify', shape: 'strip', origin: 'verifyPackage' },
   researchReferenceA: { title: 'Research', shape: 'strip', origin: 'researchPackage' },
   researchReferenceB: { title: 'Research', shape: 'strip', origin: 'researchPackage' },
   draftReference: { title: 'Draft', shape: 'strip', origin: 'draftPackage' },
   personaListings: { title: 'Optional persona listings', shape: 'label', tone: 'contract' },
-  persona: { title: 'Persona', shape: 'frame', tone: 'domain', origin: 'package' },
+  persona: { title: 'Persona', shape: 'frame', headerIcons: 'modalities', tone: 'domain', origin: 'package' },
   ontology: { title: 'Domain ontology', shape: 'strip', tone: 'domain', origin: 'persona' },
   team: { title: 'Team', shape: 'frame', tone: 'domain' },
   teamB: { title: 'Team B', shape: 'frame', tone: 'domain', origin: 'team' },
@@ -52,11 +53,8 @@ const catalog = {
   planning: { title: 'Select · order · invoke', shape: 'label', tone: 'runtime', origin: 'goal' },
   creation: { title: 'Draft the missing playbook', shape: 'label', tone: 'contract', origin: 'goal' },
   agents: { title: 'Agents execute the selected playbooks', shape: 'label', tone: 'contract' },
-  harness: { title: 'Harness', shape: 'frame', tone: 'runtime' },
-  modelProviders: { title: 'Model providers and families', shape: 'providers', tone: 'runtime', origin: 'harness' },
+  harness: { title: 'Harness', shape: 'frame', headerIcons: 'providers', tone: 'runtime' },
   modelBinding: { title: 'Model binding', shape: 'strip', tone: 'contract', origin: 'harness' },
-  playbookSkills: { title: 'Skills', shape: 'strip', origin: 'steps' },
-  modalities: { title: 'Input and output capabilities', shape: 'modalities', tone: 'runtime', origin: 'modelBinding' },
   connectors: { title: 'Connectors', shape: 'strip', tone: 'domain' },
   operations: { title: 'Read · write · share', shape: 'label', tone: 'domain' },
   services: { title: 'External services', shape: 'frame', tone: 'domain' },
@@ -74,7 +72,7 @@ const catalog = {
   learning: { title: 'Improve playbook', shape: 'strip', tone: 'contract', origin: 'receipt' },
   workspace: { title: 'Workspace A', shape: 'frame', tone: 'runtime' },
   workspaceB: { title: 'Workspace B', shape: 'frame', tone: 'runtime', origin: 'workspace' },
-  personaB: { title: 'Persona B', shape: 'frame', tone: 'domain', origin: 'persona' },
+  personaB: { title: 'Persona B', shape: 'frame', headerIcons: 'modalities', tone: 'domain', origin: 'persona' },
   teamC: { title: 'Team', shape: 'frame', tone: 'domain', origin: 'team' },
   referenceA: { shape: 'cube', tone: 'contract', origin: 'package' },
   referenceB: { shape: 'cube', tone: 'contract', origin: 'package' },
@@ -95,6 +93,7 @@ const at = (x: number, y: number, width: number, height: number, depth = 0, angl
 const wire = (from: PieceId, to: PieceId, kind: Wire['kind'] = 'invoke'): Wire => ({ from, to, kind });
 
 const personaComposition: Frame['poses'] = {
+  harness: at(360, 280, 690, 516, -14),
   persona: at(360, 292, 648, 418, -8),
   ontology: at(360, 151, 580, 36),
   team: at(208, 319, 274, 238, -4),
@@ -186,18 +185,6 @@ export const storyboard = {
     poses: activeTeam,
     wires: [wire('goal', 'core'), wire('goal', 'playbookB'), wire('goal', 'playbookC')],
   },
-  models: {
-    caption: 'A model binding connects the same playbook and skills to models that support the required inputs and outputs.',
-    poses: {
-      modelProviders: at(360, 91, 646, 128, -4),
-      harness: at(360, 351, 646, 366, -12),
-      core: at(181, 263, 240, 104, 2),
-      playbookSkills: at(181, 278, 208, 41, 7),
-      modelBinding: at(539, 263, 240, 53, 7),
-      modalities: at(360, 419, 608, 164, 3),
-    },
-    wires: [wire('modelProviders', 'modelBinding'), wire('modalities', 'modelBinding'), wire('modelBinding', 'core')],
-  },
   missing: {
     caption: 'A goal can reveal a missing capability. The team can draft, review, and register a playbook for it.',
     poses: {
@@ -275,9 +262,9 @@ export const storyboard = {
   complete: {
     caption: 'Team goals invoke playbooks. The harness binds models and coordinates execution, data access, apps, and expert review.',
     poses: {
-      harness: at(252, 280, 448, 446, -14),
+      harness: at(252, 275, 448, 456, -14),
       persona: at(158, 236, 224, 280, -8),
-      ontology: at(158, 145, 190, 26, 2),
+      ontology: at(158, 154, 190, 26, 2),
       team: at(158, 266, 194, 190, -4),
       core: at(158, 308, 153, 66, 3),
       goal: at(158, 226, 153, 28, 6),
@@ -299,8 +286,8 @@ export const storyboard = {
       verifyPackage: at(155, 137, 62, 66, 6),
       researchPackage: at(360, 137, 62, 66, 6),
       draftPackage: at(565, 137, 62, 66, 6),
-      researchPersona: at(192, 376, 280, 154, -8),
-      briefingPersona: at(528, 376, 280, 154, -8),
+      researchPersona: at(192, 369, 280, 168, -8),
+      briefingPersona: at(528, 369, 280, 168, -8),
       team: at(192, 392, 246, 92, -4),
       teamC: at(528, 392, 246, 92, -4),
       verifyReference: at(135, 404, 101, 34, 3),
