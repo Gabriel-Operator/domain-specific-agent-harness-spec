@@ -20,9 +20,15 @@ A **persona** is the versioned definition of a domain, its teams, and the playbo
 - **Playbook.** The harness follows the playbook’s rules for inputs, actions, and approvals.
 - **Agent.** The harness runs the agent loop with context, models, and permitted tools.
 
-Playbooks should be **vendor-agnostic**, **domain-specific**, **model-coupled**, **composable**, and **portable**. A playbook declares the model capabilities its steps need. The workspace can bind one multimodal model or several specialized models, such as a text model for reasoning, a vision model for interpreting images, and image or video models for generation. Declared inputs and outputs let teams compose playbooks, and versioned packages let workspaces reuse those definitions with their own compatible bindings.
+Playbooks should be **vendor-agnostic**, **domain-specific**, **multi-model bound**, **composable**, and **portable**. Declared inputs and outputs let teams compose playbooks, and versioned packages let workspaces reuse those definitions with compatible bindings.
 
 Adapted from the [Standard Agent Specification’s core principles](https://standardagentspec.org/#core-principles).
+
+### Guide the harness by text or speech
+
+The harness should let people supply context, clarify intent, and review work through conversation. In Gabriel, **Coach** uses the persona’s domain and the selected workspace to understand the request. Inside a team, it can help set a goal or collect inputs for a playbook. The harness passes the context needed for that run to the agent. Text and voice use the same authorized operations, and protected actions still require [human approval](../concepts/human-review/).
+
+Coach can also walk a person through the harness on screen. With the person’s tab shared, it can open the team Canvas, show where to configure a connector, or fill a playbook draft for review. The person can take control at any time. See [Coach computer use](../concepts/coach-computer-use/).
 
 ## Vocabulary
 

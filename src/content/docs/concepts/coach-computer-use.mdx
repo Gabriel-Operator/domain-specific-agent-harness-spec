@@ -1,0 +1,26 @@
+---
+title: Coach computer use
+description: How Gabriel Coach guides people through a shared browser tab and hands control back for review.
+template: splash
+concept:
+  category: execution
+  order: 13
+---
+
+**Coach computer use** lets a person ask by text or voice for help using their persona’s workspace. Coach can walk through Studio, open the right team or tab, and fill supported draft fields while the person watches. This is how Gabriel implements on-screen guidance from the [harness manifesto](../../standards/#guide-the-harness-by-text-or-speech).
+
+## Follow Coach through Studio
+
+1. In desktop Chrome, open the persona workspace and ask Coach to “show me this team’s Connectors tab” or “add a paused bot called Intake reviewer to this team’s Canvas.” Open the intended team before asking to add a bot.
+2. When the **Browser task** card appears, select **Share tab and start** and choose the persona tab that opened the request. Watch the Coach pointer show which controls it uses. The chat stays available while Coach works.
+3. Select **Stop** with the Coach’s name, or press **Escape** while focused in the workspace, to pause the task, stop sharing, and take control. If Coach needs you to sign in, upload a file, or use a control it cannot operate, it pauses and shows what to do. Select **Continue** and share the tab again to resume the same task, or select **Cancel** to end it.
+
+To edit a new bot’s skill files, open **Review skill files** while adding the bot, select **Edit with Coach**, and describe the change. Coach can open files, fill the current draft, and validate it with **Apply source changes**. Applying the changes updates the bot form. Review the draft and save it yourself when it is ready.
+
+## What the browser can do
+
+Gabriel ties the task to the signed-in person, their selected workspace, and the initiating tab. The browser sends masked screenshots and a list of visible controls to a vision model. Credential fields, embedded frames, and Coach chat are masked. The model selects a step, and the browser checks the target again before it acts. Studio exposes navigation, scrolling, and specific draft fields. Other controls can be shown to the person for a handoff.
+
+Gabriel supports three browser saves when explicitly requested and permitted in the workspace. Coach can create a team with the requested name and purpose, add a paused bot to the selected team, or install a read-only connector with sync off. The normal Studio save handlers enforce access. The browser task reads back the saved result before Coach reports success. Provider sign-in remains a manual step. Starting a team goal or running a playbook uses the normal execution path, including any required human approvals. See [governed execution](../governed-execution/).
+
+Browser tasks are on by default when Coach is enabled. Persona authors can turn them off with the **Coach browser tasks** setting. The task needs a compatible vision model and permission to share the current persona tab.
