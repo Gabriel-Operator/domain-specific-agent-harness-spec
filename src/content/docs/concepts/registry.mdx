@@ -1,0 +1,16 @@
+---
+title: Registry
+description: The lock that pins linked definition files to reviewed content and Git revisions.
+template: splash
+concept:
+  category: infrastructure
+  order: 6
+---
+
+A persona’s portable **registry** lives in `references/registry.json`. It lists linked workflows, pipelines, and lists with their resource keys and file paths, definition fingerprints, and published revisions. Older entries can use the root Git link when an explicit revision is absent.
+
+## Publish and verify a pin
+
+Publish a linked definition before the persona root. Use the authoring tools to generate its fingerprint and revision. During import, the runtime resolves the key and verifies the definition before use. Gabriel’s generated `references/workspace.json` describes the broader authoring graph.
+
+See [registry fields and import rules](../../specification/#5-registry-) and [publishing order](../../implementation/#publish-and-reuse).

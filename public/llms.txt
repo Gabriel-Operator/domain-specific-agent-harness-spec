@@ -7,7 +7,7 @@
 - [Specification](https://raw.githubusercontent.com/Gabriel-Operator/domain-specific-agent-harness-spec/main/src/content/docs/specification.mdx): Folder structure, SKILL.md, definitions-only rule, resource keys, registry, and runtime rules.
 - [Implementation guide](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/implementation/): Map the architecture to definition files, workspace behavior, and validated example JSON.
 - [Apps and connectors](https://raw.githubusercontent.com/Gabriel-Operator/domain-specific-agent-harness-spec/main/src/content/docs/apps.mdx): Connector requirements, steps, lists, pipelines, app packages, live sync, and presence.
-- [Concept reference](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/concepts/): Topic pages that map Gabriel Operator concepts and Studio views to the draft.
+- [Concept reference](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/concepts/): Individual concept pages covering core definitions, execution and governance, data and integrations, and infrastructure and distribution.
 - [Governed execution](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/concepts/governed-execution/): Human decisions, isolated rehearsal, exact effect approval, and live receipts.
 - [Skill catalogue](https://raw.githubusercontent.com/Gabriel-Operator/domain-specific-agent-harness-spec/main/src/content/docs/skills.mdx): Individual Gabriel Operator skills and child references.
 - [Examples](https://raw.githubusercontent.com/Gabriel-Operator/domain-specific-agent-harness-spec/main/src/content/docs/examples.mdx): Studio tour, a prospect workflow, and 17 persona architectures.

@@ -1,0 +1,18 @@
+---
+title: Data feeds
+description: Versioned sources that read, validate, and map observations into the domain.
+template: splash
+concept:
+  category: data
+  order: 6
+---
+
+A **data feed** reads an observation through a source workflow. Its definition describes inputs, outputs, credential slots, and any mapping to the ontology. A feed catalog ties the definition to the workflow’s stable resource key and file paths.
+
+## From source to observation
+
+A recruiting feed can read a hiring announcement, validate the returned fields, and map the company and role into the ontology. The workspace keeps the observations and enabled schedules. The feed definition and source workflow can be reviewed and versioned in Git.
+
+A signal can evaluate the observation and suggest work. The playbook that performs that work uses its own permissions and approvals.
+
+See the [feed catalog contract](../../specification/#66-data-feeds) and [signals](../signals/).

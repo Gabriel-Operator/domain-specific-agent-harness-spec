@@ -10,16 +10,16 @@ A **persona** is the versioned definition of a domain, its teams, and the playbo
 
 | Term | Meaning in this specification |
 | --- | --- |
-| Persona | The Git definition of a domain model, its teams, and the playbooks those teams can use. |
-| Runtime | Software that imports and verifies a persona, connects workspace resources, and coordinates execution. |
-| Agent harness | The execution system that runs the agent loop, including model calls, context, and tool use. |
-| Agent | An AI worker configured with instructions and tools. In a Gabriel team definition, the existing field for agent entries is `teams[].bots`. |
-| Team | Agents and shared resources configured to work together. One persona can declare multiple teams. |
-| Skill | A reusable bundle of instructions and supporting files that an agent can load. |
-| Goal | A desired outcome for a team, with criteria for what counts as done. A goal can use existing playbooks or guide the authoring of a new one. |
-| Workflow (playbook) | A prescribed sequence or graph of steps. **Workflow** is the generic term; **playbook** is the name used in Gabriel Studio. |
-| Connector / connection | A connector declares which external operations work may call. A connection is an authenticated account that a workspace supplies. |
-| Workspace | One installation's environment, with accounts, permissions, and state. |
+| [Persona](../concepts/persona/) | The Git definition of a domain model, its teams, and the playbooks those teams can use. |
+| [Runtime](../concepts/runtime/) | Software that imports and verifies a persona, connects workspace resources, and coordinates execution. |
+| [Agent harness](../concepts/agent-harness/) | The execution system that runs the agent loop, including model calls, context, and tool use. |
+| [Agent](../concepts/agents/) | An AI worker configured with instructions and tools. In a Gabriel team definition, the existing field for agent entries is `teams[].bots`. |
+| [Team](../concepts/teams/) | Agents and shared resources configured to work together. One persona can declare multiple teams. |
+| [Skill](../concepts/skills/) | A reusable bundle of instructions and supporting files that an agent can load. |
+| [Goal](../concepts/goals/) | A desired outcome for a team, with criteria for what counts as done. A goal can use existing playbooks or guide the authoring of a new one. |
+| [Workflow (playbook)](../concepts/playbooks/) | A prescribed sequence or graph of steps. **Workflow** is the generic term; **playbook** is the name used in Gabriel Studio. |
+| [Connector / connection](../concepts/connectors/) | A connector declares which external operations work may call. A connection is an authenticated account that a workspace supplies. |
+| [Workspace](../concepts/workspaces/) | One installation's environment, with accounts, permissions, and state. |
 
 For example, Lane is a **persona** for introductions and pilots. Lead researcher and Outreach coordinator are **agents** on one team. The steps for drafting and approving an email are a **playbook**. Sam's connected Gmail account and the resulting email history belong to the **workspace**.
 

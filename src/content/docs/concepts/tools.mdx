@@ -1,0 +1,18 @@
+---
+title: Tools
+description: The callable capabilities a harness exposes to an agent within a playbook’s scope.
+template: splash
+concept:
+  category: definitions
+  order: 9
+---
+
+A **tool** is an operation an agent can request through its harness. A tool can read a calendar, search records, or submit data to a service. A tool’s input and output contract gives the harness a way to validate the request and return evidence to the run.
+
+## From tool request to operation
+
+A playbook declares the external connector operations it needs. The workspace binds an operation to an authorized connection. For example, a calendar tool exposed by an MCP server can satisfy a playbook’s logical calendar read if the runtime supports that binding and the workspace grants access.
+
+The harness exposes the capabilities permitted for the run. The runtime checks the operation’s scope and requires the applicable approval before a protected effect.
+
+See [connector requirements](../connectors/), [capability reporting](../../specification/#71-capability-report-), and [Model Context Protocol](../../standards/#model-context-protocol).

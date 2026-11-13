@@ -1,0 +1,16 @@
+---
+title: Agent harness
+description: The system that runs the agent loop, manages context, and coordinates model and tool calls.
+template: splash
+concept:
+  category: infrastructure
+  order: 2
+---
+
+An **agent harness** manages the model and tool loop for an agent. It supplies context to model calls, exposes permitted tools, and returns results for the surrounding run. A domain-specific harness uses the persona’s definitions and workspace bindings to keep the work within the team’s scope.
+
+## How it fits with the runtime
+
+The runtime verifies the imported definitions, resolves accounts and permissions, and tracks execution. The harness handles the agent loop for the selected work. An implementation can put both responsibilities in the same process. This draft leaves the interface between them to each implementation.
+
+See [terms and interoperability](../../standards/#vocabulary) and [capability and binding rules](../../specification/#7-runtime-rules).

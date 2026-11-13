@@ -1,0 +1,18 @@
+---
+title: Models
+description: The language or multimodal models that the workspace binds to required capabilities.
+template: splash
+concept:
+  category: definitions
+  order: 8
+---
+
+A **model** performs the inference a harness needs to carry out an agent’s work. A model may interpret context, produce structured output, or propose a tool call. The harness supplies the context and controls the actual invocation of tools.
+
+## Capability and binding
+
+The draft proposes that persona definitions describe the model capabilities they need, such as tool use or structured output. The workspace selects a compatible model when it binds those requirements. For example, Meeting desk can require structured fields for a summary while its workspace supplies the model.
+
+The runtime still checks the selected playbook’s capabilities and permissions. A model’s proposed write or publish operation goes through the applicable effect approval.
+
+See [the proposed binding rules](../../specification/#72-binding-) and [agent harness](../agent-harness/).

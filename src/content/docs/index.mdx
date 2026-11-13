@@ -6,7 +6,8 @@ hero: {}
 ---
 
 import CopyPrompt from '../../components/CopyPrompt.astro';
-import DocCategories from '../../components/DocCategories.astro';
+import ArchitectureDiagram from '../../components/ArchitectureDiagram.astro';
+import ConceptDirectory from '../../components/ConceptDirectory.astro';
 import HarnessWalkthrough from '../../components/HarnessWalkthrough.astro';
 
 ## Why a domain-specific harness?
@@ -17,36 +18,29 @@ import HarnessWalkthrough from '../../components/HarnessWalkthrough.astro';
 
 ## Architecture at a glance
 
-<figure class="ap-architecture">
-  <a href="./architecture.svg">
-    <img src="./architecture.svg" width="1200" height="1050" loading="lazy" alt="A workspace loads a persona. Team goals invoke playbooks through the harness. The harness prepares, rehearses, and seeks human approval before protected live actions. Connectors use vault credentials, receipts inform revisions, and playbooks can be reused across personas." />
-  </a>
-  <figcaption>Select the diagram to view it at full size.</figcaption>
-</figure>
+<ArchitectureDiagram />
 
 [Map the architecture to files and runtime behavior](./implementation/).
+
+<span id="package-agent-workspace"></span>
+
+<span id="persona-runtime-and-harness"></span>
+
+## Anatomy of the specification
+
+Each concept has its own reference page with a definition, how it fits into the harness, and links to the relevant rules or examples.
+
+<ConceptDirectory />
 
 <span id="explore-the-documentation"></span>
 
 ## Explore the specification
 
-Start with the definitions, follow a run, or look up the Gabriel Operator skills that author and operate these resources.
-
-<DocCategories />
-
-<span id="package-agent-workspace"></span>
-
-## Persona, runtime, and harness
-
-- **Playbook.** Reusable work that can be discovered in a marketplace and referenced by teams.
-- **Persona.** The versioned composition of a domain model, teams, and their playbooks.
-- **Goal.** An outcome scoped to a team. It can invoke saved playbooks and guide the authoring of new ones.
-- **Runtime.** The layer that loads a persona, connects it to workspace resources, and coordinates execution.
-- **Agent harness.** The system that runs the agent loop and coordinates model calls and tool use.
-- **Workspace.** An installation that holds accounts, records, permissions, and run history.
-- **Domain specialist.** The person who defines what good work looks like, resolves anomalies, and reviews changes to the rules.
-
-See [Terms and standards](./standards/) for the glossary and how Agent Skills, MCP, and A2A fit.
+- [Specification](./specification/) covers persona files, portable definitions, and runtime rules.
+- [Implementation guide](./implementation/) walks through installing, running, and reviewing a Meeting desk persona.
+- [Apps and connectors](./apps/) describes the profile for operations, data, and custom interfaces.
+- [Worked examples](./examples/) shows how teams compose and run playbooks in Gabriel Operator.
+- [Terms and standards](./standards/) explains how this draft relates to Agent Skills, MCP, and A2A.
 
 <span id="anatomy-of-a-persona"></span>
 

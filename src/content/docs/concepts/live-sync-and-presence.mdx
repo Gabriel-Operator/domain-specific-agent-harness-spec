@@ -1,0 +1,18 @@
+---
+title: Live sync and presence
+description: The events that refresh open views and show who is working in a shared workspace.
+template: splash
+concept:
+  category: infrastructure
+  order: 8
+---
+
+**Live sync** keeps open views current as workspace records and run state change. **Presence** shows which members are active, such as their current view or cursor. These features use the workspace’s access controls.
+
+## Events and shared views
+
+When a playbook publishes an accepted field change, the runtime can notify clients that may read the affected list. A board can then show the new stage without a reload. Presence can show who is looking at that board. In Gabriel Studio, following another member mirrors their view while the follower’s own permissions still apply.
+
+The Apps and connectors profile documents Gabriel’s live event transport and proposes shared presence behavior.
+
+See [live sync](../../apps/#7-live-sync-) and [presence and following](../../apps/#8-presence-and-following-).

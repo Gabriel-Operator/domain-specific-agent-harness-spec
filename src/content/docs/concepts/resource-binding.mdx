@@ -1,0 +1,18 @@
+---
+title: Resource binding
+description: How a workspace connects logical requirements to its models, accounts, people, and destinations.
+template: splash
+concept:
+  category: infrastructure
+  order: 4
+---
+
+**Binding** connects a portable requirement to a resource available in an installation. A definition can request structured model output, a calendar read, or an approver role. The workspace supplies a compatible model, an authorized calendar account, or the person assigned to review.
+
+## Resolve and check access
+
+Before dispatch, check that the selected resource can perform the operation and that the acting member or team has the necessary grant. A missing binding holds the affected work. A published definition can be reused in another workspace with different bindings.
+
+In Meeting desk, `calendar:upcoming` is a logical operation. The installation binds it to a member-authorized calendar and maps the returned data to the meetings field. A separate publisher binding identifies where an approved summary may go.
+
+See [proposed binding rules](../../specification/#72-binding-) and [the Meeting desk example](../../implementation/#bind-and-run-a-team-goal).

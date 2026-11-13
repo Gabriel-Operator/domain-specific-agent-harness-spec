@@ -1,0 +1,73 @@
+---
+import { getCollection } from 'astro:content';
+import { LinkCard } from '@astrojs/starlight/components';
+
+const categories = [
+  ['definitions', 'Core definitions'],
+  ['execution', 'Execution and governance'],
+  ['data', 'Data and integrations'],
+  ['infrastructure', 'Infrastructure and distribution'],
+] as const;
+
+const concepts = (await getCollection('docs')).flatMap(({ id, data }) =>
+  data.concept && !data.draft ? [{ id, data, concept: data.concept }] : [],
+).sort((first, second) => first.concept.order - second.concept.order);
+const base = Astro.locals.starlightRoute.siteTitleHref;
+---
+
+<div class="concept-directory not-content">
+  {categories.map(([category, title]) => (
+    <section class="concept-group" aria-labelledby={`concept-${category}`}>
+      <h3 id={`concept-${category}`}>{title}</h3>
+      <div class="concept-grid">
+        {concepts.filter(({ concept }) => concept.category === category).map(({ id, data }) => (
+          <LinkCard title={data.title} description={data.description} href={`${base}${id}/`} />
+        ))}
+      </div>
+    </section>
+  ))}
+</div>
+
+<style>
+  .concept-directory {
+    display: grid;
+    gap: clamp(1.75rem, 3vw, 2.75rem);
+    margin-block: 1.5rem 2.25rem;
+  }
+
+  .concept-group h3 {
+    margin: 0 0 0.875rem;
+  }
+
+  .concept-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+    gap: 0.875rem;
+  }
+
+  @media (min-width: 58rem) {
+    .concept-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  }
+
+  .concept-grid :global(.sl-link-card) {
+    min-width: 0;
+    padding: 1rem 1.15rem;
+    border-color: var(--ap-line);
+    background: var(--ap-surface);
+    box-shadow: none;
+  }
+
+  .concept-grid :global(.sl-link-card:hover),
+  .concept-grid :global(.sl-link-card:focus-within) {
+    border-color: var(--ap-muted);
+    background: var(--sl-color-bg);
+  }
+
+  .concept-grid :global(.sl-link-card .title) {
+    font-size: 1.0625rem;
+  }
+
+  .concept-grid :global(.sl-link-card .description) {
+    font-size: 0.9375rem;
+  }
+</style>

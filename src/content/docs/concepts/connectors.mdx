@@ -1,0 +1,16 @@
+---
+title: Connectors
+description: Declared external operations and the workspace connections that authorize them.
+template: splash
+concept:
+  category: data
+  order: 1
+---
+
+A **connector requirement** states which external operations a playbook can request. A **connection** is the authenticated account that satisfies a requirement in a workspace. A playbook can declare an email provider and the send operation. The workspace resolves an authorized sender.
+
+## Reading, writing, and starting work
+
+A connector read brings evidence into a run. A write changes something in the destination. A process starts work the runtime may have to check for completion. Map operation arguments and named outputs through the declared step contract. Protected writes and processes wait for the applicable approval.
+
+See [connector requirements and account scope](../../apps/#2-connector-requirements-) and [steps that use a connector](../../apps/#3-steps-that-use-a-connector-).

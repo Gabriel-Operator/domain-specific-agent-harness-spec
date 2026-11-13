@@ -1,0 +1,18 @@
+---
+title: Sandbox rehearsal
+description: An isolated test of a proposed action that records evidence without production effects.
+template: splash
+concept:
+  category: execution
+  order: 4
+---
+
+A **sandbox rehearsal** exercises the proposed behavior against an isolated environment. A copied form, a mocked connector, or a test account can show which checks pass, what would change, and what the test cannot establish.
+
+## Evidence for the next decision
+
+Record the inputs, definition revision, expected effects, checks, and limits of the rehearsal. Keep production writes, notifications, and charges disabled. If the workflow requires a rehearsal, the runtime holds live dispatch until it has suitable evidence. An authorized person reviews the actual proposed effect before it executes.
+
+Sherma rehearses normalized answers against a form twin. The reviewer can inspect the exact answers before submission. A receipt for a live submission comes from the destination.
+
+See [what counts as rehearsal](../governed-execution/#what-counts-as-rehearsal) and the [runtime rules](../../specification/#74-rehearsal-and-governed-execution-).

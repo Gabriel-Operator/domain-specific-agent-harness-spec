@@ -1,0 +1,16 @@
+---
+title: Resource keys
+description: Stable identities that let portable definitions reference one another across installations.
+template: splash
+concept:
+  category: infrastructure
+  order: 5
+---
+
+A **resource key** identifies a portable definition. A key is lowercase, dot-separated, and begins with its kind. For example, `list.example.meetings` can identify a list referenced by a pipeline. The same definition can have many revisions under one key.
+
+## Resolve the right definition
+
+A portable reference names a resource key. The registry tells the runtime which linked definition to load and verify. Studio team definitions also use IDs and keys within their own definition graph. The workspace creates any local IDs it needs when installing resources.
+
+See [resource-key syntax and examples](../../specification/#4-resource-keys-) and [the portable registry](../registry/).

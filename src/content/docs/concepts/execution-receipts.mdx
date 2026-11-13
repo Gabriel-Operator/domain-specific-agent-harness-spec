@@ -1,0 +1,18 @@
+---
+title: Execution receipts
+description: Evidence from a live operation that helps a runtime verify and reconcile the result.
+template: splash
+concept:
+  category: execution
+  order: 5
+---
+
+An **execution receipt** records evidence of what happened after dispatch. A provider may return a delivery ID, a confirmed order, or an identifier for the record it updated. Keep the receipt with the run and the approval it consumed.
+
+## Handle an uncertain result
+
+If a network failure interrupts a response after dispatch, reconcile the outcome against the provider before trying again. The provider may have accepted the request. A rehearsal records expected behavior in isolation. A live receipt records the actual effect.
+
+Paya checks for a merchant order ID before recording a purchase as complete. An uncertain payment is reconciled before another charge can be attempted.
+
+See the [governed execution contract](../../specification/#74-rehearsal-and-governed-execution-) and [persona examples](../../examples/#persona-architectures).

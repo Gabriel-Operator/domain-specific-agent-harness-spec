@@ -1,0 +1,18 @@
+---
+title: Teams
+description: The owners of goals, agent placements, handoffs, and shared resources.
+template: splash
+concept:
+  category: definitions
+  order: 3
+---
+
+A **team** groups agents and resources around a domain responsibility. One persona can declare several teams. A team owns the goals started inside it, the agents available for those goals, and shared definitions such as boards and lists.
+
+## How a team is defined
+
+In `assets/studio-teams.json`, a team declares an ID, a purpose in `goal`, a revision, a budget, placements in `bots`, and handoff edges in `connections`. The handoff edges link placements inside that team. Each placement pins the playbook it runs.
+
+The Accountants team can place Lead Finder, Signal Researcher, Copywriter, and Sequence Reviewer. A qualification goal may need only the first two. A goal that includes outreach can also select the writing and review placements.
+
+See [Studio team definitions](../../specification/#63-studio-definitions) and [Canvas and Work](../teams-and-goals/#canvas-and-work).

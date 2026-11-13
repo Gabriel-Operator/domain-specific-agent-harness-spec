@@ -5,9 +5,11 @@ import { Icon } from '@astrojs/starlight/components';
 const { entry, hasSidebar, siteTitleHref } = Astro.locals.starlightRoute;
 ---
 
-{hasSidebar && (
+{(entry.data.concept || hasSidebar) && (
   <nav class="ap-breadcrumb" aria-label="Breadcrumb" data-pagefind-ignore>
-    <a href={siteTitleHref}><Icon name="open-book" /> Documentation</a>
+    <a href={entry.data.concept ? `${siteTitleHref}concepts/` : siteTitleHref}>
+      <Icon name="open-book" /> {entry.data.concept ? 'Topics' : 'Documentation'}
+    </a>
     <Icon name="right-caret" />
     <span aria-current="page">{entry.data.title}</span>
   </nav>

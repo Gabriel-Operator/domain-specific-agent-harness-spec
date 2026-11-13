@@ -1,0 +1,16 @@
+---
+title: Workspaces
+description: Installations that hold local accounts, permissions, records, and run history.
+template: splash
+concept:
+  category: infrastructure
+  order: 3
+---
+
+A **workspace** is one installation of a persona revision. It supplies member roles, connector bindings, models, and grants. It also keeps run state, approvals, outputs, and shared records.
+
+## Import and update
+
+Import the persona from a reviewed revision and verify its pins. The workspace binds logical requirements to local resources before the corresponding work can run. Multiple workspaces can use the same definition with different accounts and state. When a workspace adopts a new revision, its local run history and authorized connections remain with the installation.
+
+See [personas and workspaces](../personas-and-workspaces/#importing-and-updating) and [what belongs outside the persona folder](../../specification/#what-lives-outside-the-persona-folder).

@@ -1,0 +1,18 @@
+---
+title: Domain ontology
+description: The entities, fields, and relationships that give a team’s data a shared meaning.
+template: splash
+concept:
+  category: definitions
+  order: 2
+---
+
+An **ontology** gives source records a common domain vocabulary. A team can define a Prospect entity, its identifier and lifecycle stage, and its relationship to an organization. Agents and apps can then interpret records using the same terms.
+
+## Map a source to the domain
+
+Inventory the apps first. For each source, decide which record represents the entity, how to identify it, and which fields carry the meaning the team needs. Record the entity and field definitions in `assets/ontology.json`. A source mapping can project provider-specific values into those fields.
+
+A domain name can help match two company records. If two records share that name, the mapping can surface both candidates for a specialist to resolve.
+
+See the [ontology schema and example](../../specification/#61-ontology) and [app inventory](../personas-and-workspaces/#map-the-organizations-apps).

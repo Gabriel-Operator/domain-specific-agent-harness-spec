@@ -1,0 +1,16 @@
+---
+title: Packaging and installation
+description: How authors version definitions and adopt them in a workspace.
+template: splash
+concept:
+  category: infrastructure
+  order: 7
+---
+
+A **persona package** brings together the root skill, published configuration, portable definitions, and pins for linked resources. The root commit versions the local files. Registry entries identify the exact linked definitions the runtime should import.
+
+## From Git to an installation
+
+Publish child definitions first, then the persona root with updated pins. A workspace verifies the published definition and supplies its own resource bindings and grants. A compiled custom app follows the app package and installation contract. A self-hosted appliance can import a separately compiled, signed release candidate.
+
+See [publishing and reuse](../../implementation/#publish-and-reuse) and [custom app packages and installations](../../apps/#packages-and-installations-).

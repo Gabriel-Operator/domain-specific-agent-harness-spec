@@ -1,0 +1,18 @@
+---
+title: Runs
+description: An attempt to execute a goal or playbook with pinned definitions and workspace evidence.
+template: splash
+concept:
+  category: execution
+  order: 2
+---
+
+A **run** is a concrete attempt to carry out work. It belongs to a workspace and captures the inputs, selected definitions and their revisions, and limits for that attempt. A team goal can delegate to several playbook runs.
+
+## What the workspace records
+
+The runtime tracks progress, pending decisions, accepted outputs, and effects. It uses the same input identity when handling a repeated start. A blocked step stays blocked when a connection or definition syncs. If the result of a live effect is uncertain, the runtime reconciles it before retrying.
+
+In Meeting desk, a calendar read and a reviewed publication can have different run records. The accepted output can be handed off within the same authorized goal scope.
+
+See [runs and collaboration](../runs-and-collaboration/) and [run binding and private handoff](../../implementation/#bind-and-run-a-team-goal).

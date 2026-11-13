@@ -1,0 +1,18 @@
+---
+title: Skills
+description: Reusable instructions and supporting files an agent can load for a task.
+template: splash
+concept:
+  category: definitions
+  order: 7
+---
+
+A **skill** is a reusable bundle of instructions and resources. The persona’s root `SKILL.md` uses the Agent Skills format and describes how to work in its domain. Additional skills can live under `skills/`.
+
+## How a playbook uses a skill
+
+A playbook can load a skill when it needs instructions for part of its work. For example, a research playbook can use a skill to explain how to check the strength of public evidence. The playbook’s own contract supplies its inputs, declared operations, and expected outputs. The workspace authorizes any tool access.
+
+An Agent Skill may include scripts. Persona definition files describe portable resources and follow the definitions-only rule.
+
+See [the root skill contract](../../specification/#2-skillmd-), [Agent Skills interoperability](../../standards/#agent-skills), and the [Gabriel skill catalogue](../../skills/).

@@ -1,0 +1,16 @@
+---
+title: Evals
+description: Versioned cases that verify a persona’s expected behavior before release.
+template: splash
+concept:
+  category: execution
+  order: 6
+---
+
+An **eval** tests behavior against a stated requirement. A suite groups cases, names its run mode, and can require a passing result before release. A case selects a command, actor role, inputs or fixtures, and assertions.
+
+## From a review finding to a test
+
+If a specialist finds that a shared website domain can identify two prospects, add a case that expects the playbook to hold for review when that happens. A case can also assert that drafting has no external side effect. Author and version the requirement, suite, and cases in `assets/persona-evals.json`. Keep live review decisions with the run.
+
+See [eval definitions](../../specification/#62-evals) and [how specialist review informs later revisions](../signals-and-evals/#learn-from-specialist-review).

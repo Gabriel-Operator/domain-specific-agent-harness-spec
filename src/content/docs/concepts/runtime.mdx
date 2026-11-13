@@ -1,0 +1,18 @@
+---
+title: Runtime
+description: The software that imports definitions, binds resources, and coordinates execution.
+template: splash
+concept:
+  category: infrastructure
+  order: 1
+---
+
+A **runtime** loads a persona revision, verifies its linked definitions, and resolves the workspace resources needed to run it. It checks permissions and capabilities and stores run state. It uses a harness for work that requires an agent loop.
+
+## Before and during a run
+
+Verify the definition fingerprints before use. Report which steps the installation supports and hold unsupported steps. At dispatch, bind authorized connectors and check current grants and approvals. A reconnect or definition sync cannot silently execute blocked work or repeat completed work.
+
+For Meeting desk, the runtime can bind a workspace calendar account and publisher while the agent uses its assigned harness to prepare a summary.
+
+See [runtime rules](../../specification/#7-runtime-rules) and [the implementation guide](../../implementation/#bind-and-run-a-team-goal).

@@ -1,0 +1,18 @@
+---
+title: Pipelines
+description: Stages and transitions that describe how a record moves through a process.
+template: splash
+concept:
+  category: data
+  order: 4
+---
+
+A **pipeline** is a state machine for records. It defines the stages a record can occupy and the transitions between them. A board can use those stages as columns.
+
+## Moving between stages
+
+A pipeline can reference the list that stores its records. A transition can name a playbook to start, declare execution limits, and identify which output fields may be shared. An authorized transition updates the record within its rules. Any protected effect the playbook proposes still follows its approval rules.
+
+Lane’s prospect pipeline can move a record from Contacted to Meeting booked. A case that needs a person can move to Needs you while the team resolves the decision.
+
+See the [linked pipeline definition](../../specification/#64-linked-lists-pipelines-and-workflows) and [Lane’s end-to-end run](../../examples/#one-prospect-end-to-end).

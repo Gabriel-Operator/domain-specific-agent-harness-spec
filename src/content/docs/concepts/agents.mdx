@@ -1,0 +1,18 @@
+---
+title: Agents
+description: The workers that execute playbooks inside a team.
+template: splash
+concept:
+  category: definitions
+  order: 4
+---
+
+An **agent** carries out work using instructions and tools. In Gabriel Studio, the portable team definition represents an agent placement under `teams[].bots`. The placement references its playbook by `playbookId` and pins the definition through `sourceFingerprint`.
+
+## Placement and execution
+
+A placement can have its own name and completion criteria in a team. The playbook defines the work and declares the capabilities it can request. When a goal selects that placement, the runtime checks the required capabilities and workspace permissions before using the harness for the agent’s work.
+
+Lane can place a Lead researcher and an Outreach coordinator on the same team. The researcher gathers evidence. The coordinator uses the accepted research to prepare an outreach draft.
+
+See the [team and playbook schema](../../specification/#63-studio-definitions) and [Lane’s team](../../examples/#the-team-behind-the-tour).
