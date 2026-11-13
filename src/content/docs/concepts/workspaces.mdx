@@ -1,7 +1,7 @@
 ---
 title: Workspaces
 description: Installations that hold local accounts, permissions, records, and run history.
-template: splash
+template: doc
 concept:
   category: infrastructure
   order: 3
@@ -9,8 +9,34 @@ concept:
 
 A **workspace** is one installation of a persona revision. It supplies member roles, connector bindings, models, and grants. It also keeps run state, approvals, outputs, and shared records.
 
+## Definition and installation
+
+### What a workspace owns
+
+The adopted persona revision supplies teams, playbooks, schemas, and logical requirements. The workspace stores local member roles, bindings, records, approvals, schedules, and history. Bindings can differ even when two workspaces adopt the same definition.
+
+### Example two installations
+
+```text
+Meeting desk at the same published revision
+├── Finance workspace
+│   ├── calendar: Finance account
+│   └── output: Finance meeting list
+└── Operations workspace
+    ├── calendar: Operations account
+    └── output: Operations meeting list
+```
+
+The logical calendar requirement is identical in both installations. Each team sees the data permitted by its own grants and the acting member’s account.
+
 ## Import and update
 
-Import the persona from a reviewed revision and verify its pins. The workspace binds logical requirements to local resources before the corresponding work can run. Multiple workspaces can use the same definition with different accounts and state. When a workspace adopts a new revision, its local run history and authorized connections remain with the installation.
+### Prepare the installation
 
-See [personas and workspaces](../personas-and-workspaces/#importing-and-updating) and [what belongs outside the persona folder](../../specification/#what-lives-outside-the-persona-folder).
+Review the pinned persona and linked definitions. Set up required connectors, model capabilities, output targets, and reviewers before running a team goal. Treat a package requiring missing compute or unbound connectors as setup work.
+
+### Adopt a new revision
+
+Compare the accepted source revision and the workspace’s current definitions. Verify new pins, preserve workspace-owned history and compatible bindings, and review changed requirements before execution. For Studio package updates, the preview identifies any local edits or permission changes that need review.
+
+See [personas and workspaces](../personas-and-workspaces/#importing-and-updating) and [what lives outside the persona folder](../../specification/#what-lives-outside-the-persona-folder).

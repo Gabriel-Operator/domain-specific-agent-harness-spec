@@ -1,7 +1,7 @@
 ---
 title: Models
 description: The language or multimodal models that the workspace binds to required capabilities.
-template: splash
+template: doc
 concept:
   category: definitions
   order: 9
@@ -9,10 +9,34 @@ concept:
 
 A **model** performs the inference a harness needs to carry out an agent’s work. A model may interpret context, produce structured output, or propose a tool call. The harness supplies the context and controls the actual invocation of tools. A [model provider](../model-providers/) serves the selected model through an authorized account.
 
-## Capability and binding
+## Match the model to the step
 
-The draft proposes that persona definitions describe the model capabilities they need, such as tool use or structured output. The workspace selects a compatible model when it binds those requirements. For example, Meeting desk can require structured fields for a summary while its workspace supplies the model.
+### Inputs, outputs, and constraints
 
-The runtime still checks the selected playbook’s capabilities and permissions. A model’s proposed write or publish operation goes through the applicable effect approval.
+Select for the actual task. A document extraction step may need vision input and structured output. A writer can use a text model with a smaller input. A spoken interaction can use a realtime audio model or a combination of speech and text services. Tool calling, input size, output validation, and cost are part of selection.
 
-See [the proposed binding rules](../../specification/#72-binding-) and [agent harness](../agent-harness/).
+| Step | Required input | Required output |
+| --- | --- | --- |
+| Summarize accepted calendar data | Structured data represented in text | A summary validated against named fields |
+| Inspect a shared tab | Masked image and the visible control list | A browser action that passes validation |
+| Give a spoken answer | Audio or a transcript | Audio, with tool calls checked by the same service |
+
+### Example capability check
+
+Illustrative decision logic for a connector-backed reasoning step.
+
+```text
+if model cannot accept the requested input: hold for setup
+if model cannot return the required output: hold for setup
+otherwise run within the step budget and validate the returned fields
+```
+
+## Record and verify the result
+
+### Record the binding used
+
+Model output is variable. The harness can check output structure, limits, and tool permissions. A specialist can still need to verify a claim against its source. Capture the selected model and actual usage for an attempt. ### Evaluate a replacement model
+
+Test a replacement model with the same inputs, tools, and evals before using it for the same playbook. Check both output quality and failure behavior. For example, when a source is missing, a replacement summarizer should request the evidence instead of inventing a citation.
+
+See [model providers](../model-providers/), [evals](../evals/), and [Coach’s vision model](../coach-computer-use/).

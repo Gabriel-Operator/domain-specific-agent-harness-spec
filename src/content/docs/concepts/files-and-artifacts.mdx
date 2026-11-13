@@ -1,7 +1,7 @@
 ---
 title: Files and artifacts
 description: How authored files, working files, and shared outputs are stored and accessed.
-template: splash
+template: doc
 concept:
   category: data
   order: 8
@@ -9,8 +9,30 @@ concept:
 
 A playbook can carry **authored files** such as instructions, references, and schemas. A running task can also produce **working files** or **artifacts** such as a report or a generated image. Those files have different lifetimes and access rules.
 
-## Keep working files within their scope
+## Assign a lifecycle to each file
 
-Packaged skill files travel with the playbook revision. Gabriel can keep a member’s working files between workflow tasks when the team enables and verifies retained filesystem support. Published outputs follow the workspace’s sharing rules. For example, a private working copy can stay in the member’s environment while a reviewed brief is published for the team.
+### Authored, working, and published files
 
-Standard Agent Specification scopes its filesystem to a thread. In Gabriel, the team’s retained workflow filesystem is scoped to the workspace, team, and member. See [skills](../skills/), [workspaces](../workspaces/), and [Standard Agent Specification’s thread filesystem](https://standardagentspec.org/0.2.0/specification/threads/filesystem/).
+| File | Scope and lifetime |
+| --- | --- |
+| `skills/verify-signals/SKILL.md` | Authored with the playbook and pinned with its revision |
+| A generated draft in a task directory | Private to the run or member filesystem allowed by the team |
+| An accepted report in Outputs | Published to an authorized workspace destination |
+
+Retention is a workspace capability. A team must enable and verify a retained filesystem before relying on it across workflow tasks. Authorized artifact transfer, publication, and sharing are separate choices. Keep a stable reference or receipt for the exact accepted output.
+
+### Example private handoff
+
+```text
+studio-output:run-meeting-review#/summary
+```
+
+This reference selects the `summary` field of a completed accepted source run. Gabriel checks that the assignment is accepted under the same parent goal, team, workspace, and member scope before resolving it. Publishing the selected field to a team list still requires that destination’s grant and any applicable consent.
+
+## Failure and cleanup
+
+If a retained workspace is unavailable, use the current run’s supported recovery path or ask the owner to restore it. A shared report should link to a verified accepted version rather than a transient sandbox path. When a file is revoked or removed, keep historical run receipts and apply the current access policy when opening evidence.
+
+For a thread-scoped filesystem design, see [Standard Agent Specification’s thread filesystem](https://standardagentspec.org/0.2.0/specification/threads/filesystem/).
+
+See [skills](../skills/), [context and conversations](../context-and-conversations/), and [the private handoff walkthrough](../../implementation/#bind-and-run-a-team-goal).

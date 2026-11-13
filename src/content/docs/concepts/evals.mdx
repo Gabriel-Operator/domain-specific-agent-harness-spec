@@ -1,7 +1,7 @@
 ---
 title: Evals
 description: Versioned cases that verify a persona’s expected behavior before release.
-template: splash
+template: doc
 concept:
   category: execution
   order: 6
@@ -9,8 +9,34 @@ concept:
 
 An **eval** tests behavior against a stated requirement. A suite groups cases, names its run mode, and can require a passing result before release. A case selects a command, actor role, inputs or fixtures, and assertions.
 
-## From a review finding to a test
+## Define what the harness should verify
 
-If a specialist finds that a shared website domain can identify two prospects, add a case that expects the playbook to hold for review when that happens. A case can also assert that drafting has no external side effect. Author and version the requirement, suite, and cases in `assets/persona-evals.json`. Keep live review decisions with the run.
+### Requirements, suites, and cases
 
-See [eval definitions](../../specification/#62-evals) and [how specialist review informs later revisions](../signals-and-evals/#learn-from-specialist-review).
+Author these definitions in `assets/persona-evals.json`. A requirement identifies the behavior, the definition that implements it, and case IDs that verify it. A suite selects a test mode and can mark itself required for production. A case runs a command as a role with fixtures and asserts observable behavior. Pick assertions for both the desired output and the boundaries the playbook must respect.
+
+### Example case
+
+This excerpt belongs in a suite’s `cases`. Register the named command and link `draft-before-publishing` to this case in `requirements` before running it.
+
+```json
+{
+  "id": "draft-without-publish",
+  "name": "Draft from a complete brief",
+  "category": "golden",
+  "commandRef": "prepare-campaign",
+  "runAs": "author",
+  "input": { "inputValues": { "brief": "Draft a launch announcement." } },
+  "requirementIds": ["draft-before-publishing"],
+  "assertions": [
+    { "type": "execution_status", "expected": "completed" },
+    { "type": "no_external_side_effect" }
+  ]
+}
+```
+
+## Exercise a changed definition
+
+Run a representative successful case, a missing-input case, and a case whose input tries to bypass approval. Check the failing condition and the evidence recorded in the result. When a specialist corrects an anomaly, add a case that reproduces it. Run the required suite before release and keep live workspace evidence separately scoped.
+
+See [the complete eval definition](../../specification/#62-evals) and [specialist feedback](../signals-and-evals/#learn-from-specialist-review).

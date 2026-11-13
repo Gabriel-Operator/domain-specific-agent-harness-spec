@@ -1,7 +1,7 @@
 ---
 title: Teams
 description: The owners of goals, agent placements, handoffs, and shared resources.
-template: splash
+template: doc
 concept:
   category: definitions
   order: 3
@@ -9,10 +9,39 @@ concept:
 
 A **team** groups agents and resources around a domain responsibility. One persona can declare several teams. A team owns the goals started inside it, the agents available for those goals, and shared definitions such as boards and lists.
 
-## How a team is defined
+## Team definition
 
-In `assets/studio-teams.json`, a team declares an ID, a purpose in `goal`, a revision, a budget, placements in `bots`, and handoff edges in `connections`. The handoff edges link placements inside that team. Each placement pins the playbook it runs.
+### Identity, resources, and placement
 
-The Accountants team can place Lead Finder, Signal Researcher, Copywriter, and Sequence Reviewer. A qualification goal may need only the first two. A goal that includes outreach can also select the writing and review placements.
+A Studio team lives in `assets/studio-teams.json` under `teams`. Its `id` is the reference used by its resources and team-scoped playbooks. Use `goal` for the team's purpose. Canvas placements use `bots`, edges use `connections`, and `budget` declares daily and per-episode limits. Work goals, individual attempts, and approvals are created inside an installed team.
 
-See [Studio team definitions](../../specification/#63-studio-definitions) and [Canvas and Work](../teams-and-goals/#canvas-and-work).
+| Field | Meaning |
+| --- | --- |
+| `revision` | Revision used for team definition changes |
+| `bots[].playbookId` | Registered executable for the placement |
+| `connections` | Permitted delegation, accepted-result handoff, or context-page association |
+| `automationPolicies` | Candidate definitions for recurring work, subject to local enablement and limits |
+
+### Example blank team
+
+This is a valid Studio team definition. Add it to `teams`. The zero budgets intentionally describe a team that needs budget setup before running work.
+
+```json
+{
+  "id": "accountants",
+  "name": "Accountants",
+  "goal": "Find accounting firms and prepare evidence-backed outreach.",
+  "revision": 1,
+  "budget": { "dailyCredits": 0, "episodeCredits": 0 },
+  "apps": [],
+  "automationPolicies": [],
+  "bots": [],
+  "connections": []
+}
+```
+
+## Set up the first goal
+
+Create the empty team, then use **Quick Start → Add manually** to open Add bot on Canvas. Author a playbook or install a package there. Bind its resources and check the team’s spending limit. In Work, create a goal and verify that the plan selects the intended placements and handoffs. A team with a research and writing placement can run a research-only goal without scheduling a draft.
+
+See [agent placements](../agents/), [goal planning](../goals/), and [team packages](../packaging/#installable-studio-packages).

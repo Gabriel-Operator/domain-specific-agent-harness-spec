@@ -1,7 +1,9 @@
 ---
 import DefaultHeader from '@astrojs/starlight/components/Header.astro';
 
-const links = Astro.locals.starlightRoute.sidebar.flatMap((entry) =>
+const { entry, sidebar } = Astro.locals.starlightRoute;
+const isTopic = entry.id.startsWith('concepts/');
+const links = sidebar.flatMap((entry) =>
   entry.type === 'link' ? [entry] : entry.entries.filter((item) => item.type === 'link'),
 ).filter((link) => 'data-primary-nav' in link.attrs);
 const compactLabels: Record<string, string> = {
@@ -14,7 +16,7 @@ const compactLabels: Record<string, string> = {
 <DefaultHeader />
 <nav class="ap-top-nav" aria-label="Main navigation">
   {links.map(({ href, label, isCurrent }) => (
-    <a href={href} aria-current={isCurrent ? 'page' : undefined} aria-label={compactLabels[label] ? label : undefined}>
+    <a href={href} aria-current={isCurrent ? 'page' : isTopic && label === 'Topics' ? 'location' : undefined} aria-label={compactLabels[label] ? label : undefined}>
       {compactLabels[label] ? (
         <>
           <span class="ap-nav-full" aria-hidden="true">{label}</span>

@@ -1,7 +1,7 @@
 ---
 title: Vault
 description: Workspace storage that keeps credentials behind authorized connections.
-template: splash
+template: doc
 concept:
   category: data
   order: 2
@@ -9,10 +9,30 @@ concept:
 
 The **vault** holds the credentials that a workspace uses to bind connector requirements to authenticated accounts. A persona declares logical requirements and references. The workspace supplies the specific account and its grants.
 
-## Account scope
+## Store and bind account access
 
-A personal connection uses the acting member’s account. A shared connection is set up for a team resource with its own grants. For example, Lane can use a person’s Gmail account for outreach and a shared Notion destination for the team’s app. Copying a playbook to another workspace requires configuring the connections there.
+### Personal and shared connections
 
-A hosted custom app uses its authorized app bridge for operations. The vault keeps the underlying provider credentials behind that connection.
+A personal connection is resolved for the person a run acts for. A shared app destination requires its own approved binding and permitted operations. The runtime resolves and uses credentials on the service side. A persona definition and install preview can show the logical requirement and the operations it needs. Secret values belong in the workspace’s account store.
 
-See [credentials and approvals](../connectors-and-approvals/#credentials-stay-in-the-vault) and [workspace binding](../../specification/#72-binding-).
+| Item | Where it belongs |
+| --- | --- |
+| `calendar` requirement and `upcoming` operation | Portable playbook |
+| Calendar account and its grant | Workspace binding and Vault |
+| Token or provider credential | Protected credential storage |
+| Account used for a real dispatch | Restricted run evidence as a reference |
+
+### Example binding review
+
+```text
+Requirement: calendar (personal)
+Operation: upcoming
+Selected connection: member-authorized Google Calendar
+Effective grant: read upcoming events within the playbook’s declared operation
+```
+
+## Recheck access when it changes
+
+When an account is revoked, expired, or replaced, recheck it before the next operation. An approval for an old acting account does not transfer to a materially different proposal. If an effect may already have been sent, reconcile it against its receipt before repeating it with a new binding.
+
+See [connectors](../connectors/), [bindings](../resource-binding/), and [execution receipts](../execution-receipts/).

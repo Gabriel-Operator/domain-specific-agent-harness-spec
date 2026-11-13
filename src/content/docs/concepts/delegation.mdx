@@ -1,7 +1,7 @@
 ---
 title: Playbook delegation
 description: How a goal or playbook assigns bounded work and receives a result it can use.
-template: splash
+template: doc
 concept:
   category: definitions
   order: 12
@@ -9,10 +9,35 @@ concept:
 
 **Delegation** gives part of a goal to another agent or playbook. The caller supplies the task and inputs, then uses the result and its evidence to continue.
 
-## Delegate inside the team
+## Declare the child and its inputs
 
-A structured playbook can call another registered playbook. A goal playbook can select a child playbook from its declared allowlist. When the child is installed from a package, the run captures that child’s definition and skill files. The child works within the parent run’s limits and the workspace’s permissions.
+### Structured playbook call
 
-For example, an outreach playbook can ask a research playbook to verify a company. The parent receives the evidence it needs to draft a message. Sending still goes through the applicable approval.
+This step calls `read-meetings` and passes two fields from the parent’s inputs. The child key must already be registered. This excerpt belongs in a structured playbook’s `steps`.
 
-Standard Agent Specification models child agents as separate threads. Gabriel’s structured playbook calls and goal tasks record their parent and child work inside the Studio run. See [playbooks](../playbooks/), [runs](../runs/), and [Standard Agent Specification’s subagent relationships](https://standardagentspec.org/0.2.0/specification/subagents/).
+```json
+{
+  "id": "read-source",
+  "title": "Read meetings",
+  "instruction": "Collect evidence for the summary.",
+  "type": "playbook",
+  "playbookKey": "read-meetings",
+  "inputMappings": { "from": "/input/from", "until": "/input/until" }
+}
+```
+
+### Goal and Canvas delegation
+
+A goal playbook lists eligible child keys in `allowedPlaybooks`. A Canvas connection of kind `delegate` names the placements that may delegate within the team. A `handoff` makes accepted results available for later work. The planner may use either connection according to what the goal and runtime support.
+
+## Keep a child inside the parent’s authority
+
+Apply the child’s accepted definition and skill, while enforcing the parent’s permission and budget ceilings. Return named outputs and evidence so the caller can proceed. A denied connector or held approval in the child holds dependent work. Check cycles during definition validation and bound dynamic delegation by depth, tasks, agents, and time.
+
+### Record parent and child results
+
+Keep the child result and its evidence tied to the calling attempt so the parent can use only the accepted fields. For example, an outreach parent receives the verified source URL from its research child. Sending the resulting draft remains a separately governed operation.
+
+See [Standard Agent Specification’s subagent relationships](https://standardagentspec.org/0.2.0/specification/subagents/) for its thread model.
+
+See [goals](../goals/#saved-goal-playbook), [agents](../agents/), and [run history](../runs/).

@@ -1,7 +1,7 @@
 ---
 title: Persona
 description: A versioned definition of a domain, its teams, and their reusable work.
-template: splash
+template: doc
 concept:
   category: definitions
   order: 1
@@ -9,12 +9,35 @@ concept:
 
 A **persona** is the Git-backed definition that a runtime imports. It names the domain, describes the work its teams can perform, and brings together their playbooks, data definitions, and review expectations.
 
-## What ships with a persona
+## Definition and installation
 
-Start with the root `SKILL.md` and the published `assets/chat-config.json`. Add ontology, eval, and Studio assets for the features the persona uses. The portable registry pins linked list, pipeline, and workflow definitions. A workspace binds the imported revision to local accounts and stores its records and run history.
+### Portable files
 
-## Example
+A persona root identifies the domain and declares its teams and capabilities. The root Git revision covers local files. Linked repositories are resolved through `references/registry.json`. `assets/chat-config.json` carries the published persona configuration, while `assets/ontology.json` and `assets/studio-teams.json` describe domain objects and Studio teams when those features are present.
 
-Lane is a persona for introductions and pilots. One team can research prospects and prepare outreach. Another can reuse a reviewed playbook for a different goal. Each workspace supplies its own access and keeps its own outcomes.
+| Identity | What it identifies | When it changes |
+| --- | --- | --- |
+| `persona.meeting-desk` | Portable persona definition | When intentionally creating a new persona identity |
+| Root Git revision | Exact published snapshot | With a new publication |
+| Workspace ID | One installation and its local state | When creating another workspace |
 
-See the [folder structure](../../specification/#1-folder-structure-) and [persona installation guide](../personas-and-workspaces/).
+### Workspace responsibilities
+
+Two installations of Meeting desk can import the same root revision and use different calendars and publication targets. The importing workspace resolves those bindings and assigns its own members. Run history, credentials, and approvals belong to each installation. An update changes the definition a future run can select. Existing run evidence retains the identity and revision it used.
+
+## Example configuration
+
+The Meeting desk fixture uses this portable envelope. The prompt supplies domain instructions. Calendar access comes from the playbook’s connector requirement and workspace binding.
+
+```json
+{
+  "schemaVersion": 2,
+  "resourceKey": "persona.meeting-desk",
+  "publishedConfig": {
+    "name": "Meeting desk",
+    "systemPrompt": "Review upcoming meetings from authorized sources and share only approved summaries."
+  }
+}
+```
+
+See [the full Meeting desk files](../../implementation/#example-files), [ontology](../ontology/), and [what a workspace stores](../workspaces/).

@@ -50,6 +50,10 @@
 
 :root ::backdrop { --sl-color-backdrop-overlay: #0009; }
 
+:root[data-has-sidebar]:has(.ap-topic-breadcrumb) {
+  --sl-content-width: 100%;
+}
+
 :root:not([data-has-sidebar]) {
   --sl-content-width: 100%;
   --sl-content-pad-x: var(--sl-nav-pad-x);
@@ -109,8 +113,8 @@ header.header .social-icons a:hover { color: var(--ap-accent); }
 }
 
 .ap-top-nav a:hover,
-.ap-top-nav a[aria-current='page'] { color: var(--ap-accent); }
-.ap-top-nav a[aria-current='page'] { border-bottom-color: var(--ap-accent); }
+.ap-top-nav a[aria-current] { color: var(--ap-accent); }
+.ap-top-nav a[aria-current] { border-bottom-color: var(--ap-accent); }
 .ap-top-nav a:focus-visible { outline-color: var(--ap-accent); outline-offset: -2px; }
 .ap-nav-compact { display: none; }
 
@@ -224,6 +228,10 @@ h1#_top { font-size: clamp(1.95rem, 1.75rem + 0.85vw, 2.4rem); }
 .sl-markdown-content h3 { font-size: clamp(1.125rem, 1.055rem + 0.35vw, 1.35rem); }
 
 .sl-markdown-content .sl-heading-wrapper:not(:first-child) { margin-top: 2.65rem; }
+
+:root:has(.ap-topic-breadcrumb) .sl-markdown-content .sl-heading-wrapper + .sl-heading-wrapper {
+  margin-top: 1rem;
+}
 
 .sl-markdown-content .sl-heading-wrapper :is(h2, h3) .sl-badge {
   margin-inline-start: 0.25em;

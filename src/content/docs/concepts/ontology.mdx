@@ -1,7 +1,7 @@
 ---
 title: Domain ontology
 description: The entities, fields, and relationships that give a team’s data a shared meaning.
-template: splash
+template: doc
 concept:
   category: definitions
   order: 2
@@ -9,10 +9,54 @@ concept:
 
 An **ontology** gives source records a common domain vocabulary. A team can define a Prospect entity, its identifier and lifecycle stage, and its relationship to an organization. Agents and apps can then interpret records using the same terms.
 
-## Map a source to the domain
+## Define a domain model
 
-Inventory the apps first. For each source, decide which record represents the entity, how to identify it, and which fields carry the meaning the team needs. Record the entity and field definitions in `assets/ontology.json`. A source mapping can project provider-specific values into those fields.
+### Entity identity and attributes
 
-A domain name can help match two company records. If two records share that name, the mapping can surface both candidates for a specialist to resolve.
+Inventory the organization’s apps with a specialist. For each source, identify the record type, stable ID, relevant dates, and fields that are safe to use. Choose domain attribute names that survive a change of provider. Use a required identity field when the team needs to reconcile the same record over repeated reads. Attribute types and required fields are part of the model the mappings should satisfy.
 
-See the [ontology schema and example](../../specification/#61-ontology) and [app inventory](../personas-and-workspaces/#map-the-organizations-apps).
+### Relationships and reconciliation
+
+Define relationships by naming both entity types, the direction, and the cardinality where known. Review the rule that joins records before using it to publish or mutate data. For a recurring calendar event, two occurrences can share a title. Use an occurrence identifier when mapping results into `Meeting` and ask for specialist review when the source has conflicting identities.
+
+## Example definition
+
+This is the Meeting desk ontology fixture. A connector may use different field names. The mapping belongs with the feed or playbook that reads it.
+
+```json
+{
+  "schemaVersion": 1,
+  "resourceKey": "ontology.persona.meeting-desk",
+  "version": "1.0.0",
+  "name": "Meeting desk",
+  "status": "defined",
+  "entities": [
+    {
+      "type": "Meeting",
+      "description": "An upcoming occurrence on an authorized calendar.",
+      "attributes": {
+        "occurrenceId": {
+          "type": "string",
+          "required": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "startsAt": {
+          "type": "datetime",
+          "required": true
+        }
+      }
+    }
+  ],
+  "relationships": []
+}
+```
+
+| Consumer | How it uses the mapping |
+| --- | --- |
+| Custom app | Displays normalized dates and titles from permitted records |
+| Agent | Reads the same domain fields as playbook input and proposes a change through an allowed operation |
+| Specialist | Reviews missing or conflicting identities and validates a revised mapping |
+
+See [feed definitions](../data-feeds/) and [records and apps](../records-and-apps/).

@@ -3,12 +3,13 @@ import DefaultPageTitle from '@astrojs/starlight/components/PageTitle.astro';
 import { Icon } from '@astrojs/starlight/components';
 
 const { entry, hasSidebar, siteTitleHref } = Astro.locals.starlightRoute;
+const isTopic = entry.id.startsWith('concepts/');
 ---
 
-{(entry.data.concept || hasSidebar) && (
-  <nav class="ap-breadcrumb" aria-label="Breadcrumb" data-pagefind-ignore>
-    <a href={entry.data.concept ? `${siteTitleHref}concepts/` : siteTitleHref}>
-      <Icon name="open-book" /> {entry.data.concept ? 'Topics' : 'Documentation'}
+{(isTopic || hasSidebar) && (
+  <nav class:list={['ap-breadcrumb', { 'ap-topic-breadcrumb': isTopic }]} aria-label="Breadcrumb" data-pagefind-ignore>
+    <a href={isTopic ? `${siteTitleHref}concepts/` : siteTitleHref}>
+      <Icon name="open-book" /> {isTopic ? 'Topics' : 'Documentation'}
     </a>
     <Icon name="right-caret" />
     <span aria-current="page">{entry.data.title}</span>

@@ -1,7 +1,7 @@
 ---
 title: Live sync and presence
 description: The events that refresh open views and show who is working in a shared workspace.
-template: splash
+template: doc
 concept:
   category: infrastructure
   order: 8
@@ -9,10 +9,28 @@ concept:
 
 **Live sync** keeps open views current as workspace records and run state change. **Presence** shows which members are active, such as their current view or cursor. These features use the workspace’s access controls.
 
-## Events and shared views
+## Subscribe to workspace changes
 
-When a playbook publishes an accepted field change, the runtime can notify clients that may read the affected list. A board can then show the new stage without a reload. Presence can show who is looking at that board. In Gabriel Studio, following another member mirrors their view while the follower’s own permissions still apply.
+### Event and replay cursor
 
-The Apps and connectors profile documents Gabriel’s live event transport and proposes shared presence behavior.
+A client can use `GET /api/v1/events` for server-sent events or `/api/v1/realtime` for a WebSocket subscription. Use a short-lived, single-use secret minted by the server for browser clients. The runtime limits subscriptions to the credential’s topics.
 
-See [live sync](../../apps/#7-live-sync-) and [presence and following](../../apps/#8-presence-and-following-).
+```json
+{
+  "type": "gabriel.subscription.create",
+  "topics": ["gabriel.resource.*"],
+  "after": "evt_3f9c"
+}
+```
+
+### Example board refresh
+
+A list update invalidates the affected board data. Load current state under the viewer’s permissions and retain the last handled event identifier as the replay cursor. When a connection resumes, request subsequent events. If the server sends `gabriel.replay.reset_required`, reload authoritative state before continuing. The profile leaves mandatory events for each resource type open.
+
+## Follow a team member
+
+### Presence scope and permissions
+
+Presence carries transient details such as a member’s active tab, canvas position, or pointer. Validate received state before applying it. Following can mirror a view within the follower’s access. Actions such as adding a playbook or joining a call require the follower’s own action. Keep presence separate from durable definitions, records, and run history.
+
+See [event transport](../../apps/#7-live-sync-) and the [presence and following proposal](../../apps/#8-presence-and-following-).

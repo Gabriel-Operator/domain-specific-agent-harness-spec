@@ -1,7 +1,7 @@
 ---
 title: Approvals
 description: Authorization from the assigned person to perform a specific protected action.
-template: splash
+template: doc
 concept:
   category: execution
   order: 8
@@ -9,10 +9,29 @@ concept:
 
 An **approval** authorizes an exact effect within a run. It identifies the operation, destination, material inputs, acting account, and applicable policy. The approval belongs with the run and the proposal the person reviewed.
 
-## Before dispatch
+## Bind approval to the reviewed effect
 
-Show the actual proposed effect and any relevant rehearsal evidence. Wait for the authorized person, then check the current grants and confirm that the action still matches the reviewed proposal. A changed recipient, amount, or account calls for a new proposal. Rejection or expiry holds dispatch.
+### Proposal fields
 
-For an outreach email, confirming the goal lets preparation begin. The send approval covers the actual sender, recipient, and message. The runtime consumes it once and keeps the result with the run.
+For a protected action, the draft requires the proposal to identify the run and step, operation, target, material inputs, acting account and applicable policy, with rehearsal evidence when available. Show those values to the assigned approver. An approval to send covers the reviewed sender, recipient, subject and body. A later edit changes what would be sent and requires a new decision.
 
-See [human review](../human-review/), [the exact-effect contract](../../specification/#74-rehearsal-and-governed-execution-), and [the Lane walkthrough](../../examples/#one-prospect-end-to-end).
+### Example approval sequence
+
+```text
+Propose draft → show exact sender, recipient and message → wait for approver
+              → compare approved details with dispatch request → consume approval
+              → dispatch → record result or reconcile uncertainty
+```
+
+## Decide whether to dispatch
+
+| Condition | Runtime behavior |
+| --- | --- |
+| Matching proposal and current grant | Dispatch the reviewed effect within its policy |
+| Rejection or expiry | Hold the action and record the decision |
+| Input, target, account, or required rehearsal changed | Present an updated proposal for review |
+| Dispatch outcome uncertain | Reconcile the existing attempt before allowing a retry |
+
+The behavior above is the draft contract. In Studio, a `reason` or read step marked `requiresApproval` can ask for a decision. Connector `write` and `process` operations have their own exact-effect gate. Where a shared publication needs a human decision, add an explicit review step and configure the destination’s grant and field allow-list.
+
+See [human review](../human-review/), [rehearsal](../sandbox-rehearsal/), and [the exact-effect contract](../../specification/#74-rehearsal-and-governed-execution-).

@@ -1,7 +1,7 @@
 ---
 title: Playbooks
 description: Reusable work with declared inputs, requirements, outputs, and limits.
-template: splash
+template: doc
 concept:
   category: definitions
   order: 6
@@ -9,10 +9,50 @@ concept:
 
 A **playbook** describes work a team can invoke again. The generic term is workflow. A Studio playbook declares a stable key, revision, inputs, connector requirements, and named outputs. A team placement can refer to a reviewed revision.
 
-## Structured and goal playbooks
+## Structured definitions
 
-A structured playbook gives the runtime steps and dependencies. Those steps can reason, use connectors, [invoke another playbook](../delegation/), [wait](../scheduled-work/), or publish. A goal playbook supplies an objective and completion criteria along with the capabilities and limits allowed for planning.
+### Inputs, dependencies, and outputs
 
-For Meeting desk, one playbook reads an authorized calendar and prepares a summary. Another reviews and publishes the summary to a team list. The destination workspace supplies the account and publisher grant.
+Each playbook has a `key`, positive `revision`, and a `kind`. `inputs` names the fields a caller supplies, `requirements` declares external operations, and `outputFields` names what the playbook can return. A structured playbook declares ordered `steps`. Step IDs must be unique, and `dependsOn` can name only preceding steps. The Studio validator rejects cycles among registered playbooks.
 
-See [the Studio definition profile](../../specification/#63-studio-definitions) and [downloadable example files](../../implementation/#example-files).
+### Example connector step
+
+The Meeting desk fixture declares a personal Calendar requirement on `read-meetings`. Its step maps the two dates from run input and selects `meetings` from the result. These mappings are JSON Pointers.
+
+```json
+{
+  "id": "read",
+  "title": "Read upcoming meetings",
+  "instruction": "Read only the selected time window.",
+  "dependsOn": [],
+  "type": "connector_operation",
+  "operation": {
+    "requirementId": "calendar",
+    "operationId": "upcoming",
+    "values": {
+      "from": "/input/from",
+      "until": "/input/until"
+    },
+    "effect": "read"
+  },
+  "inputMappings": {},
+  "outputFields": {
+    "meetings": "/meetings"
+  },
+  "requiresApproval": false
+}
+```
+
+| Step type | What the runtime does |
+| --- | --- |
+| `reason` | Invokes a model with the step’s authorized context |
+| `connector_operation` | Runs one declared read, write, or process |
+| `playbook` | Invokes a registered child by `playbookKey` with explicit mappings |
+| `wait_until` | Waits for the time found at the declared pointer |
+| `publish_page`, `publish_list` | Applies mapped fields to an authorized workspace destination |
+
+## Goal definitions and graph packages
+
+A goal playbook gives the harness an objective and allowed playbooks to plan with. A supported Studio command graph has its own graph definition and step lifecycle. A published package declares which executable it carries and can bundle its skill folder with that executable. Use the installed revision when running the playbook. To add access or change behavior, review a new revision and its workspace bindings.
+
+See [the complete fixture](../../implementation/#example-files), [goal playbooks](../goals/#saved-goal-playbook), and [package entry files](../packaging/).

@@ -1,7 +1,7 @@
 ---
 title: Context and conversations
 description: The shared knowledge, messages, and files that give a team the background for a run.
-template: splash
+template: doc
 concept:
   category: execution
   order: 7
@@ -9,14 +9,29 @@ concept:
 
 **Context** is the material a team can draw on, such as a shared brief, organization knowledge, or an accepted output. A **conversation** is the exchange of messages between people and authorized agents. Both are workspace data and can be subject to different access grants.
 
-## Carry useful context into a run
+## Select context for an attempt
 
-A goal can use a team brief and the outputs it is allowed to read. In Gabriel Studio, a person can edit a shared page while an agent maintains a live section or proposes an addition. In a team conversation, a member can address a specific agent by tagging it.
+### Shared and private sources
 
-For example, a prospect’s shared brief can hold accepted research while an outreach discussion asks one agent about a reply. A portable persona can define the workflow that uses these sources. The installation keeps the actual pages, messages, and revisions.
+A goal can name authorized team pages using `contextPageIds`. The workspace resolves those pages and checks access for the actor and team. An accepted playbook result can carry scoped context for another assignment. A conversation may help clarify the task. Shared notes, accepted evidence, conversation history, and a person’s private Coach memory each keep their own scope.
 
-## Threads and messages
+### Example goal with a brief
 
-Gabriel Studio stores team conversations in threads. A thread has a stable identity, a message history, and a lifecycle. Team members can open a thread, post a message, or resolve and reopen it according to their access. Studio’s conversation endpoints read and update threads in the selected team. A conversation can carry context for a goal, while the [run](../runs/) has its own execution state.
+Use the actual ID of a page the selected team may use. This body is for the team goals endpoint described under Goals.
 
-See [what Studio shows](../runs-and-collaboration/#what-studio-shows) and [the collaboration walkthrough](../../examples/#working-together).
+```json
+{
+  "goal": "Summarize tomorrow’s meetings against the shared brief.",
+  "criteria": "Cite the source for each proposed follow-up.",
+  "contextPageIds": ["meeting-brief"],
+  "reviewPlan": true,
+  "expectedTeamRevision": 7,
+  "idempotencyKey": "meetings-shared-brief-1"
+}
+```
+
+## Collaborate without mixing state
+
+A team can open a thread to discuss an output and tag an agent to respond. The thread has a stable identity and message history. Members can post, resolve, or reopen it within their permissions. A shared page can hold a live section maintained by an agent. Both have separate histories from the run. For durable input, record the material answer or accepted document as goal context. Workspace permissions still apply when an agent reads a page, proposes an edit, or passes a result to another assignment.
+
+See [goals](../goals/#create-a-team-goal), [files and artifacts](../files-and-artifacts/), and [runs and collaboration](../runs-and-collaboration/).

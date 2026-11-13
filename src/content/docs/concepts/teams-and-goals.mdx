@@ -1,14 +1,14 @@
 ---
 title: Teams, goals, and playbooks
 description: How goals select, invoke, and create playbooks within a persona’s teams.
-template: splash
+template: doc
 ---
 
 A **team** owns the agents and shared resources that do a particular job. A **goal** describes an outcome and what counts as done. A **playbook** defines reusable work, including its inputs, required connector operations, and permitted outputs. A **run** is one attempt to carry out that work.
 
 ## From an outcome to a plan
 
-A goal belongs inside a team. It selects and invokes that team’s playbooks. The outcome, available capabilities, and dependencies determine which playbooks run and in what order; a team is not necessarily one fixed sequence. Agents execute those playbooks inside the harness. A saved goal playbook can delegate work within its configured limits. If the team needs a reusable playbook, an author can draft one from the goal, review its contract, and register it for later runs.
+A goal belongs inside a team. It selects and invokes that team’s playbooks. The outcome, available capabilities, and dependencies determine which playbooks run and in what order. A later goal can use a different sequence. Agents execute those playbooks inside the harness. A saved goal playbook can delegate work within its configured limits. If the team needs a reusable playbook, an author can draft one from the goal, review its contract, and register it for later runs.
 
 For example, the Accountants team can use Lead Finder, Signal Researcher, Copywriter, and Sequence Reviewer. One goal may need all four with accepted research passed into the writing steps. Another may need only the first two. If a goal requires a missing capability, the team can author the additional playbook and include it in the plan after review.
 
@@ -16,9 +16,9 @@ Gabriel distinguishes **Build from steps**, where the author specifies a sequenc
 
 ## Reuse a playbook
 
-A team placement references a playbook definition. Gabriel pins the revision in a team placement. The proposed marketplace extends this model to independently discoverable packages across personas. To reuse a package, a team must be able to supply its inputs, map its domain data, and grant its required connector operations in the workspace. Review the revision and those bindings before adopting it.
+A team placement references a playbook definition. Gabriel pins the revision in a team placement. Gabriel’s marketplace extends this model to independently discoverable packages across personas. To reuse a package, a team must be able to supply its inputs, map its domain data, and grant its required connector operations in the workspace. Review the revision and those bindings before adopting it.
 
-The proposed **marketplace** lets people discover playbook packages, combine them into different personas, and optionally list complete personas for others to adopt. A **persona** packages a domain model, teams, and the playbooks those teams use. The **playbook registry** identifies reusable definitions and revisions. A persona’s own [definition registry](../../specification/#5-registry-) pins its linked files.
+The **marketplace** lets people discover playbook packages, combine them into different personas, and optionally list complete personas for others to adopt. A **persona** packages a domain model, teams, and the playbooks those teams use. The **playbook registry** identifies reusable definitions and revisions. A persona’s own [definition registry](../../specification/#5-registry-) pins its linked files.
 
 During execution, playbooks use connectors to read, update, and share data. Connections use credentials held in the workspace’s vault. Custom apps can consume the same connector data and agent outputs; agents can mutate the source records or the custom app’s data through their authorized operations. See [connectors and approvals](../connectors-and-approvals/) and [apps and connectors](../../apps/).
 
@@ -33,3 +33,23 @@ During execution, playbooks use connectors to read, update, and share data. Conn
 The draft covers [team resources](../../apps/#1-the-parts-), [goal authoring in Gabriel](../../apps/#from-goals-to-playbooks), and [connector steps](../../apps/#3-steps-that-use-a-connector-). See the [Studio definition fields](../../specification/#63-studio-definitions) and [sample files](../../implementation/#example-files). A shared orchestration contract across runtimes remains [planned](../../specification/#8-not-yet-specified-).
 
 Use [`persona-team-manager`](../../skills/#persona-authoring-and-operations) to author a Studio team and register playbooks. [`team-agents`](../../skills/#team-graph-nodes) documents the separate Page Builder orchestration graph and its node references.
+
+## Example plan for the Accountants team
+
+### Handoffs and parallel work
+
+A goal requests a shortlist of firms and reviewed outreach drafts. The Accountants team has playbooks for Lead Finder, Signal Researcher, Copywriter, and Sequence Reviewer. Use an accepted shortlist as the input to research. Draft outreach after the research is accepted. The reviewer receives the drafts and the evidence used to make the claims.
+
+```text
+Accountants team
+  Goal: prepare a reviewed outreach sequence
+  Lead Finder → Signal Researcher → Copywriter → Sequence Reviewer
+```
+
+The planner can dispatch independent work in parallel when its inputs are ready. A missing capability can become a proposed playbook or an explicit gap in the plan. Review the playbook and its requirements before running work that depends on it.
+
+### Change the plan during review
+
+If a reviewer narrows the target audience, revise the criteria and update tasks that depend on the shortlist. Review the revised plan before dispatch when plan review is enabled. Any later external send uses its own effect approval.
+
+See [goal request and approval examples](../goals/), [playbook contracts](../playbooks/), and [delegation](../delegation/).

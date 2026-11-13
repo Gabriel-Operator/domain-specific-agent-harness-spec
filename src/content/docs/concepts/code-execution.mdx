@@ -1,7 +1,7 @@
 ---
 title: Code execution
 description: How the harness runs scripts in isolated compute with explicit inputs and permissions.
-template: splash
+template: doc
 concept:
   category: execution
   order: 10
@@ -9,10 +9,28 @@ concept:
 
 **Code execution** runs a script in an environment provisioned for the task. The harness supplies the input, controls the resources available to the script, and collects its result.
 
-## Run code with a defined boundary
+## Define the execution boundary
 
-In Gabriel Studio, packaged lifecycle hooks use a fresh, verified E2B computer with Node.js installed. The harness passes the declared fields to the script over standard input. The hook environment has outbound networking disabled and runs without workspace credentials or a connector broker. Missing compute requires setup. A failed check stops progression.
+### Inputs, compute, and permissions
 
-A [sandbox rehearsal](../sandbox-rehearsal/) serves a different purpose. It produces evidence about how a proposed action would behave with a test account, mock, or copy before a person approves a live effect.
+Use an explicit runtime entry point for bundled code. For packaged hooks, Gabriel provisions a fresh, verified E2B Studio computer with Node.js 22 or newer, passes a declared projection over standard input, disables outbound networking, and runs without workspace credentials or a connector broker. The hook can validate data and report success or failure.
 
-See [lifecycle hooks](../hooks/), [packaging and installation](../packaging/), and [Standard Agent Specification’s isolated code execution](https://standardagentspec.org/0.2.0/specification/threads/code-execution/).
+### Example input check
+
+Put this script at `scripts/check-input.mjs` and invoke it in the packaged `BeforeTask` declaration. The example expects a required `from` field in the input projection.
+
+```js
+import { readFileSync } from 'node:fs';
+
+const { input } = JSON.parse(readFileSync(0, 'utf8'));
+if (typeof input?.from !== 'string' || Number.isNaN(Date.parse(input.from))) {
+  process.stderr.write('A valid start date is required.\n');
+  process.exitCode = 1;
+}
+```
+
+## Record the outcome
+
+A nonzero exit stops progression. Treat inability to verify compute as a setup issue and a lost or uncertain invocation as a review issue. Code execution limits which data and capabilities a program can use. Rehearsal separately demonstrates how a proposed action behaves under a test binding before review.
+
+See [the hook declaration](../hooks/#declare-a-packaged-lifecycle-hook), [sandbox rehearsal](../sandbox-rehearsal/), and [package installation](../packaging/), and [Standard Agent Specification’s isolated code execution](https://standardagentspec.org/0.2.0/specification/threads/code-execution/).

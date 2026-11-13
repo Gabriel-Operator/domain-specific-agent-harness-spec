@@ -1,7 +1,7 @@
 ---
 title: Governed execution
 description: How a human decision, a sandbox rehearsal, and a live action fit into a playbook run.
-template: splash
+template: doc
 concept:
   category: execution
   order: 1
@@ -31,3 +31,32 @@ A sandbox is an isolated place to exercise behavior. Its value is the evidence i
 Gabriel has workflow-specific rehearsals and previews. Its managed execution layer also has a separate effect gate: supported REST, MCP, and integration adapters can hold irreversible or unclassified actions for exact human approval. Configurable AI reviewers can help check correctness and policy. The human gate remains in force regardless of AI review settings. When a provider cannot enforce the effect boundary, the runtime can hold the operation for a supported adapter or a person to take over.
 
 See the [proposed runtime contract](../../specification/#74-rehearsal-and-governed-execution-), [implementation checklist](../../implementation/#implement-the-review-and-rehearsal-boundary), and [persona examples](../../examples/#persona-architectures).
+
+## Dispatch contract
+
+### Decisions have a scope
+
+Record what a person decided and which plan revision, inputs, or proposed effect the decision covered. Resolving an ambiguity can release preparation. Approving a reviewed plan can release assignments. A protected effect still needs a decision from someone with authority over that exact action. A configured AI check can supply evidence alongside those decisions.
+
+### Example execution sequence
+
+The sequence below describes the draft’s runtime behavior. It is an implementation guide rather than a portable state enum.
+
+```text
+request → plan → resolve missing inputs → rehearse when required
+        → propose exact effect → wait for decision → recheck grants and proposal
+        → dispatch once → verify receipt or reconcile uncertain outcome
+```
+
+## Example publication
+
+Use the Meeting desk fixture to draft a synthetic summary. Rehearse its `summary` mapping with a test publisher, then choose the permitted live list separately. Show the exact text and target for review. If someone edits the text after approval, generate the new proposal and review that version before dispatch. If the provider times out after dispatch, check for the existing record before retrying.
+
+| Evidence | What it establishes |
+| --- | --- |
+| Draft preview | What the harness proposes to do |
+| Sandbox result | What the tested setup did with the recorded inputs |
+| Human decision | Who authorized the reviewed action and what it covered |
+| Live receipt | What the runtime or provider confirmed happened |
+
+See [approvals](../approvals/), [rehearsal evidence](../sandbox-rehearsal/), and [execution receipts](../execution-receipts/).

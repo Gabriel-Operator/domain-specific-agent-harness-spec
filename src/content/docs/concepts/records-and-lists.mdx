@@ -1,7 +1,7 @@
 ---
 title: Records and lists
 description: List definitions describe fields while workspace records hold the live values.
-template: splash
+template: doc
 concept:
   category: data
   order: 3
@@ -9,8 +9,43 @@ concept:
 
 A **list** defines the fields that a team uses to store and display records. A **record** is one live entry, such as a prospect with a name, status, and last contact date. An app can show records through a grid or board.
 
-## Publish a record
+## Define a list
 
-A playbook can publish selected output fields through a named publisher. The workspace binds that publisher to a list and field allow-list, and checks destination access, source grants, and applicable consent. List definitions travel with a persona. Live rows stay in the workspace.
+### Columns and ownership
 
-See [lists, pipelines, and apps](../../apps/#4-lists-pipelines-and-apps-) and [the Meeting desk publication example](../../implementation/#bind-and-run-a-team-goal).
+A Studio list resource has a stable `key`, `teamId`, revision, and `definition.columns`. Each column declares a unique key, label, type, and whether it is required. Studio supports `text`, `number`, `boolean`, `date`, `select`, `image`, and `json` columns. Apps and publications refer to the column key. Renaming the visible label can leave those bindings intact.
+
+```json
+{
+  "key": "list.meeting-desk.summaries",
+  "teamId": "meeting-desk",
+  "revision": 1,
+  "archived": false,
+  "kind": "list",
+  "definition": {
+    "name": "Meeting summaries",
+    "description": "",
+    "language": "en",
+    "columns": [
+      {
+        "key": "summary",
+        "label": "Summary",
+        "type": "text",
+        "required": true
+      }
+    ]
+  }
+}
+```
+
+## Populate and verify records
+
+### Publication projection
+
+A `publish_list` step declares the publisher key and maps individual fields. Bind it to the destination list with the owner’s allow-list and applicable consent. Meeting desk maps `summary` from `/input/summary`. A private source attachment or attendee list stays in its original scope unless explicitly mapped and authorized. Use a provider or runtime receipt to confirm the record write.
+
+### Definition and record revisions
+
+Validate dependent views, pipelines, and publications before changing a column type or removing a column. When updating a record, recheck its current state and use the expected version supported by the operation. Data inside the list remains workspace state when its definition is published.
+
+See [pipelines](../pipelines/), [apps](../apps/), and [record publication](../../apps/#4-lists-pipelines-and-apps-).

@@ -1,7 +1,7 @@
 ---
 title: Packaging and installation
 description: How authors version definitions and adopt them in a workspace.
-template: splash
+template: doc
 concept:
   category: infrastructure
   order: 7
@@ -55,3 +55,36 @@ Publish under your own scope, starting with the playbook. When you publish the t
 `SKILL.md`, references, assets, and bundled scripts follow the Agent Skills folder format. Gabriel adds eval files and supports `BeforeTask` and `AfterTask` in `gabriel/hooks.json`. In installed packages, those hooks invoke bundled Node scripts on a verified E2B Studio computer with Node.js 22 or newer and outbound networking disabled. They receive declared input or output fields and can stop the run. Connector credentials and approval authority stay in the destination workspace. Persona resource references are setup requirements. The installer records them in `assets/package-resource-requirements.json` so the destination owner can connect the appropriate resources. [Agent Skills specification](https://agentskills.io/specification)
 
 Follow the [blank Canvas walkthrough](../../implementation/#build-and-install-from-a-blank-canvas).
+
+## Resolve the package graph
+
+### Destination by package kind
+
+A playbook requires a target team. A team requires a persona workspace. A persona creates a private workspace containing its packaged teams. In each case the package graph resolves before installation. The workspace supplies the accounts, role assignments, output bindings, compute, and permissions shown in the preview.
+
+### Example team dependency
+
+This is one dependency entry from the downloadable Accountants team manifest. The team pins the release whose authored skill and executable it will install.
+
+```json
+{
+  "studio:verify-signals": {
+    "registry": "https://registry.npmjs.org/",
+    "name": "@example/verify-signals",
+    "version": "1.0.0",
+    "integrity": "sha512-a6FvGfHRNlp5W2u4Zt2vgfyp1n7PfBvFwVfjZIFcaLrkcKcwvnDfcrejSu/+ngEUv1377Xf2NN1njANZa7qigQ=="
+  }
+}
+```
+
+## Review upgrades and removal
+
+### Adopting a new version
+
+Publish the child first and preview the new version of the package that uses it. Compare executable content, skill files, hooks, connector requirements, and changed Canvas placements. Review local skill edits before applying an update. Rebind or repair changed requirements before starting new work.
+
+### Removing a release
+
+Inspect the installed package and the definitions that still use it. A team placement or another package’s dependency can block removal. Historical runs and their receipts remain available for auditing the revision that ran.
+
+See [marketplace discovery and installation](../marketplace/) and the [blank Canvas walkthrough](../../implementation/#build-and-install-from-a-blank-canvas).

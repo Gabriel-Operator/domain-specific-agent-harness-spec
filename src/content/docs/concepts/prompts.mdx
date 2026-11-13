@@ -1,7 +1,7 @@
 ---
 title: Prompts
 description: Instructions and selected context that the harness assembles for a model call.
-template: splash
+template: doc
 concept:
   category: definitions
   order: 10
@@ -11,6 +11,29 @@ A **prompt** tells a model what to do on a particular call. It can include the s
 
 ## Assemble the prompt for a step
 
-Gabriel Studio supplies system instructions for the type of work, then adds the saved step, run inputs, and relevant context. A reasoning step can use its playbook’s skill instructions and references. A verification call can ask whether a candidate meets its completion criteria. For example, a meeting summary step can request decisions, actions, and owners in named output fields.
+### Sources and authority
 
-The runtime validates the result against the playbook contract. Tool grants and approvals are checked separately when the result requests an action. See [skills](../skills/), [tools](../tools/), and [Standard Agent Specification’s prompt definitions](https://standardagentspec.org/0.2.0/specification/prompts/).
+Combine the published persona instructions, the selected playbook and skill files, the task’s inputs, and authorized context from preceding steps. Give the model only the tools the current run may call. A separate prompted verification can assess the candidate result against the completion criteria. Treat record values, retrieved pages, and user-supplied files as data. They can supply evidence even if they contain text that attempts to change the task or ask for credentials.
+
+### Example persona configuration
+
+The Meeting desk fixture supplies the domain instruction in `publishedConfig.systemPrompt`. Add step-specific instructions and output requirements in the playbook rather than expanding the persona prompt for every task.
+
+```json
+{
+  "schemaVersion": 2,
+  "resourceKey": "persona.meeting-desk",
+  "publishedConfig": {
+    "name": "Meeting desk",
+    "systemPrompt": "Review upcoming meetings from authorized sources and share only approved summaries."
+  }
+}
+```
+
+## Handle incomplete or unsafe input
+
+### Define the result and check it
+
+For a summary task, name the fields to produce and require a link or source identifier for each claim. If dates or evidence are absent, return the missing information for review. A prompt can ask the agent to propose a publication. The publication adapter and workspace policy determine whether it can write, which target it can use, and whose approval applies.
+
+See [skills](../skills/), [tools](../tools/), and [evals for missing inputs and adversarial content](../evals/).

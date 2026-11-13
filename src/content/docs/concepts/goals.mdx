@@ -1,7 +1,7 @@
 ---
 title: Goals
 description: Team-scoped outcomes that select and invoke the playbooks needed for the work.
-template: splash
+template: doc
 concept:
   category: definitions
   order: 5
@@ -9,10 +9,135 @@ concept:
 
 A **goal** describes the outcome a team should produce and how to judge completion. A goal belongs to a team. Its plan selects available playbooks and orders their work according to dependencies and the requested outcome.
 
-## Purpose, reusable planning, and a live goal
+## Create a team goal
 
-The `goal` field on a team describes its enduring purpose. A saved playbook with `kind: "goal"` defines reusable planning with allowed capabilities and limits. When a person starts work, the workspace holds the specific goal, its inputs, plan, and execution history.
+### Identity and ownership
 
-If an Accountants goal needs evidence and a first draft, it can invoke research and writing. A missing capability can lead an author to draft and register a playbook for review before adding it to a plan.
+Create the goal against a concrete team in the selected workspace. The team’s saved `goal` field supplies its enduring purpose as context. The goal request describes a specific outcome, and its plan chooses the playbooks that can deliver that outcome. A run is one attempt and has its own execution identity. Repeating a goal creates another attempt under the team's current permissions and eligible revisions.
 
-See [how a team plans from an outcome](../teams-and-goals/#from-an-outcome-to-a-plan) and the [worked goal run](../../implementation/#bind-and-run-a-team-goal).
+### Gabriel Studio request
+
+Use **Work → Add goal**, or submit the following JSON body to `POST /api/persona-playground/pages/:pageId/spaces/:spaceId/goals` with the selected workspace. The example asks the Accountants team to stop after gathering evidence. Adapt the criteria and workspace identifiers for a real request.
+
+```json
+{
+  "goal": "Find three independent accounting firms and verify one dated public buying signal for each.",
+  "criteria": "Return each firm, a dated signal, and the source URL. Leave outreach in draft.",
+  "reviewPlan": true,
+  "expectedTeamRevision": 7,
+  "idempotencyKey": "accountants-goal-1"
+}
+```
+
+| Field | Behavior |
+| --- | --- |
+| `goal` | The outcome requested for this team |
+| `criteria` | Evidence or conditions used to assess completion |
+| `reviewPlan` | Holds proposed tasks for human review when enabled |
+| `expectedTeamRevision` | Revision of the team the caller reviewed |
+| `idempotencyKey` | Identifies the request so retrying it returns the same attempt |
+| `contextPageIds` | Optional context pages the workspace permits this goal to use |
+| `allowedBotIds` | Optional restriction to specific placements in the team |
+
+A caller can set `draft: true` to save the goal before starting an attempt. Starting later uses the separate [execution request](../runs/#start-an-attempt).
+
+## Plan and dispatch work
+
+### Dependencies and missing capabilities
+
+Lead Finder can produce the shortlist and Signal Researcher can verify it. The plan can leave Copywriter and Sequence Reviewer out of a research-only request. A goal that asks for outreach can include both, with accepted research passed to Copywriter and the draft passed to Sequence Reviewer. The plan’s dependencies express which outputs must exist before another task runs.
+
+When a capability is missing, use the goal to draft a playbook with an explicit input, output, and allowed operations. Review and save the draft, then register or place it on the team before using it in a revised plan. Creating a draft does not start the playbook or grant access to its connectors.
+
+### Review a plan revision
+
+#### Approve the plan you inspected
+
+Read the plan at `GET …/goals/:goalId/plan`. The plan review endpoint is `POST …/goals/:goalId/plan/approve`. Submit the revision the person reviewed. The following sample approves plan revision 2.
+
+```json
+{
+  "revision": 2
+}
+```
+
+An approval marks eligible tasks ready once their prerequisites complete. A protected connector effect still uses its own [approval](../approvals/). If the plan has changed, Studio returns `409 TEAM_PLAN_REVISION_STALE`. Reload the plan and inspect the new revision before deciding.
+
+#### Request a revision
+
+Submit feedback to `POST …/goals/:goalId/plan/changes`. For example, a reviewer can tighten the evidence requirements before any outreach is drafted.
+
+```json
+{
+  "revision": 2,
+  "feedback": "Use only signals published in the last 30 days and include the original publication date."
+}
+```
+
+Studio records the feedback and advances the plan revision. Reopen the plan to inspect the revised tasks, dependencies, and expected outputs before approving it.
+
+### Recover a stale or repeated start
+
+The start request checks the team revision and budget. If the team changed, Studio returns `409 TEAM_REVISION_CHANGED`. Reload the team and check the eligible placements again. Retrying the same request with the same `idempotencyKey` returns the existing attempt. Reusing that key with changed inputs returns `409 TEAM_IDEMPOTENCY_CONFLICT`.
+
+## Saved goal playbook
+
+### Reusable planning definition
+
+`kind: "goal"` stores an objective, completion criteria, allowed playbook keys and limits. The example from Meeting desk can invoke `read-meetings` and return a summary within a bounded attempt. Its execution inputs come from the goal or caller. The `limits` object constrains depth, agents, tasks, concurrency, active minutes, and elapsed days.
+
+```json
+{
+  "teamId": "meeting-desk",
+  "schemaVersion": 1,
+  "key": "review-meetings",
+  "name": "Review meetings",
+  "revision": 1,
+  "inputs": [
+    {
+      "key": "from",
+      "label": "Start time",
+      "required": true
+    },
+    {
+      "key": "until",
+      "label": "End time",
+      "required": true
+    }
+  ],
+  "requirements": [
+    {
+      "id": "calendar",
+      "label": "Google Calendar",
+      "context": "personal",
+      "providers": [
+        "googlecalendar"
+      ],
+      "operations": [
+        "upcoming"
+      ],
+      "optional": false
+    }
+  ],
+  "outputFields": [
+    "summary"
+  ],
+  "kind": "goal",
+  "objective": "Use the Read meetings playbook and draft a summary of upcoming meetings.",
+  "completionCriteria": "Return a summary grounded in the authorized calendar result without editing the calendar.",
+  "allowedSkills": [],
+  "limits": {
+    "maxDepth": 1,
+    "maxAgents": 3,
+    "maxTasks": 4,
+    "maxConcurrentAgents": 1,
+    "activeMinutes": 10,
+    "elapsedDays": 1
+  },
+  "allowedPlaybooks": [
+    "read-meetings"
+  ]
+}
+```
+
+See [playbook definitions](../playbooks/), [governed execution](../governed-execution/), and [starting a run](../runs/).

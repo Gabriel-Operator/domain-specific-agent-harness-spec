@@ -1,7 +1,7 @@
 ---
 title: Signals
 description: Conditions that turn observations into reasons to propose work.
-template: splash
+template: doc
 concept:
   category: data
   order: 7
@@ -9,10 +9,25 @@ concept:
 
 A **signal** evaluates an observation against a condition. The signal gives the team a reason to act or to look closer. A data feed supplies the observation, and a playbook carries out any work the team decides to start.
 
-## Example
+## Evaluate a condition
 
-A recruiting feed sees that a company announced a role. A signal can flag the opening when it meets the team’s criteria. A playbook then qualifies the company and prepares outreach. Sending still depends on the authorized account and the relevant approval.
+### Observation, rule, and eligibility
 
-Gabriel keeps observations, enabled schedules, and outcomes in the workspace. A portable contract for signals and schedules is planned.
+Record the source and observation ID before evaluating the team’s rule. A condition should make clear which data must be present and which cases should be held. A matched observation can propose work. The workspace decides whether the trigger is enabled, the destination team is eligible, and the occurrence has already been handled.
 
-See [the observation-to-outcome walkthrough](../signals-and-evals/#from-observation-to-outcome) and [planned contract areas](../../specification/#8-not-yet-specified-).
+### Example hiring signal
+
+This is decision logic for an implementation. The draft leaves the portable signal schema open.
+
+```text
+Observe a dated hiring announcement with a source URL.
+If company identity or announcement date is ambiguous, hold for specialist review.
+If the announcement is new and matches the team’s criteria, propose a research goal.
+If its occurrence was already handled, link to the existing outcome.
+```
+
+## Trace the outcome
+
+Keep the observation, the matched rule, any human decision, and the resulting goal or run together by reference. A later revision can change the rule and be checked against a replayed fixture. The existing outcome remains evidence of what happened under the prior revision.
+
+See [feeds](../data-feeds/), [scheduled work](../scheduled-work/), and [specialist feedback and evals](../signals-and-evals/).

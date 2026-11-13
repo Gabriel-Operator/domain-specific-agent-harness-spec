@@ -1,7 +1,7 @@
 ---
 title: Apps
 description: Built-in views and custom interfaces over authorized team data and actions.
-template: splash
+template: doc
 concept:
   category: data
   order: 5
@@ -9,10 +9,39 @@ concept:
 
 An **app** gives people a view of authorized domain data and the work the team can do with it. A built-in Studio grid or board describes a view over a list. A custom app can show a chart, call scoped connector operations, or consume results from agents.
 
-## Definitions and installations
+## Choose an app definition
 
-A built-in view is declared as a team resource. A custom app package contains its manifest and compiled interface. Its installation binds the package to workspace data and permissions. An externally hosted interface calls the authorized app bridge for those operations.
+### Studio grid or board
 
-For example, a prospect board can display the current pipeline stage. A custom dashboard can chart how many prospects are waiting for a reply, using the same records.
+A Studio app defines the list, visible fields, and view. A board names a pipeline that belongs to the same list and team. This Meeting desk resource renders the `summary` column from the Meeting summaries list. It can use the pipeline’s current stage for display.
 
-See [built-in views and custom apps](../records-and-apps/#built-in-views-and-custom-apps) and [custom app packages](../../apps/#6-custom-app-packages-).
+```json
+{
+  "key": "app.meeting-desk.summaries",
+  "teamId": "meeting-desk",
+  "revision": 1,
+  "archived": false,
+  "kind": "app",
+  "definition": {
+    "name": "Summary board",
+    "description": "",
+    "listRef": "list.meeting-desk.summaries",
+    "view": "board",
+    "fields": [
+      "summary"
+    ],
+    "pipelineRef": "pipeline.meeting-desk.summaries",
+    "requirements": []
+  }
+}
+```
+
+### Compiled interface
+
+An app package can ship its own interface and manifest. The manifest declares which entities and actions it can call and which playbooks it can start. The installation binds those calls to permitted team data and accounts. A UI bundle runs in its own sandbox and uses the host’s declared calls to access the workspace.
+
+## Example read and mutation paths
+
+Use the board to show accepted summaries. To draft a follow-up, expose a declared playbook action that accepts the needed record fields. If the playbook proposes an email send, show the actual recipient and message for approval and then use the installed connector grant. The app can display the receipt or the changed record after the runtime confirms it.
+
+See [custom app manifest and calls](../../apps/#6-custom-app-packages-), [pipelines](../pipelines/), and [connector effect rules](../connectors/).

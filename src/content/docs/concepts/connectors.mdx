@@ -1,7 +1,7 @@
 ---
 title: Connectors
 description: Declared external operations and the workspace connections that authorize them.
-template: splash
+template: doc
 concept:
   category: data
   order: 1
@@ -9,8 +9,33 @@ concept:
 
 A **connector requirement** states which external operations a playbook can request. A **connection** is the authenticated account that satisfies a requirement in a workspace. A playbook can declare an email provider and the send operation. The workspace resolves an authorized sender.
 
-## Reading, writing, and starting work
+## Declare and bind a connector
 
-A connector read brings evidence into a run. A write changes something in the destination. A process starts work the runtime may have to check for completion. Map operation arguments and named outputs through the declared step contract. Protected writes and processes wait for the applicable approval.
+### Requirement fields
 
-See [connector requirements and account scope](../../apps/#2-connector-requirements-) and [steps that use a connector](../../apps/#3-steps-that-use-a-connector-).
+A Studio playbook names a requirement in `requirements` and refers to it by `operation.requirementId`. `providers` lists eligible services, `operations` limits the allowed operation IDs, and `optional` says whether the work can omit it. A `personal` requirement resolves for the acting member. An `app` requirement needs an `appId` for the configured shared destination.
+
+```json
+{
+  "id": "calendar",
+  "label": "Google Calendar",
+  "context": "personal",
+  "providers": [
+    "googlecalendar"
+  ],
+  "operations": [
+    "upcoming"
+  ],
+  "optional": false
+}
+```
+
+### Operation and result mapping
+
+`operation.values` maps arguments from run context with JSON Pointers. `outputFields` projects the provider result into names later steps can consume. An async `completion` operation must be declared on the same requirement. Validate the selected connection, operation, and effect before dispatch.
+
+## Example Calendar read and failure cases
+
+Bind `calendar:upcoming` to an authorized Calendar account. Pass `/input/from` and `/input/until` into the operation and return `/meetings` as `meetings`. Hold the step when the mandatory binding is missing. A connector that can write to Calendar does not grant writes through this read-only requirement. `write` and `process` need the appropriate effect approval.
+
+See [step fields and effect rules](../../apps/#3-steps-that-use-a-connector-), [Vault](../vault/), and [resource binding](../resource-binding/).

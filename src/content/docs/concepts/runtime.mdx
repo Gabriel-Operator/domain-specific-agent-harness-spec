@@ -1,7 +1,7 @@
 ---
 title: Runtime
 description: The software that imports definitions, binds resources, and coordinates execution.
-template: splash
+template: doc
 concept:
   category: infrastructure
   order: 1
@@ -9,10 +9,34 @@ concept:
 
 A **runtime** loads a persona revision, verifies its linked definitions, and resolves the workspace resources needed to run it. It checks permissions and capabilities and stores run state. It uses a harness for work that requires an agent loop.
 
-## Before and during a run
+## From import to dispatch
 
-Verify the definition fingerprints before use. Report which steps the installation supports and hold unsupported steps. At dispatch, bind authorized connectors and check current grants and approvals. A reconnect or definition sync cannot silently execute blocked work or repeat completed work.
+### Verify the definitions
 
-For Meeting desk, the runtime can bind a workspace calendar account and publisher while the agent uses its assigned harness to prepare a summary.
+Resolve linked definitions at their recorded revisions and verify their fingerprints before activation. Studio also resolves the playbook revision pinned by each placement. Capture the definition and input versions for a run so a later import cannot change its meaning while it is active.
 
-See [runtime rules](../../specification/#7-runtime-rules) and [the implementation guide](../../implementation/#bind-and-run-a-team-goal).
+### Report capability and setup separately
+
+Capability describes what the runtime can execute. Setup describes whether this installation has the model, authorized connector account, output destination, or compute needed for a supported step. Report both before dispatch so an operator can distinguish a missing account from an unsupported operation.
+
+A capability report for a Meeting desk installation could present the following information. The labels are illustrative.
+
+```text
+Step                      Runtime capability    Workspace readiness
+read-meetings             supported             calendar account bound
+prepare-brief             supported             model bound
+publish-brief             supported             waiting for effect approval
+send-sms-reminder        unsupported           blocked
+```
+
+## Maintain run state
+
+### Recheck at the boundary
+
+At dispatch, resolve the acting account and current grants and apply the step’s policy. At an agent step, pass the allowed context, model, and tools to the harness. At a connector write, verify the current request against the reviewed effect before calling the provider.
+
+### Resume without repeating work
+
+Restore durable run state and recheck pending authorization. A reconnect or definition sync leaves unsupported steps blocked and completed work complete. If a provider may have received a request before the connection dropped, reconcile the provider outcome before making a second attempt.
+
+See the [capability report and runtime rules](../../specification/#7-runtime-rules) and [execution receipts](../execution-receipts/).

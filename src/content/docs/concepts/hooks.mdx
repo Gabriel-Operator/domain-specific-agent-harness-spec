@@ -1,7 +1,7 @@
 ---
 title: Lifecycle hooks
 description: Checks the harness runs at declared points before or after playbook work.
-template: splash
+template: doc
 concept:
   category: execution
   order: 9
@@ -9,10 +9,39 @@ concept:
 
 A **lifecycle hook** runs at a point the harness defines. Gabriel playbook packages can declare `BeforeTask` and `AfterTask` in the skill folder’s `gabriel/hooks.json`.
 
-## Check inputs and results
+## Declare a packaged lifecycle hook
 
-A before hook can validate a playbook’s declared inputs before its work begins. An after hook can check the declared output before the result counts as complete. For example, a playbook can require that an output include a source identifier before another step uses it.
+### Events and command format
 
-Studio shows executable hook commands during package review. Installed hooks run bundled Node.js scripts in a verified, isolated Studio computer. A failed check stops progression. Connector access and approval to perform an external effect are checked separately.
+| Event | Data provided | What a failed check holds |
+| --- | --- | --- |
+| `BeforeTask` | Declared input fields | Start of playbook work |
+| `AfterTask` | Declared output fields | Acceptance of the result and dependent work |
 
-See [code execution](../code-execution/), [packaging and installation](../packaging/), and [Standard Agent Specification’s hook lifecycle](https://standardagentspec.org/0.2.0/specification/hooks/).
+Each hook receives a JSON document on standard input with `event`, `playbook`, and the applicable `input` or `output` object. Use `node` with a bundled script and include the script at the matching relative path.
+
+```json
+{
+  "hooks": {
+    "BeforeTask": [
+      { "hooks": [{ "type": "command", "command": "node", "args": ["scripts/check-input.mjs"] }] }
+    ]
+  }
+}
+```
+
+### Preview and run
+
+The install preview lists commands for review. The packaged runtime executes supported commands on isolated compute and supplies the declared data over standard input. The child’s lifecycle uses its own pinned skill folder when called by another playbook. Provider-specific CLI tool hooks use a separate runtime path.
+
+## Handle a failed check
+
+### Known result
+
+A successful hook for the same invocation and payload can be reused when the run resumes. A nonzero exit blocks that invocation. Correct the inputs or skill, review the change, then start a new run. A missing or unverified computer puts the package into setup until the workspace provides supported compute.
+
+### Uncertain result
+
+When compute cannot confirm the outcome, Gabriel holds the invocation for review. Inspect the existing attempt before starting another. Keep scripts focused on validation so they can be reviewed together with the exact input or output fields they consume.
+
+See [code execution](../code-execution/), [skill folders](../skills/), and [package review](../packaging/), and [Standard Agent Specification’s hook lifecycle](https://standardagentspec.org/0.2.0/specification/hooks/).

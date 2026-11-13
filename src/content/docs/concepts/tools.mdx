@@ -1,7 +1,7 @@
 ---
 title: Tools
 description: The callable capabilities a harness exposes to an agent within a playbook’s scope.
-template: splash
+template: doc
 concept:
   category: definitions
   order: 11
@@ -9,10 +9,38 @@ concept:
 
 A **tool** is an operation an agent can request through its harness. A tool can read a calendar, search records, or submit data to a service. A tool’s input and output contract gives the harness a way to validate the request and return evidence to the run.
 
-## From tool request to operation
+## Declare an operation
 
-A playbook declares the external connector operations it needs. The workspace binds an operation to an authorized connection. For example, a calendar tool exposed by an MCP server can satisfy a playbook’s logical calendar read if the runtime supports that binding and the workspace grants access.
+### Inputs and scope
 
-The harness exposes the capabilities permitted for the run. The runtime checks the operation’s scope and requires the applicable approval before a protected effect.
+Expose a tool with a name, input contract, and an operation the harness can authorize. The model selects a tool and supplies arguments. Validate the arguments and resolve the current workspace binding before acting. Tool results return to the harness as data that a later step can use.
 
-See [connector requirements](../connectors/), [capability reporting](../../specification/#71-capability-report-), and [Model Context Protocol](../../standards/#model-context-protocol).
+### Example Studio requirement
+
+A Studio connector tool resolves through this requirement in the Meeting desk fixture. The operation ID must also appear on the step that invokes it.
+
+```json
+{
+  "id": "calendar",
+  "label": "Google Calendar",
+  "context": "personal",
+  "providers": [
+    "googlecalendar"
+  ],
+  "operations": [
+    "upcoming"
+  ],
+  "optional": false
+}
+```
+
+## Dispatch and return results
+
+1. Resolve the declared tool in the running context and check the caller’s grant.
+2. Validate or map its arguments, then classify the effect from the supported operation.
+3. For a protected action, hold execution for the configured review and verify the approved proposal at dispatch.
+4. Return the projected result or a clear blocked or failed status. Record a receipt when an external effect occurred.
+
+A playbook may expose an operation through MCP. MCP discovery and input schemas describe the tool. The current workspace, binding and approval still govern a real call.
+
+See [connector operations](../connectors/), [approvals](../approvals/), and [MCP interoperability](../../standards/#model-context-protocol).

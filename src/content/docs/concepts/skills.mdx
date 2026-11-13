@@ -1,7 +1,7 @@
 ---
 title: Skills
 description: Reusable instructions and supporting files an agent can load for a task.
-template: splash
+template: doc
 concept:
   category: definitions
   order: 7
@@ -9,10 +9,35 @@ concept:
 
 A **skill** is a reusable bundle of instructions and resources. The persona’s root `SKILL.md` uses the Agent Skills format and describes how to work in its domain. Additional skills can live under `skills/`.
 
-## How a playbook uses a skill
+## Author a skill folder
 
-A playbook can load a skill when it needs instructions for part of its work. For example, a research playbook can use a skill to explain how to check the strength of public evidence. The playbook’s own contract supplies its inputs, declared operations, and expected outputs. The workspace authorizes any tool access.
+### Required and optional files
 
-An Agent Skill may include scripts. Gabriel playbook packages can use bundled scripts as [lifecycle hooks](../hooks/). Persona definition files describe portable resources and follow the definitions-only rule.
+Use `SKILL.md` for the skill’s name, description and instructions. Place background material under `references/`, run assets or schemas under `assets/`, and supported scripts under `scripts/`. Gabriel accepts evals and `gabriel/hooks.json` in a registered playbook’s folder. Hooks are a Gabriel lifecycle extension. The Agent Skills core format defines the folder and instructions.
 
-See [the root skill contract](../../specification/#2-skillmd-), [Agent Skills interoperability](../../standards/#agent-skills), and the [Gabriel skill catalogue](../../skills/).
+```text
+skills/verify-signals/
+  SKILL.md
+  references/evidence-rules.md
+  assets/input-schema.json
+  scripts/check-input.cjs
+  gabriel/hooks.json
+  evals/evals.json
+```
+
+### Example skill metadata
+
+```yaml
+---
+name: verify-signals
+description: Verify dated public buying signals and return their source links.
+---
+```
+
+Use the Skill Editor to review or change the saved source. The Studio schema permits one folder per registered playbook, up to 48 text files, 64 KiB per file, and 256 KiB total. A portable package carries that folder with the corresponding executable and version. A called playbook uses its own skill and authorized context.
+
+## Use files during a run
+
+Reference material can describe how to assess a source, and an asset can give an output shape. A script needs a supported runtime entry point, such as a packaged lifecycle hook. Review the script and its declared data before enabling it. When changing a skill, exercise the affected cases and inspect the new playbook revision before adopting it.
+
+See [Agent Skills](https://agentskills.io/specification), [lifecycle hooks](../hooks/), and [the Skill catalogue](../../skills/).

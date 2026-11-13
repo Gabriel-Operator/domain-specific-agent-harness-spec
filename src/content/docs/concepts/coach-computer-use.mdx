@@ -1,7 +1,7 @@
 ---
 title: Coach computer use
 description: How Gabriel Coach guides people through a shared browser tab and hands control back for review.
-template: splash
+template: doc
 concept:
   category: execution
   order: 13
@@ -24,3 +24,30 @@ Gabriel ties the task to the signed-in person, their selected workspace, and the
 Gabriel supports three browser saves when explicitly requested and permitted in the workspace. Coach can create a team with the requested name and purpose, add a paused bot to the selected team, or install a read-only connector with sync off. The normal Studio save handlers enforce access. The browser task reads back the saved result before Coach reports success. Provider sign-in remains a manual step. Starting a team goal or running a playbook uses the normal execution path, including any required human approvals. See [governed execution](../governed-execution/).
 
 Browser tasks are on by default when Coach is enabled. Persona authors can turn them off with the **Coach browser tasks** setting. The task needs a compatible vision model and permission to share the current persona tab.
+
+## Browser task lifecycle
+
+### Text and voice entry
+
+Ask Coach in the current persona and team context. The browser task waits for the user to share the initiating tab. The request carries workspace and tab identity. Coach can follow the visible controls while the person stays in chat. Pausing releases the tab share and returns the controls to the person.
+
+### Example authoring request
+
+```text
+Open the Canvas for this team and add a paused bot called Intake reviewer.
+Use it to check that a submitted brief includes the dates and supporting sources.
+```
+
+Review what Coach proposes and confirm that the destination team and bot name match the request. For a file-edit request, start in **Review skill files** with **Edit with Coach** and inspect the changes before saving.
+
+## Observation and handoff contract
+
+| Stage | What Gabriel uses |
+| --- | --- |
+| Observe | A masked screenshot and references to visible controls from the selected tab |
+| Choose | A vision model proposes one action from the current observation |
+| Verify | The browser checks that the target is still present and permitted before acting |
+| Hand off | Coach pauses for controls or steps that require the person |
+| Confirm | Studio verifies an allowed save and the task reports the saved result |
+
+Changing the selected workspace ends the active browser task. Starting a goal or playbook follows Studio’s authorized execution path. Use [the manifesto](../../standards/#guide-the-harness-by-text-or-speech) and [human review](../human-review/) for how this fits into the harness.

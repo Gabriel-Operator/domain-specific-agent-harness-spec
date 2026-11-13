@@ -1,7 +1,7 @@
 ---
 title: Resource keys
 description: Stable identities that let portable definitions reference one another across installations.
-template: splash
+template: doc
 concept:
   category: infrastructure
   order: 5
@@ -9,8 +9,29 @@ concept:
 
 A **resource key** identifies a portable definition. A key is lowercase, dot-separated, and begins with its kind. For example, `list.example.meetings` can identify a list referenced by a pipeline. The same definition can have many revisions under one key.
 
-## Resolve the right definition
+## Identify a definition across installations
 
-A portable reference names a resource key. The registry tells the runtime which linked definition to load and verify. Studio team definitions also use IDs and keys within their own definition graph. The workspace creates any local IDs it needs when installing resources.
+### Syntax and references
 
-See [resource-key syntax and examples](../../specification/#4-resource-keys-) and [the portable registry](../registry/).
+A portable key is lowercase, dot-separated, and begins with the resource kind. The key identifies the definition across revisions. The [registry](../registry/) maps that identity to the reviewed content and the workspace can assign its own local record ID.
+
+For example, a portable reference to a meeting list has this shape.
+
+```json
+{
+  "kind": "list",
+  "resourceKey": "list.example.meetings"
+}
+```
+
+### Studio references
+
+Studio team resources use their own `key` within `studio-teams.json`. Teams have `id`, and an agent placement identifies a saved playbook by `playbookId` and its `sourceFingerprint`. When crossing from a Studio resource to an inherited portable list, use the typed reference supported by that resource’s profile.
+
+## Change a definition safely
+
+### Keep identity across revisions
+
+Adding an optional column to the meeting list keeps `list.example.meetings` and changes the pinned content. For a deliberately separate definition, allocate a new key and update its consumers explicitly. At import, report unresolved keys and mismatched resource kinds before activation.
+
+See [resource-key rules and examples](../../specification/#4-resource-keys-) and [Studio team definitions](../../specification/#63-studio-definitions).

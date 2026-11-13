@@ -1,7 +1,7 @@
 ---
 title: Personas and workspaces
 description: The versioned persona definition, the workspace it runs in, and how a runtime imports it.
-template: splash
+template: doc
 ---
 
 A **persona** describes the domain a team works in. It gives names and meanings to things such as prospects, meetings, and pilots, and declares the work the team can do. A **workspace** is an installation of that definition with its own members, records, connections, and run history. Two workspaces can load the same version of Lane and work with different accounts and prospects.
@@ -41,3 +41,20 @@ See the [folder tree](../../specification/#1-folder-structure-), [registry](../.
 The runtime resolves references and verifies each linked definition before use. Resource keys identify the same definition across installations. The runtime supplies local identifiers and stores operational state in the workspace. The draft describes [import verification](../../specification/#5-registry-) and [capability reporting](../../specification/#71-capability-report-). Workspace binding is proposed.
 
 In Gabriel, creating a persona, editing a workspace team, and publishing a persona revision are distinct actions. A workspace can adopt a published update while keeping its own records and accounts. The [`persona-builder` and `persona-workspaces` skills](../../skills/#persona-authoring-and-operations) cover those authoring and installation flows.
+
+## Example from inventory to installation
+
+### Map one source
+
+Start with a domain specialist and choose a question the workspace should answer. For an upcoming-meetings brief, identify the calendar as the source for meeting time and status. Give the ontology a stable Meeting entity, then map the provider’s event identifier and time into that definition. Record who owns the source and what people are permitted to see.
+
+```text
+Organization calendar → Meeting ontology → calendar read requirement
+                                       ↘ team list and meeting board
+```
+
+### Verify a second installation
+
+Import the same reviewed persona revision into a second workspace. Bind a different authorized calendar. Run the same team goal and verify that the new team sees only its own source records and writes to its own destination. Repeat the check after adopting a changed definition.
+
+See [ontology](../ontology/), [workspaces](../workspaces/), and [resource binding](../resource-binding/).

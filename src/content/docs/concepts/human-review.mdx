@@ -1,7 +1,7 @@
 ---
 title: Human review
 description: The domain judgment and exact approvals that let a team govern a run.
-template: splash
+template: doc
 concept:
   category: execution
   order: 3
@@ -9,10 +9,33 @@ concept:
 
 **Human review** is a decision made by someone with the authority the playbook needs. A domain specialist can settle a disputed match or correct a proposed plan. An authorized approver decides whether a protected action may take effect.
 
-## What gets approved
+## Choose the right decision
 
-Reviewing the scope lets preparation continue. Approving a protected effect covers its exact target, operation, inputs, acting account, and policy. The runtime holds dependent work until the right person decides. A material change calls for a fresh proposal and approval.
+### Domain judgment and authorization
 
-A specialist may decide which of two prospects is the right record. A subsequent email still needs the configured send approval for the specific recipient and message.
+The person who knows how to resolve a data discrepancy may be different from the person allowed to authorize a write. Route each decision to the right role in the destination workspace. Show the source evidence, the question, any uncertainty, and the consequence of each option. When a step requires a decision, hold its dependent work until a valid response arrives.
 
-See [specialist review rules](../../specification/#73-specialist-review-and-improvement-) and [review in a live run](../governed-execution/).
+| Review point | Example question |
+| --- | --- |
+| Intake | Which of these two records refers to the requested organization? |
+| Plan | Is this the right sequence of assignments and evidence checks? |
+| Protected effect | May this exact message go to this recipient from the displayed account? |
+| Definition change | Should this revised rule and its eval become the team’s next version? |
+
+### Example review note
+
+This illustrative review note shows the evidence to retain.
+
+```text
+Goal: Verify the shortlist
+Question: Do these two entries describe the same firm?
+Evidence: Source URL A, registry entry B, conflicting office addresses
+Decision: Keep separate; business registration numbers differ
+Result: Update the draft and recheck the downstream proposal
+```
+
+## Feed a decision into the next revision
+
+Keep the decision with the run, evidence and definition revision. Convert recurring issues into proposed mappings, instructions, or eval cases. Have the specialist validate the change with the relevant evidence before publishing. A new revision affects later runs and their decisions. Keep the earlier result available for comparison.
+
+See [specialist review and improvement](../../specification/#73-specialist-review-and-improvement-), [approvals](../approvals/), and [evals](../evals/).

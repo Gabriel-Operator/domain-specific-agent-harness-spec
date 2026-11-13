@@ -1,7 +1,7 @@
 ---
 title: Records, pipelines, and apps
 description: How connectors and agents publish shared data and how a team app displays it.
-template: splash
+template: doc
 ---
 
 Connector results and agent outputs become shared work when a playbook publishes selected fields into a list. A **list** defines records and fields. A **pipeline** defines the stages and transitions of a record. An **app** renders those records for the team and can let a person act on them.
@@ -30,3 +30,20 @@ A publish step declares which fields may leave the private run. A pipeline trans
 A list-backed grid or board is a declarative view. Its definition names the list, fields, and optional pipeline. A custom app package has its own manifest and interface. A workspace installation binds the package to permitted resources and connector accounts. A Studio list-backed view travels with the team definition. A custom app installation stays with the workspace. The package can be versioned independently of the team that installs it.
 
 The [example files](../../implementation/#example-files) show a Studio list, pipeline, and board together. See [lists, pipelines, and apps](../../apps/#4-lists-pipelines-and-apps-), [custom app packages](../../apps/#6-custom-app-packages-), and [live sync](../../apps/#7-live-sync-). [`list-builder`, `pipeline-builder`, and `connector-app-builder`](../../skills/) cover authoring the corresponding resources.
+
+## Example two views over one meeting list
+
+### Use the same identity in each view
+
+One team view shows meeting rows and another groups those same records by pipeline stage. A playbook maps provider results into allowed list columns. Use a stable source identifier to find an existing record, then advance the stage through an allowed transition when the relevant outcome has been accepted.
+
+```text
+Calendar event ID → meeting record → table and pipeline board
+Review outcome    → allowed stage transition → refresh both views
+```
+
+### Choose the publication destination
+
+A structured output can publish to a list and refresh a Studio view. A compiled app can read or write through its installation’s authorized bindings. The playbook and the app each use the appropriate approval path for a governed external effect.
+
+See [record publication](../records-and-lists/), [stage transitions](../pipelines/), and [compiled interfaces](../apps/).

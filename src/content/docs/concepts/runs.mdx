@@ -1,7 +1,7 @@
 ---
 title: Runs
 description: An attempt to execute a goal or playbook with pinned definitions and workspace evidence.
-template: splash
+template: doc
 concept:
   category: execution
   order: 2
@@ -9,10 +9,33 @@ concept:
 
 A **run** is a concrete attempt to carry out work. It belongs to a workspace and captures the inputs, selected definitions and their revisions, and limits for that attempt. A team goal can delegate to several playbook runs.
 
-## What the workspace records
+## Start an attempt
 
-The runtime records execution state, including status, steps, pending decisions, accepted outputs, and effects. Team and playbook limits bound work such as model calls, elapsed time, and credits. A request to stop a run prevents further work when the runtime can confirm it has stopped. An effect already dispatched may still require reconciliation. It uses the same input identity when handling a repeated start. A blocked step stays blocked when a connection or definition syncs. If the result of a live effect is uncertain, the runtime reconciles it before retrying.
+### Request and revision
 
-In Meeting desk, a calendar read and a reviewed publication can have different run records. The accepted output can be handed off within the same authorized goal scope.
+Studio starts a team execution at `POST /api/persona-playground/pages/:pageId/spaces/:spaceId/executions`. This request starts an existing goal after checking the selected team and its revision. Use the same idempotency key for the same start request. Allocate a new key when intentionally starting a new attempt.
 
-See [scheduled work](../scheduled-work/), [runs and collaboration](../runs-and-collaboration/) and [run binding and private handoff](../../implementation/#bind-and-run-a-team-goal).
+```json
+{
+  "goalId": "goal-meetings",
+  "expectedTeamRevision": 7,
+  "reviewPlan": true,
+  "inputs": { "from": "2026-11-16T09:00:00Z", "until": "2026-11-16T17:00:00Z" },
+  "idempotencyKey": "meeting-review-2026-11-16"
+}
+```
+
+### Execution states
+
+| State or group | What the client can show |
+| --- | --- |
+| `pending`, `planning`, `running`, `finalizing` | Progress for the current attempt |
+| `waiting_input`, `waiting_approval`, `waiting_external` | The specific decision, data, or provider result the run needs |
+| `cancelling`, `cancelled` | Stop requested or confirmed |
+| `completed`, `failed`, `uncertain` | Confirmed result, failure, or an outcome requiring reconciliation |
+
+## Inspect or recover an attempt
+
+Use `GET …/executions/:executionId` for current state and `GET …/executions/:executionId/events` for its activity. Track the attempt ID across reconnection and re-read after a replay gap. Use `POST …/executions/:executionId/cancel` when a person requests cancellation. If the provider may already have acted, keep the attempt and reconcile it against evidence. Retry only when the runtime can establish that the effect is safe to retry.
+
+See [goals](../goals/), [live sync](../live-sync-and-presence/), and [execution receipts](../execution-receipts/).

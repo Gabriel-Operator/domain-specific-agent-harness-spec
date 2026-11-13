@@ -1,14 +1,46 @@
 ---
 title: Marketplace
 description: Discover and review reusable playbook, team, and persona releases.
-template: splash
+template: doc
 concept:
   category: infrastructure
   order: 9
 ---
 
-Use **Marketplace** in Studio to find published playbooks, teams, and personas. Filter by package type or enter the exact registry, name, and version. An installation preview shows the resolved dependencies, the destination, required connector operations, and any executable hooks.
+The **marketplace** helps Studio users discover and review reusable playbook, team, and persona packages. The installation preview ties a specific release to the workspace where it will run.
 
-A workspace owner applies the reviewed installation. The destination team configures its own connections, output destinations, spending limits, and approvals before running a goal. Use the **Installed** view to preview an update or removal. A private release can be installed by exact reference using registry credentials.
+## Discover and select a release
 
-See [package formats](../packaging/) and [publishing from Studio](../../implementation/#build-and-install-from-a-blank-canvas).
+### Match the package to its destination
+
+| Package | Destination | What the install creates |
+| --- | --- | --- |
+| Playbook | An existing team | A playbook placement on its Canvas. |
+| Team | An existing persona workspace | A team with pinned playbooks and handoffs. |
+| Persona | A new private workspace | The persona and its packaged teams. |
+
+From a team’s Canvas, use **Quick Start → Add manually → Add bot → Install from marketplace** to add a playbook. Search public listings and choose a version. An exact registry reference also works for a private release when the workspace has access.
+
+### Example playbook reference
+
+The following exact reference uses the downloadable Accounting example’s illustrative release. Replace it with a release available in your registry before requesting a preview.
+
+```json
+{
+  "registry": "https://registry.npmjs.org/",
+  "name": "@example/verify-signals",
+  "version": "1.0.0"
+}
+```
+
+## Review and apply
+
+### Install preview
+
+Review the destination, the exact version and digest of each dependency, the Canvas changes, connector operations, output bindings, and executable hooks. A workspace owner applies the reviewed preview. If the destination changed since review, generate a fresh preview.
+
+### First run and later changes
+
+Complete local setup before starting a team goal. In the **Installed** view, preview updates and removals before applying them. A marketplace lists packages people can discover. The npm-compatible registry supplies the archive and its release metadata.
+
+See [archive contents and pins](../packaging/) and [publishing from Studio](../../implementation/#build-and-install-from-a-blank-canvas).

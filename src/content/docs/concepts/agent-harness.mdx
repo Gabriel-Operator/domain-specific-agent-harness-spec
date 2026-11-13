@@ -1,7 +1,7 @@
 ---
 title: Agent harness
 description: The system that runs the agent loop, manages context, and coordinates model and tool calls.
-template: splash
+template: doc
 concept:
   category: infrastructure
   order: 2
@@ -9,8 +9,32 @@ concept:
 
 An **agent harness** manages the model and tool loop for an agent. It supplies context to model calls, exposes permitted tools, and returns results for the surrounding run. A domain-specific harness uses the persona’s definitions and workspace bindings to keep the work within the team’s scope.
 
-## How it fits with the runtime
+## The loop inside a run
 
-The runtime verifies the imported definitions, resolves accounts and permissions, and tracks execution. The harness handles the agent loop for the selected work. An implementation can put both responsibilities in the same process. This draft leaves the interface between them to each implementation.
+### Inputs from the runtime
 
-See [terms and interoperability](../../standards/#vocabulary) and [capability and binding rules](../../specification/#7-runtime-rules).
+A harness takes the selected playbook step, authorized context, model binding, and available tools. The playbook determines the operation and its constraints. The runtime retains the team scope, run state, budgets, and effect policy. An implementation can provide both responsibilities in one process. The draft leaves the interface between them to each implementation.
+
+### Model calls and tool calls
+
+1. Assemble the instructions and context for the active step.
+2. Invoke the model chosen for the step’s capabilities.
+3. Validate any proposed tool call against the declared tool and arguments before dispatching through the authorized path.
+4. Add permitted results to the step context and continue within the budget.
+5. Return validated output, a request for review, or a failure to the surrounding run.
+
+## Example meeting brief
+
+The model can choose which changes deserve attention. The harness still validates that every cited meeting comes from the authorized calendar result and that the brief fits the expected output. The sequence below illustrates responsibilities.
+
+```text
+Playbook step: summarize meeting changes
+  runtime → supplies allowed meeting records and output contract
+  harness → assembles context and invokes the workspace-bound model
+  harness → validates the summary and meeting references
+  runtime → records the result for review or an eligible next step
+```
+
+### Pause at a governed effect
+
+When an agent proposes to publish the brief, hand the proposed action back to the runtime for its policy checks. A separate approval can bind the destination, acting account, and exact content before dispatch. See [tools](../tools/) and [governed execution](../governed-execution/).

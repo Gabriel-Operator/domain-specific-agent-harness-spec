@@ -1,7 +1,7 @@
 ---
 title: Sandbox rehearsal
 description: An isolated test of a proposed action that records evidence without production effects.
-template: splash
+template: doc
 concept:
   category: execution
   order: 4
@@ -9,10 +9,29 @@ concept:
 
 A **sandbox rehearsal** exercises the proposed behavior against an isolated environment. A copied form, a mocked connector, or a test account can show which checks pass, what would change, and what the test cannot establish.
 
-## Evidence for the next decision
+## Select an isolated target
 
-Record the inputs, definition revision, expected effects, checks, and limits of the rehearsal. Keep production writes, notifications, and charges disabled. If the workflow requires a rehearsal, the runtime holds live dispatch until it has suitable evidence. An authorized person reviews the actual proposed effect before it executes.
+### Test account, mock, or copy
 
-Sherma rehearses normalized answers against a form twin. The reviewer can inspect the exact answers before submission. A receipt for a live submission comes from the destination.
+Choose the closest environment in which the important behavior can be exercised safely. A copied form can validate field rules. A test connector can check request and response mapping. A mock can check how the harness reacts to a timeout or rejection. Use synthetic or authorized data and prevent live writes, messages, and charges.
 
-For the compute boundary used to run scripts, see [code execution](../code-execution/). See [what counts as rehearsal](../governed-execution/#what-counts-as-rehearsal) and the [runtime rules](../../specification/#74-rehearsal-and-governed-execution-).
+### Record what ran
+
+Capture the tested inputs, definition revision, target, expected effects, observed results, and coverage gaps. If a rehearsal is required and no suitable target exists, hold the affected work for setup or manual handling. A proposal that changes materially needs matching evidence and review.
+
+## Example Meeting desk rehearsal
+
+Use a disposable workspace and a test publisher for `meeting-summaries`. The following record illustrates the evidence. A portable evidence schema remains planned.
+
+```text
+Playbook revision: publish-summary@1
+Target: Test meeting summaries list
+Input: Synthetic summary for a meeting with a fictional attendee
+Checks: Map summary; reject undeclared attendee field; suppress live publication
+Observed: Test list received only summary
+Coverage gap: Live account and permission still need to be checked before dispatch
+```
+
+Sherma offers a real persona example. It rehearses normalized answers against a form twin and shows the exact answers for review before submission.
+
+See [the rehearsal checklist](../../implementation/#implement-the-review-and-rehearsal-boundary), [governed execution](../governed-execution/), and [isolated code execution](../code-execution/).

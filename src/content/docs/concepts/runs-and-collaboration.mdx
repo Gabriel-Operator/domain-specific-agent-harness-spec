@@ -1,7 +1,7 @@
 ---
 title: Runs and collaboration
 description: How Studio exposes run state, context, conversations, outputs, and audit evidence.
-template: splash
+template: doc
 ---
 
 A runtime loads the persona, checks available capabilities, and coordinates work through the selected harness. The harness handles agent reasoning and tool use. The workspace owns the run state, accounts, permissions, and shared history. Gabriel captures the run’s playbook definitions and limits at start, then checks current permissions before dispatch. The way a runtime connects to a harness is implementation-specific in this draft. See the [run sequence](../../implementation/#bind-and-run-a-team-goal).
@@ -22,3 +22,22 @@ For example, a teammate can open Lane’s accepted outreach result, follow the l
 Live sync delivers resource changes to open views. Presence describes who is online and where they are working. In Gabriel’s Studio, following another member can change which view you see. Actions still require your own permissions. Presence is a proposed profile in this draft.
 
 See [capability reporting and binding](../../specification/#7-runtime-rules), [live sync](../../apps/#7-live-sync-), and [presence and following](../../apps/#8-presence-and-following-).
+
+## Example collaborating on a paused run
+
+### Review from a shared view
+
+A goal has started preparing a brief. One teammate opens the waiting approval while another follows their view. Each sees records their own role can read. The authorized reviewer inspects the proposed destination and content, then makes the decision from their own session.
+
+```text
+Work → current tasks and attempt state
+Approvals → proposed effect and reviewer decision
+Outputs → accepted artifacts or published records
+Activity → events and diagnostics used to investigate the run
+```
+
+### Reconnect during execution
+
+Reload authoritative run and approval state after a lost connection. Inspect the existing attempt before trying again. When delivery is uncertain, the operator verifies the destination before authorizing a retry. Following and presence remain session context.
+
+See [run states](../runs/), [context and conversations](../context-and-conversations/), and [live sync and presence](../live-sync-and-presence/).

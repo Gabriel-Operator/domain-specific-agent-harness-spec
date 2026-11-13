@@ -1,7 +1,7 @@
 ---
 title: Agents
 description: The workers that execute playbooks inside a team.
-template: splash
+template: doc
 concept:
   category: definitions
   order: 4
@@ -9,10 +9,39 @@ concept:
 
 An **agent** carries out work using instructions and tools. In Gabriel Studio, the portable team definition represents an agent placement under `teams[].bots`. The placement references its playbook by `playbookId` and pins the definition through `sourceFingerprint`.
 
-## Placement and execution
+## Studio placement contract
 
-A placement can have its own name and completion criteria in a team. The playbook defines the work and declares the capabilities it can request. When a goal selects that placement, the runtime checks the required capabilities and workspace permissions before using the harness for the agent’s work.
+### Fields and revision binding
 
-Lane can place a Lead researcher and an Outreach coordinator on the same team. The researcher gathers evidence. The coordinator uses the accepted research to prepare an outreach draft.
+The placement defines the agent’s role on one team. Its `id` is the target of Canvas connections and work assignments. `playbookId` resolves the executable, and `sourceFingerprint` binds the accepted source. `objective` and `completionCriteria` describe the job the placement is responsible for. The finite `position.x` and `position.y` values control layout.
 
-See the [team and playbook schema](../../specification/#63-studio-definitions) and [Lane’s team](../../examples/#the-team-behind-the-tour).
+### Example placement
+
+This excerpt comes from the Meeting desk fixture. The save or installation path computes the fingerprint for the registered definition. If the playbook changes, review the new binding before using it for new work.
+
+```json
+{
+  "id": "reviewer",
+  "playbookId": "studio:review-meetings",
+  "sourceFingerprint": "23a67f9c4bcac40e304c202ed184db58a0cba57d16922d29c14330d2c724853d",
+  "name": "Meeting reviewer",
+  "objective": "Use the Read meetings playbook and draft a summary of upcoming meetings.",
+  "completionCriteria": "Return an evidence-backed summary for review.",
+  "position": {
+    "x": 0,
+    "y": 0
+  }
+}
+```
+
+## What happens when an agent runs
+
+### Context and permissions
+
+The harness supplies the selected model, authorized context, and allowed operations for the assigned work. A placement may consume an accepted handoff, read an approved context page, or perform a declared connector read. Workspace permissions and connector grants still govern each operation. A request in an input, page, or model response does not grant further access.
+
+### Inspect a result
+
+In Studio, check the agent’s playbook revision, the run’s inputs and step results, and any review it is waiting for. For Meeting reviewer, completion means a summary grounded in the calendar results. Publishing that summary can be assigned to the separate Summary publisher placement and reviewed under its own rules.
+
+See [the harness loop](../agent-harness/) and [the team’s Canvas](../teams-and-goals/#canvas-and-work).

@@ -1,7 +1,7 @@
 ---
 title: Data feeds
 description: Versioned sources that read, validate, and map observations into the domain.
-template: splash
+template: doc
 concept:
   category: data
   order: 6
@@ -9,10 +9,33 @@ concept:
 
 A **data feed** reads an observation through a source workflow. Its definition describes inputs, outputs, credential slots, and any mapping to the ontology. A feed catalog ties the definition to the workflow’s stable resource key and file paths.
 
-## From source to observation
+## Declare a feed
 
-A recruiting feed can read a hiring announcement, validate the returned fields, and map the company and role into the ontology. The workspace keeps the observations and enabled schedules. The feed definition and source workflow can be reviewed and versioned in Git.
+### Catalog and source workflow
 
-A signal can evaluate the observation and suggest work. The playbook that performs that work uses its own permissions and approvals.
+A persona’s catalog connects a workflow resource key to a definition file and a workflow file. The definition describes the operation, input and output shape, credential slots, and optional ontology projection. The workflow uses the same resource key. Paths are persona-relative.
 
-See the [feed catalog contract](../../specification/#66-data-feeds) and [signals](../signals/).
+```json
+{
+  "schemaVersion": 1,
+  "feeds": [
+    {
+      "resourceKey": "workflow.example.meeting-source",
+      "definition": "assets/data-feeds/meeting-source.definition.json",
+      "workflow": "assets/data-feeds/meeting-source.workflow.json"
+    }
+  ]
+}
+```
+
+## Process one observation
+
+### Validate and normalize
+
+Read from the bound source under the workspace’s grant. Validate the response and map it to the domain shape before storing or using it. For a calendar feed, preserve the source occurrence ID and timezone-aware start time. A missing stable ID is a useful reason to hold the observation for review. Keep the observed value and provenance in the workspace so the team can explain a later signal.
+
+### Route to a signal
+
+A successful feed result can be stored and evaluated against a condition. Work only starts if an eligible trigger and workspace policy permit it. A feed may repeat a source record on the next poll, so reuse a stable observation identity when deduplicating trigger attempts.
+
+See [the catalog contract](../../specification/#66-data-feeds), [domain ontology](../ontology/), and [signals](../signals/).

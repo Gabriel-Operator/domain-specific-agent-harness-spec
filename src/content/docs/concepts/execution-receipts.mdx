@@ -1,7 +1,7 @@
 ---
 title: Execution receipts
 description: Evidence from a live operation that helps a runtime verify and reconcile the result.
-template: splash
+template: doc
 concept:
   category: execution
   order: 5
@@ -9,10 +9,30 @@ concept:
 
 An **execution receipt** records evidence of what happened after dispatch. A provider may return a delivery ID, a confirmed order, or an identifier for the record it updated. Keep the receipt with the run and the approval it consumed.
 
-## Handle an uncertain result
+## Record a live attempt
 
-If a network failure interrupts a response after dispatch, reconcile the outcome against the provider before trying again. The provider may have accepted the request. A rehearsal records expected behavior in isolation. A live receipt records the actual effect.
+### Identity and evidence
 
-Paya checks for a merchant order ID before recording a purchase as complete. An uncertain payment is reconciled before another charge can be attempted.
+Associate the receipt with the workspace, run, step and reviewed proposal. Keep the operation, target, acting account reference, provider result, timing, and actual usage that are available. Store sensitive evidence under its workspace access policy. A provider response can confirm that a request was accepted while the eventual external result is still pending.
 
-See the [governed execution contract](../../specification/#74-rehearsal-and-governed-execution-) and [persona examples](../../examples/#persona-architectures).
+### Example receipt progression
+
+Illustrative timeline for a connector that accepts a write and finishes it asynchronously.
+
+```text
+Approved → dispatched → provider job ID recorded → waiting for completion
+         → provider status confirmed → receipt attached to the run
+```
+
+## Reconcile before retry
+
+| Observation | Next action |
+| --- | --- |
+| No dispatch occurred | Recheck the current grant and proposal before retrying |
+| Provider confirms the effect happened | Attach the provider result and continue from the confirmed state |
+| Provider confirms rejection | Record the failure and decide whether the same reviewed request can be retried |
+| Connection failed after dispatch | Look up the operation by durable identity or ask an authorized person to reconcile |
+
+Keep rehearsal evidence and live receipts separately identifiable. The draft specifies this behavior and leaves a portable receipt schema open. Gabriel execution details and events expose attempt state in the workspace.
+
+See [runs](../runs/), [the dispatch rules](../../specification/#74-rehearsal-and-governed-execution-), and [live sync](../live-sync-and-presence/).

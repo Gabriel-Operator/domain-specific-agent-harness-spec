@@ -10,6 +10,9 @@ const REPOSITORY = 'https://github.com/Gabriel-Operator/domain-specific-agent-ha
 const SITE_URL = process.env.SITE_URL || undefined;
 const SITE_BASE = process.env.SITE_BASE || undefined;
 
+/** @param {string[]} slugs */
+const conceptLinks = (slugs) => slugs.map((slug) => ({ slug: `concepts/${slug}` }));
+
 // https://astro.build/config
 export default defineConfig({
 	site: SITE_URL,
@@ -21,6 +24,7 @@ export default defineConfig({
 			social: [{ icon: 'github', label: 'GitHub', href: REPOSITORY }],
 			editLink: { baseUrl: `${REPOSITORY}/edit/main/` },
 			lastUpdated: true,
+			tableOfContents: { minHeadingLevel: 2, maxHeadingLevel: 4 },
 			expressiveCode: {
 				shiki: false,
 				styleOverrides: {
@@ -52,13 +56,51 @@ export default defineConfig({
 					label: 'Concepts',
 					items: [
 						{ label: 'Topics', slug: 'concepts', attrs: { 'data-primary-nav': '' } },
-						{ label: 'Personas and workspaces', slug: 'concepts/personas-and-workspaces' },
-						{ label: 'Teams, goals, and playbooks', slug: 'concepts/teams-and-goals' },
-						{ label: 'Connectors and approvals', slug: 'concepts/connectors-and-approvals' },
-						{ label: 'Governed execution', slug: 'concepts/governed-execution' },
-						{ label: 'Records, pipelines, and apps', slug: 'concepts/records-and-apps' },
-						{ label: 'Runs and collaboration', slug: 'concepts/runs-and-collaboration' },
-						{ label: 'Signals, evidence, and evals', slug: 'concepts/signals-and-evals' },
+						{
+							label: 'Core definitions',
+							collapsed: true,
+							items: conceptLinks([
+								'persona', 'ontology', 'teams', 'agents', 'goals', 'playbooks', 'skills',
+								'model-providers', 'models', 'prompts', 'tools', 'delegation',
+							]),
+						},
+						{
+							label: 'Execution and governance',
+							collapsed: true,
+							items: conceptLinks([
+								'governed-execution', 'runs', 'human-review', 'sandbox-rehearsal', 'execution-receipts',
+								'evals', 'context-and-conversations', 'approvals', 'hooks', 'code-execution',
+								'scheduled-work', 'coach-computer-use',
+							]),
+						},
+						{
+							label: 'Data and integrations',
+							collapsed: true,
+							items: conceptLinks([
+								'connectors', 'vault', 'records-and-lists', 'pipelines', 'apps',
+								'data-feeds', 'signals', 'files-and-artifacts',
+							]),
+						},
+						{
+							label: 'Infrastructure and distribution',
+							collapsed: true,
+							items: conceptLinks([
+								'runtime', 'agent-harness', 'workspaces', 'resource-binding', 'resource-keys',
+								'registry', 'packaging', 'live-sync-and-presence', 'marketplace',
+							]),
+						},
+						{
+							label: 'Concept guides',
+							collapsed: true,
+							items: [
+								{ label: 'Personas and workspaces', slug: 'concepts/personas-and-workspaces' },
+								{ label: 'Teams, goals, and playbooks', slug: 'concepts/teams-and-goals' },
+								{ label: 'Connectors and approvals', slug: 'concepts/connectors-and-approvals' },
+								{ label: 'Records, pipelines, and apps', slug: 'concepts/records-and-apps' },
+								{ label: 'Runs and collaboration', slug: 'concepts/runs-and-collaboration' },
+								{ label: 'Signals, evidence, and evals', slug: 'concepts/signals-and-evals' },
+							],
+						},
 					],
 				},
 				{

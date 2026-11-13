@@ -1,7 +1,7 @@
 ---
 title: Signals, evidence, and evals
 description: How domain data can suggest work and how requirements and outcomes are checked.
-template: splash
+template: doc
 ---
 
 A domain can react to events as well as to goals people enter. In Gabriel’s operating model, a **data feed** acquires an observation, a **signal** evaluates whether a declared condition is met, and a **playbook** does the proposed work under its usual limits and approvals.
@@ -27,3 +27,21 @@ Gabriel can capture a fully accepted goal run as a candidate procedure for the o
 **Outcome evidence** records what happened in an actual run. Gabriel’s ROI tools can use accepted outcomes and costs to assess impact. A generated draft is evidence of preparation. A delivery receipt or an accepted record change is evidence of a different outcome.
 
 See [eval requirements and cases](../../specification/#62-evals) and the [persona data feed, signals, framework, and ROI skills](../../skills/#persona-authoring-and-operations).
+
+## Example turning a correction into an eval
+
+### Capture the evidence
+
+A feed reports that an account is hiring. The source date is old, and the specialist rejects the proposed outreach. Keep the source date and the reviewer’s reason with the run. The domain owner then proposes a freshness rule and tests it on the rejected example and a recent positive example.
+
+```text
+Candidate signal → dated source evidence → specialist decision
+                 → reviewed freshness rule and eval cases
+                 → published playbook revision → new team runs
+```
+
+### Verify the next revision
+
+Test that old evidence routes to review or is excluded according to the new rule, and that recent evidence still qualifies. Compare the revised run’s outputs and decision points. Each new run still uses the workspace’s current grants and approvals.
+
+See [feeds](../data-feeds/), [signals](../signals/), and [eval cases](../evals/).

@@ -1,7 +1,7 @@
 ---
 title: Pipelines
 description: Stages and transitions that describe how a record moves through a process.
-template: splash
+template: doc
 concept:
   category: data
   order: 4
@@ -9,10 +9,56 @@ concept:
 
 A **pipeline** is a state machine for records. It defines the stages a record can occupy and the transitions between them. A board can use those stages as columns.
 
-## Moving between stages
+## Define a stage graph
 
-A pipeline can reference the list that stores its records. A transition can name a playbook to start, declare execution limits, and identify which output fields may be shared. An authorized transition updates the record within its rules. Any protected effect the playbook proposes still follows its approval rules.
+### Stages and transitions
 
-Lane’s prospect pipeline can move a record from Contacted to Meeting booked. A case that needs a person can move to Needs you while the team resolves the decision.
+A team pipeline names its storage list through `definition.listRef`. Declare unique stages with exactly one `initial` stage, and transitions whose `fromStageId` and `toStageId` both exist. A transition can map fields. A connector-backed transition in Studio references a pinned, registered single-operation playbook scoped to that team.
 
-See the [linked pipeline definition](../../specification/#64-linked-lists-pipelines-and-workflows) and [Lane’s end-to-end run](../../examples/#one-prospect-end-to-end).
+```json
+{
+  "key": "pipeline.meeting-desk.summaries",
+  "teamId": "meeting-desk",
+  "revision": 1,
+  "archived": false,
+  "kind": "pipeline",
+  "definition": {
+    "name": "Summary follow-up",
+    "description": "",
+    "listRef": "list.meeting-desk.summaries",
+    "stages": [
+      {
+        "id": "shared",
+        "name": "Shared",
+        "type": "initial"
+      },
+      {
+        "id": "done",
+        "name": "Done",
+        "type": "terminal"
+      }
+    ],
+    "transitions": [
+      {
+        "id": "finish",
+        "name": "Mark done",
+        "fromStageId": "shared",
+        "toStageId": "done",
+        "fieldMappings": []
+      }
+    ]
+  }
+}
+```
+
+## Apply a transition
+
+### Example follow-up
+
+A new Meeting summaries record starts at **Shared**. **Mark done** moves it to **Done** when the team finishes the follow-up. Before moving a record, verify its current stage and apply the transition allowed from that stage. A transition that starts a protected connector operation must respect its grant and review. Use the result or receipt to decide when the record can advance.
+
+### Definition changes
+
+Review existing records and app boards before removing or renaming a stage key. An app board references a pipeline for the same team and list. When the runtime rejects a stale transition, reload the record and evaluate the new stage before resubmitting.
+
+See [list definitions](../records-and-lists/), [apps](../apps/), and [the linked pipeline profile](../../specification/#64-linked-lists-pipelines-and-workflows).

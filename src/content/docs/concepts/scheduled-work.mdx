@@ -1,7 +1,7 @@
 ---
 title: Scheduled work
 description: How a team starts work on a schedule or resumes a playbook after a wait.
-template: splash
+template: doc
 concept:
   category: execution
   order: 11
@@ -9,10 +9,34 @@ concept:
 
 A **schedule** can start work at a configured time. A **wait** pauses an existing run until a condition is met. Both let a team continue work after the original interaction ends.
 
-## Start or resume work
+## Declare when work can run
 
-In Gabriel Studio, an enabled schedule can create a goal for a team. A structured playbook’s `wait_until` step instead records when the existing run should wake up. For example, an operations team can schedule a morning check, then let a playbook wait until its source is expected to have fresh data.
+### Schedule, signal, and wait
 
-Scheduled work requires workspace activation and remains subject to team limits, connector grants, and any approval required for a protected action. Standard Agent Specification calls its separately queued side-effect handlers **effects**. Gabriel represents comparable deferred work through schedules and playbook steps.
+A scheduled occurrence can start a new goal or playbook run once the destination workspace enables its policy. A signal is an observation evaluated against a trigger. A wait belongs to an existing run and preserves its identity when work resumes. These paths all use the current team’s admission policy, limits, and connector grants.
 
-See [signals](../signals/), [runs](../runs/), and [Standard Agent Specification’s effects](https://standardagentspec.org/0.2.0/specification/effects/).
+### Example wait step
+
+Use an input or prior output that resolves to the target time. This step is a fragment of a structured playbook’s `steps` array.
+
+```json
+{
+  "id": "wait-for-window",
+  "title": "Wait for the reporting window",
+  "instruction": "Resume when the declared reporting window opens.",
+  "type": "wait_until",
+  "waitUntil": "/input/resumeAt"
+}
+```
+
+## Resume safely
+
+### Resume a wait
+
+A `wait_until` step reads the target timestamp through its JSON Pointer. Supply a time with an explicit offset so the intended moment is unambiguous. When the wait is due, continue from the saved step in that attempt and apply the authorization rules for the next operation.
+
+### Recover a scheduled occurrence
+
+Store the trigger occurrence or wait identity with the execution. When a worker restarts, resume that run from its recorded state. Deduplicate repeated trigger delivery. Recheck access, activation and limits before dispatching a due occurrence. Inspect held or uncertain work before release. Scheduled work imported in a package remains inactive until enabled in the destination.
+
+The Standard Agent Specification models deferred side effects as independently scheduled handlers. Gabriel’s examples use schedules, team triggers, and playbook waits. Compare [Standard Agent Specification’s Effects](https://standardagentspec.org/0.2.0/specification/effects/).

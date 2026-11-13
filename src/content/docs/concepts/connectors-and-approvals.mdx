@@ -1,7 +1,7 @@
 ---
 title: Connectors and approvals
 description: The boundary between declared operations, granted accounts, and approved effects.
-template: splash
+template: doc
 ---
 
 A playbook declares which outside operations it needs. The workspace resolves each requirement to an authorized connection. An approval governs a particular action within a run. These are three separate decisions.
@@ -35,3 +35,21 @@ Before a protected effect, the playbook can rehearse the proposed change with a 
 **Connectors** helps the team see which operations it needs and resolve missing setup. **Vault** handles account credentials and sensitive settings. **Approvals** presents the decisions that a run is waiting for. An approved action is tied to the reviewed details of that action. Editing the draft or changing the connector assignment can require another decision. Shared publication also requires an owner-approved destination and the member’s consent for the fields being shared.
 
 See the [connector requirement fields](../../apps/#2-connector-requirements-), [step types and effects](../../apps/#3-steps-that-use-a-connector-), and [runtime capability report](../../specification/#71-capability-report-). The [implementation guide](../../implementation/#bind-and-run-a-team-goal) walks through the binding and publishing steps. The [skill catalogue](../../skills/#persona-authoring-and-operations) covers persona integrations and team setup.
+
+## Example from calendar read to publication
+
+### Bind reads and writes separately
+
+Meeting desk reads upcoming events under the acting member’s calendar grant. Its publisher points to an authorized destination. Review the operations and account contexts independently, including whether the destination is a team list or an external channel.
+
+```text
+Calendar read  → authorized source account → candidate meeting brief
+Review brief   → proposed destination, acting account, and exact content
+Publish brief  → recheck grant and approved scope → record outcome
+```
+
+### Respond to a changed destination
+
+If the operator changes the channel after approval, show the proposed publication again with its new destination. If the provider outcome is uncertain, reconcile it before retrying. This preserves the connection between the human decision and the provider action.
+
+See [connector requirements](../connectors/), [Vault](../vault/), and [approvals](../approvals/).

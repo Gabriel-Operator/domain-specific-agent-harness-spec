@@ -1,7 +1,7 @@
 ---
 title: Model providers
 description: Services and adapters that connect the harness to a model through an authorized account.
-template: splash
+template: doc
 concept:
   category: definitions
   order: 8
@@ -9,8 +9,31 @@ concept:
 
 A **model provider** serves inference requests. The harness’s provider adapter translates its messages, request options, and expected response into the provider’s API format. A [model](../models/) is the specific model selected for the request. A provider account supplies the credentials and access needed to use it.
 
-## Bind a provider account
+## Provider and account resolution
 
-A portable playbook can describe the capability it needs, such as structured output. Gabriel resolves the model and account from the execution context. For example, a Studio team can select a model from a connected account. The runtime checks the selected model and applies the run’s budget before sending a request.
+### What a provider adapter does
 
-Provider credentials belong to the installation. See [resource binding](../resource-binding/) and [Standard Agent Specification’s provider interface](https://standardagentspec.org/0.2.0/specification/providers/).
+An adapter turns a harness request into the provider’s format and returns the result, tool requests, and usage in a form the runtime understands. Model capabilities depend on the chosen model and endpoint. The workspace or authorized execution actor supplies an account connection under its own policy.
+
+| Check | Why it matters |
+| --- | --- |
+| Provider and model are supported together | A valid account may lack the requested model or API capability |
+| Actor can use the selected connection | Team access does not grant every member a private provider account |
+| Run has capacity and budget | An otherwise valid binding may still be blocked at dispatch |
+
+### Example selection
+
+This example illustrates the selection decision a runtime can record. Use provider/model IDs and account references from the workspace configuration.
+
+```text
+Step: draft meeting summary
+Needs: text input and schema-constrained output
+Binding: workspace-approved text model and actor-authorized account
+Failure: if schema-constrained output is unavailable, hold the step for setup
+```
+
+## Configuration changes
+
+Resolve provider bindings again before a new attempt. Record the binding used for the actual attempt so cost and behavior can be explained. If the configured account is revoked while work is waiting, recheck it before use. An alternate provider may have different tool or output support and should be checked against the same requirements.
+
+See [models](../models/), [resource binding](../resource-binding/), and [the proposed binding rules](../../specification/#72-binding-).

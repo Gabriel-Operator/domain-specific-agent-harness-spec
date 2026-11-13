@@ -1,7 +1,7 @@
 ---
 title: Resource binding
 description: How a workspace connects logical requirements to its models, accounts, people, and destinations.
-template: splash
+template: doc
 concept:
   category: infrastructure
   order: 4
@@ -9,10 +9,34 @@ concept:
 
 **Binding** connects a portable requirement to a resource available in an installation. A definition can request structured model output, a calendar read, or an approver role. The workspace supplies a compatible model, an authorized calendar account, or the person assigned to review.
 
-## Resolve and check access
+## Resolve a portable requirement
 
-Before dispatch, check that the selected resource can perform the operation and that the acting member or team has the necessary grant. A missing binding holds the affected work. A published definition can be reused in another workspace with different bindings.
+### Match capability and scope
 
-In Meeting desk, `calendar:upcoming` is a logical operation. The installation binds it to a member-authorized calendar and maps the returned data to the meetings field. A separate publisher binding identifies where an approved summary may go.
+| Requirement | Workspace binding | Dispatch check |
+| --- | --- | --- |
+| A model with structured output | A configured model and provider | The selected model can return the required shape. |
+| A connector operation | A provider connection under the requested account context | The actor has a current grant for that operation. |
+| A reviewer role | An authorized member or role assignment | The reviewer can decide on this scope and proposal. |
+| A logical output | A destination list, artifact, or provider target | The actor can write to that destination under local policy. |
 
-See [proposed binding rules](../../specification/#72-binding-) and [the Meeting desk example](../../implementation/#bind-and-run-a-team-goal).
+### Example calendar read
+
+This example shows the relationship between a Studio requirement, its workspace binding, and the result. For the persisted requirement format, see [connectors](../connectors/).
+
+```text
+portable requirement  calendar:upcoming
+workspace binding     authorized calendar for the acting member
+runtime mapping       permitted provider operation → meetings result
+next step input       meetings
+```
+
+## Validate again before dispatch
+
+### Missing or changed bindings
+
+Hold the affected step if an account is disconnected, an operation loses its grant, or the selected model lacks a required capability. Report the missing prerequisite so a workspace owner can repair it.
+
+### Changes after review
+
+Changing an account or destination can change the effect that was reviewed. Compare the dispatch request to the recorded approval and obtain a fresh decision when its scope changes. See the [proposed binding rules](../../specification/#72-binding-) and [approvals](../approvals/).

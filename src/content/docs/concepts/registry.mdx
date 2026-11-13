@@ -1,7 +1,7 @@
 ---
 title: Registry
 description: The lock that pins linked definition files to reviewed content and Git revisions.
-template: splash
+template: doc
 concept:
   category: infrastructure
   order: 6
@@ -9,8 +9,39 @@ concept:
 
 A persona’s portable **registry** lives in `references/registry.json`. It lists linked workflows, pipelines, and lists with their resource keys and file paths, definition fingerprints, and published revisions. Older entries can use the root Git link when an explicit revision is absent.
 
-## Publish and verify a pin
+## The portable registry
 
-Publish a linked definition before the persona root. Use the authoring tools to generate its fingerprint and revision. During import, the runtime resolves the key and verifies the definition before use. Gabriel’s generated `references/workspace.json` describes the broader authoring graph.
+### Fields and example
 
-See [registry fields and import rules](../../specification/#5-registry-) and [publishing order](../../implementation/#publish-and-reuse).
+`references/registry.json` lists linked workflow, pipeline, and list definitions. An entry identifies the definition, its repository and paths, and the content the publisher reviewed. The excerpt uses placeholders for publisher-generated values.
+
+```json
+{
+  "schemaVersion": 2,
+  "repos": [
+    {
+      "kind": "list",
+      "resourceKey": "list.example.meetings",
+      "displayName": "Meetings",
+      "repositoryUrl": "https://github.com/example/meetings",
+      "branch": "main",
+      "path": "references/lists/meetings",
+      "assetPath": "assets/list.json",
+      "definitionFingerprint": "<publisher-generated sha256>",
+      "revision": "<published git commit>"
+    }
+  ]
+}
+```
+
+### Resolve and verify
+
+Resolve a resource key to the linked revision and asset path. For an older entry with no explicit revision, use the root commit’s Git link. Gabriel normalizes the definition to compact JSON with object keys sorted recursively and array order preserved. The fingerprint must match before use. Publish linked repositories first so the root can carry their reviewed revisions.
+
+## Other indexes in Gabriel
+
+### Authoring graph and package registries
+
+`references/workspace.json` tracks the broader authoring graph, including links beyond portable imports. An npm-compatible registry serves separately packaged playbooks, teams, and personas by exact package name, version, and archive digest. A marketplace listing helps people discover those releases.
+
+See the [full registry contract](../../specification/#5-registry-) and [package pinning](../packaging/).
