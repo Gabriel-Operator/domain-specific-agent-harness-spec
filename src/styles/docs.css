@@ -243,6 +243,7 @@ h1#_top { font-size: clamp(1.95rem, 1.75rem + 0.85vw, 2.4rem); }
 .sl-markdown-content .sl-badge.caution { background: var(--ps-warn-soft); color: var(--ps-warn); }
 
 .sl-markdown-content :where(table):not(:where(.not-content *)) {
+  display: table;
   width: 100%;
   border: 1px solid var(--ap-line);
   border-collapse: collapse;
@@ -252,10 +253,19 @@ h1#_top { font-size: clamp(1.95rem, 1.75rem + 0.85vw, 2.4rem); }
 .sl-markdown-content :where(th, td):not(:where(.not-content *)) {
   padding: 0.65rem 0.85rem;
   border-bottom-color: var(--ap-line);
-  overflow-wrap: anywhere;
+  vertical-align: top;
+  overflow-wrap: break-word;
 }
 
 .sl-markdown-content :where(thead):not(:where(.not-content *)) { background: var(--ap-surface); }
+
+@media (max-width: 49.99rem) {
+  .sl-markdown-content :where(th, td):not(:where(.not-content *)) { padding-inline: 0.5rem; }
+
+  .sl-markdown-content :where(th, td) :where(code, a):not(:where(.not-content *)) {
+    overflow-wrap: anywhere;
+  }
+}
 
 .sl-markdown-content .starlight-aside,
 .sl-markdown-content starlight-file-tree {
@@ -420,6 +430,7 @@ h1#_top { font-size: clamp(1.95rem, 1.75rem + 0.85vw, 2.4rem); }
 @media (max-width: 23rem) {
   .ap-top-nav { gap: 0.3rem; }
   .ap-top-nav a { font-size: 0.75rem; }
+  .sl-markdown-content :where(th, td):not(:where(.not-content *)) { padding-inline: 0.375rem; }
 }
 
 .ap-topic-index td:first-child a { display: block; }
