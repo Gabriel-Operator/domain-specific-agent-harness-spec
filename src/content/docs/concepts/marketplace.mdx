@@ -1,18 +1,14 @@
 ---
 title: Marketplace
-description: The proposed way to discover reusable playbooks and composed personas.
+description: Discover and review reusable playbook, team, and persona releases.
 template: splash
 concept:
   category: infrastructure
   order: 9
 ---
 
-The proposed **marketplace** makes playbooks discoverable across teams and personas. Authors can also list complete personas that combine reviewed definitions around a particular domain.
+Use **Marketplace** in Studio to find published playbooks, teams, and personas. Filter by package type or enter the exact registry, name, and version. An installation preview shows the resolved dependencies, the destination, required connector operations, and any executable hooks.
 
-## Adopt a playbook
+A workspace owner applies the reviewed installation. The destination team configures its own connections, output destinations, spending limits, and approvals before running a goal. Use the **Installed** view to preview an update or removal. A private release can be installed by exact reference using registry credentials.
 
-Review its revision and check that the destination team can supply the inputs, map the outputs, and grant its required operations. A Research playbook can pair with Verify in one persona and Draft in another. Each workspace uses its own accounts and approvals.
-
-Marketplace listing and cross-runtime installation formats are planned. Gabriel’s custom app registry has its own implemented package and installation contract.
-
-See [playbook reuse](../teams-and-goals/#reuse-a-playbook) and [the planned marketplace contract](../../specification/#8-not-yet-specified-).
+See [package formats](../packaging/) and [publishing from Studio](../../implementation/#build-and-install-from-a-blank-canvas).

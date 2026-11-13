@@ -14,3 +14,44 @@ A **persona package** brings together the root skill, published configuration, p
 Publish child definitions first, then the persona root with updated pins. A workspace verifies the published definition and supplies its own resource bindings and grants. A compiled custom app follows the app package and installation contract. A self-hosted appliance can import a separately compiled, signed release candidate.
 
 See [publishing and reuse](../../implementation/#publish-and-reuse) and [custom app packages and installations](../../apps/#packages-and-installations-).
+
+## Installable Studio packages
+
+Gabriel distributes three package types as npm archives. The public marketplace uses npmjs.com by default. Private installations can use an administrator-configured npm-compatible registry such as Artifactory. Administrators allow registry URLs with `GABRIEL_PACKAGE_REGISTRIES`, a comma-separated list of HTTPS URLs ending in a slash. An install preview shows the exact versions and integrity digests, local bindings, and executable hooks.
+
+| Package | Content | Install destination |
+| --- | --- | --- |
+| Playbook | A structured or goal playbook, or a supported Studio graph, plus its saved skill files and pinned playbook dependencies. | An existing team's Canvas. |
+| Team | Purpose, Canvas placements, handoffs, portable team resources, and exact playbook pins. | A new team in an existing persona workspace. |
+| Persona | A persona profile, optional ontology, logical resource requirements, and exact team pins. | A new private persona and workspace. |
+
+An archive contains `package.json`, `gabriel-package.json`, and the manifest's entry file. The playbook entry is `playbook.json`. A graph entry includes its authored files under `graph/`. The team entry is `team.json`. The persona entry is `persona.json`. A skill folder belongs to its playbook and lives under `skills/<name>/`. Package versions are independent of Studio's local revision numbers.
+
+### Manifest fields
+
+[Download the version 1 manifest JSON Schema](../../examples/gabriel-packages/gabriel-package.schema.json). Registry allowlists, archive integrity, and exact version resolution are validated during installation.
+
+| Field | Value |
+| --- | --- |
+| `schemaVersion` | `1` |
+| `kind` | `playbook`, `team`, or `persona` |
+| `title`, `description` | Display text for the release |
+| `entry` | The file that matches the package kind |
+| `runtime` | An object with `contract: "gabriel-studio-v1"` and a boolean `hooks` |
+| `dependencies` | An object mapping logical names to a registry URL, scoped name, exact version, and SHA-512 integrity digest |
+
+### Worked example: Accounting
+
+The persona installs the Accountants team. That team places Verify signals on its Canvas. Each manifest pins its child by exact version and SHA-512 digest. The archives below were built and validated together. The names are illustrative; the example releases have not been published to npm.
+
+| Package | Manifest with exact pins | Archive |
+| --- | --- | --- |
+| `@example/verify-signals@1.0.0` | [Playbook manifest](../../examples/gabriel-packages/verify-signals.manifest.json) | [Playbook archive](../../examples/gabriel-packages/verify-signals-1.0.0.tgz) |
+| `@example/accountants@1.0.0` | [Team manifest](../../examples/gabriel-packages/accountants.manifest.json) | [Team archive](../../examples/gabriel-packages/accountants-1.0.0.tgz) |
+| `@example/accounting@1.0.0` | [Persona manifest](../../examples/gabriel-packages/accounting.manifest.json) | [Persona archive](../../examples/gabriel-packages/accounting-1.0.0.tgz) |
+
+Publish under your own scope, starting with the playbook. When you publish the team and persona, Studio includes the digests verified against your registry. A new release of Verify stays independent until the team reviews and adopts it.
+
+`SKILL.md`, references, assets, and bundled scripts follow the Agent Skills folder format. Gabriel adds eval files and supports `BeforeTask` and `AfterTask` in `gabriel/hooks.json`. In installed packages, those hooks invoke bundled Node scripts on a verified E2B Studio computer with Node.js 22 or newer and outbound networking disabled. They receive declared input or output fields and can stop the run. Connector credentials and approval authority stay in the destination workspace. Persona resource references are setup requirements. The installer records them in `assets/package-resource-requirements.json` so the destination owner can connect the appropriate resources. [Agent Skills specification](https://agentskills.io/specification)
+
+Follow the [blank Canvas walkthrough](../../implementation/#build-and-install-from-a-blank-canvas).

@@ -1,0 +1,18 @@
+---
+title: Playbook delegation
+description: How a goal or playbook assigns bounded work and receives a result it can use.
+template: splash
+concept:
+  category: definitions
+  order: 12
+---
+
+**Delegation** gives part of a goal to another agent or playbook. The caller supplies the task and inputs, then uses the result and its evidence to continue.
+
+## Delegate inside the team
+
+A structured playbook can call another registered playbook. A goal playbook can select a child playbook from its declared allowlist. When the child is installed from a package, the run captures that child’s definition and skill files. The child works within the parent run’s limits and the workspace’s permissions.
+
+For example, an outreach playbook can ask a research playbook to verify a company. The parent receives the evidence it needs to draft a message. Sending still goes through the applicable approval.
+
+Standard Agent Specification models child agents as separate threads. Gabriel’s structured playbook calls and goal tasks record their parent and child work inside the Studio run. See [playbooks](../playbooks/), [runs](../runs/), and [Standard Agent Specification’s subagent relationships](https://standardagentspec.org/0.2.0/specification/subagents/).

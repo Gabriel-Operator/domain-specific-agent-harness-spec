@@ -1,0 +1,16 @@
+---
+title: Model providers
+description: Services and adapters that connect the harness to a model through an authorized account.
+template: splash
+concept:
+  category: definitions
+  order: 8
+---
+
+A **model provider** serves inference requests. The harness’s provider adapter translates its messages, request options, and expected response into the provider’s API format. A [model](../models/) is the specific model selected for the request. A provider account supplies the credentials and access needed to use it.
+
+## Bind a provider account
+
+A portable playbook can describe the capability it needs, such as structured output. Gabriel resolves the model and account from the execution context. For example, a Studio team can select a model from a connected account. The runtime checks the selected model and applies the run’s budget before sending a request.
+
+Provider credentials belong to the installation. See [resource binding](../resource-binding/) and [Standard Agent Specification’s provider interface](https://standardagentspec.org/0.2.0/specification/providers/).

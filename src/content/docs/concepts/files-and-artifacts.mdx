@@ -1,0 +1,16 @@
+---
+title: Files and artifacts
+description: How authored files, working files, and shared outputs are stored and accessed.
+template: splash
+concept:
+  category: data
+  order: 8
+---
+
+A playbook can carry **authored files** such as instructions, references, and schemas. A running task can also produce **working files** or **artifacts** such as a report or a generated image. Those files have different lifetimes and access rules.
+
+## Keep working files within their scope
+
+Packaged skill files travel with the playbook revision. Gabriel can keep a member’s working files between workflow tasks when the team enables and verifies retained filesystem support. Published outputs follow the workspace’s sharing rules. For example, a private working copy can stay in the member’s environment while a reviewed brief is published for the team.
+
+Standard Agent Specification scopes its filesystem to a thread. In Gabriel, the team’s retained workflow filesystem is scoped to the workspace, team, and member. See [skills](../skills/), [workspaces](../workspaces/), and [Standard Agent Specification’s thread filesystem](https://standardagentspec.org/0.2.0/specification/threads/filesystem/).

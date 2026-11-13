@@ -1,0 +1,166 @@
+{
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "number",
+      "const": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "playbook",
+        "team",
+        "persona"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000
+    },
+    "entry": {
+      "type": "string",
+      "enum": [
+        "playbook.json",
+        "team.json",
+        "persona.json"
+      ]
+    },
+    "runtime": {
+      "type": "object",
+      "properties": {
+        "contract": {
+          "type": "string",
+          "const": "gabriel-studio-v1"
+        },
+        "hooks": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "contract",
+        "hooks"
+      ],
+      "additionalProperties": false
+    },
+    "dependencies": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "registry": {
+            "type": "string",
+            "maxLength": 300,
+            "format": "uri",
+            "default": "https://registry.npmjs.org/"
+          },
+          "name": {
+            "type": "string",
+            "maxLength": 214,
+            "pattern": "^@[a-z0-9][a-z0-9._-]*\\/[a-z0-9][a-z0-9._-]*$"
+          },
+          "version": {
+            "type": "string",
+            "maxLength": 100,
+            "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+          },
+          "integrity": {
+            "type": "string",
+            "pattern": "^sha512-[A-Za-z0-9+/]{86}==$"
+          }
+        },
+        "required": [
+          "name",
+          "version",
+          "integrity"
+        ],
+        "additionalProperties": false
+      },
+      "propertyNames": {
+        "maxLength": 160,
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+      },
+      "maxProperties": 64
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "kind",
+    "title",
+    "description",
+    "entry",
+    "runtime",
+    "dependencies"
+  ],
+  "additionalProperties": false,
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Gabriel package manifest, version 1",
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "playbook"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "entry": {
+            "const": "playbook.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "team"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "entry": {
+            "const": "team.json"
+          },
+          "runtime": {
+            "properties": {
+              "hooks": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "kind": {
+            "const": "persona"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "entry": {
+            "const": "persona.json"
+          },
+          "runtime": {
+            "properties": {
+              "hooks": {
+                "const": false
+              }
+            }
+          }
+        }
+      }
+    }
+  ]
+}

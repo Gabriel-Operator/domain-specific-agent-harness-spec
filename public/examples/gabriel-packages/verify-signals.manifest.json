@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "kind": "playbook",
+  "title": "Verify signals",
+  "description": "",
+  "entry": "playbook.json",
+  "runtime": {
+    "contract": "gabriel-studio-v1",
+    "hooks": false
+  },
+  "dependencies": {}
+}

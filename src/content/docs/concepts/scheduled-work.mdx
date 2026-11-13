@@ -1,0 +1,18 @@
+---
+title: Scheduled work
+description: How a team starts work on a schedule or resumes a playbook after a wait.
+template: splash
+concept:
+  category: execution
+  order: 11
+---
+
+A **schedule** can start work at a configured time. A **wait** pauses an existing run until a condition is met. Both let a team continue work after the original interaction ends.
+
+## Start or resume work
+
+In Gabriel Studio, an enabled schedule can create a goal for a team. A structured playbook’s `wait_until` step instead records when the existing run should wake up. For example, an operations team can schedule a morning check, then let a playbook wait until its source is expected to have fresh data.
+
+Scheduled work requires workspace activation and remains subject to team limits, connector grants, and any approval required for a protected action. Standard Agent Specification calls its separately queued side-effect handlers **effects**. Gabriel represents comparable deferred work through schedules and playbook steps.
+
+See [signals](../signals/), [runs](../runs/), and [Standard Agent Specification’s effects](https://standardagentspec.org/0.2.0/specification/effects/).

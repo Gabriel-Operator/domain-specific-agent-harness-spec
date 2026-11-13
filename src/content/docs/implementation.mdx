@@ -17,7 +17,7 @@ Start with the [architecture diagram](../#architecture-at-a-glance). Use the [fo
 | Connector and vault | The playbook declares operations and account context. The workspace grants a connection, holds its credentials, and maps logical operations to permitted tools. | [Requirements and steps](../apps/#2-connector-requirements-) |
 | Records and apps | A publish step sends allowed fields to a bound destination. A team view reads a list. A custom interface is a separate package with workspace installation settings. | [Records, pipelines, and apps](../concepts/records-and-apps/) |
 | Governed execution | The workspace records human decisions, rehearsal evidence, exact effect approvals, and live receipts. Reviewed changes to definitions or evals become new Git revisions. | [Rehearsal and governed execution](../specification/#74-rehearsal-and-governed-execution-) |
-| Marketplace | Playbook packages can be composed into personas. The shared listing and installation format is proposed. | [Publish and reuse](#publish-and-reuse) |
+| Marketplace | Install an individual playbook, a team that pins playbooks, or a persona that pins teams. | [Publish and reuse](#publish-and-reuse) |
 
 ## Example files
 
@@ -64,4 +64,13 @@ Record what the specialist reviewed and what was approved, corrected, or rejecte
 
 Commit linked resources first, then publish the persona root with their Git links and generated fingerprints. The [portable registry](../specification/#5-registry-) pins linked definitions. The root commit versions local assets such as `studio-teams.json`. A workspace can adopt a new revision while keeping its own credentials, records, and run history.
 
-For playbook reuse, review the definition revision, map the inputs and outputs to the destination team, and grant the required operations there. The proposed marketplace gives people a place to discover reusable playbooks and optionally list complete personas. For example, Research can pair with Verify for one persona and with Draft for another. Marketplace metadata and resolution rules are [planned](../specification/#8-not-yet-specified-). The creator’s [custom app package registry](../apps/#packages-and-installations-) is a separate, implemented installation mechanism.
+For Studio packages, publish each playbook before the team that uses it and publish the team before the persona. Review each exact version and map the required operations and outputs in the destination workspace. [Package and manifest reference](../concepts/packaging/)
+
+## Build and install from a blank Canvas
+
+1. In Playbook Studio, create an empty **Accountants** team. Use **Add playbook** to author **Verify public signals**, import an existing skill folder, or choose **Install from marketplace**. Set its input and output fields, then use the Skill Editor to write instructions and add a reference, an input schema, or an eval.
+2. Add a second playbook if the goal needs a handoff. Configure the needed connectors in the team, then create a goal inside **Accountants**. Review the plan before the team runs and review any governed operation when prompted.
+3. In **Marketplace → Export or publish**, select **Playbook** and the saved definition. Enter your registry, scoped name, and version. Preview the files and hook commands. Download the archive or save a scoped registry token and publish the reviewed release.
+4. Publish **Accountants** as a **Team** after its playbooks have versions. Publish the persona after its teams have versions. Studio writes those dependency pins into the parent package.
+5. From another Studio workspace, find the release in **Marketplace** or enter its exact package reference. A playbook uses the currently selected team. A team creates a new Canvas in the workspace. A persona creates a new private persona and workspace.
+6. Review the destination and the required operations, then install. In the destination, set up accounts, grants, publishing destinations, a spending limit, and an E2B Studio computer for any declared hooks. Create a goal in the installed team to invoke its playbooks.

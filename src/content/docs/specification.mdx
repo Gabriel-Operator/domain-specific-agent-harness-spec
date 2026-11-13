@@ -55,7 +55,7 @@ Every linked definition under `references/` is its own Git repository, linked di
 | A specific goal, its plan, run state, evidence, and approvals | The team’s workspace. See [runtime rules](#7-runtime-rules). |
 | Connector accounts, credentials, grants, and list records | Workspace storage. See [connector binding](#72-binding-). |
 | Custom interface bundles and their installed account and data mappings | The app package registry and the workspace installation. See [custom app packages](../apps/#6-custom-app-packages-). |
-| Discoverable playbook and persona listings | The proposed marketplace. See [publishing and reuse](../implementation/#publish-and-reuse). |
+| Discoverable playbook, team, and persona listings | The Studio marketplace. See [publishing and reuse](../implementation/#publish-and-reuse). |
 
 ## 2. `SKILL.md` <Badge text="Extracted" variant="success" />
 
@@ -374,7 +374,7 @@ Connector requirements, apps, custom app packages, live sync and presence have t
 These parts exist in running installations and will be specified in later drafts:
 
 - A common execution and orchestration contract across runtimes. The [Studio definition profile](#63-studio-definitions) and [connector step contract](../apps/#3-steps-that-use-a-connector-) describe the implemented Gabriel forms.
-- Playbook and persona marketplace listing formats, cross-runtime package resolution, and marketplace installation.
+- Interoperable marketplace listings and cross-runtime package resolution beyond the [Gabriel Studio npm package contract](../concepts/packaging/).
 - A portable schema for rehearsal environments, approval policies and evidence, and execution receipts. [Section 7.4](#74-rehearsal-and-governed-execution-) proposes the runtime behavior.
 - Signals and routines: work that starts from an event or a schedule.
 - Access: workspace members, roles and scoped tokens.

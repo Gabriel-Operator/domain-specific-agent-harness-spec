@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "kind": "team",
+  "title": "Accountants",
+  "description": "",
+  "entry": "team.json",
+  "runtime": {
+    "contract": "gabriel-studio-v1",
+    "hooks": false
+  },
+  "dependencies": {
+    "studio:verify-signals": {
+      "registry": "https://registry.npmjs.org/",
+      "name": "@example/verify-signals",
+      "version": "1.0.0",
+      "integrity": "sha512-a6FvGfHRNlp5W2u4Zt2vgfyp1n7PfBvFwVfjZIFcaLrkcKcwvnDfcrejSu/+ngEUv1377Xf2NN1njANZa7qigQ=="
+    }
+  }
+}

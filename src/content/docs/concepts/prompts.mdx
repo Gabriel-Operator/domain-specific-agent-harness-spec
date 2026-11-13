@@ -1,0 +1,16 @@
+---
+title: Prompts
+description: Instructions and selected context that the harness assembles for a model call.
+template: splash
+concept:
+  category: definitions
+  order: 10
+---
+
+A **prompt** tells a model what to do on a particular call. It can include the step’s instructions, approved context and evidence, and the format expected for the answer.
+
+## Assemble the prompt for a step
+
+Gabriel Studio supplies system instructions for the type of work, then adds the saved step, run inputs, and relevant context. A reasoning step can use its playbook’s skill instructions and references. A verification call can ask whether a candidate meets its completion criteria. For example, a meeting summary step can request decisions, actions, and owners in named output fields.
+
+The runtime validates the result against the playbook contract. Tool grants and approvals are checked separately when the result requests an action. See [skills](../skills/), [tools](../tools/), and [Standard Agent Specification’s prompt definitions](https://standardagentspec.org/0.2.0/specification/prompts/).

@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "kind": "persona",
+  "title": "Accounting",
+  "description": "",
+  "entry": "persona.json",
+  "runtime": {
+    "contract": "gabriel-studio-v1",
+    "hooks": false
+  },
+  "dependencies": {
+    "accountants": {
+      "registry": "https://registry.npmjs.org/",
+      "name": "@example/accountants",
+      "version": "1.0.0",
+      "integrity": "sha512-6C2/42H5N4bRtr+poOmS2I6KJF6wDZSC3Nn0xAujGjvOMp5D4ucBrCpmEBWHF5hoD1POhpkalc3jL9cB0iegYA=="
+    }
+  }
+}

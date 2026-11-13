@@ -43,6 +43,16 @@ A persona adds a registry and declarative definitions for domains, data, workflo
 
 ## Standard Agent Specification
 
-The [Standard Agent Specification](https://standardagentspec.org) defines executable agents, including model selection, prompts, tools, threads, and hooks. It distributes TypeScript implementations as npm packages. A persona holds Markdown and JSON definitions in Git. It can describe multiple teams, and the proposed binding rules leave model selection to the workspace.
+The [Standard Agent Specification](https://standardagentspec.org/#anatomy-of-the-specification) defines executable agents and their runtime interfaces. A Gabriel persona describes a domain and its teams in Markdown and JSON. Gabriel Studio can distribute playbooks, teams, and personas as npm packages.
 
-Exporting individual agents from a persona as Standard Agents would require an adapter for the two execution and state models.
+| Standard Agent Specification | Related Gabriel concepts |
+| --- | --- |
+| Providers, models, prompts, and tools | [Model providers](../concepts/model-providers/), [models](../concepts/models/), [prompts](../concepts/prompts/), and [tools](../concepts/tools/) |
+| Agents and subagents | [Agents](../concepts/agents/), [teams](../concepts/teams/), and [playbook delegation](../concepts/delegation/) |
+| Effects, hooks, and code execution | [Scheduled work](../concepts/scheduled-work/), [lifecycle hooks](../concepts/hooks/), and [code execution](../concepts/code-execution/) |
+| Threads, messages, endpoints, filesystem, and execution state | [Context and conversations](../concepts/context-and-conversations/), [files and artifacts](../concepts/files-and-artifacts/), and [runs](../concepts/runs/) |
+| Decisions | [Prompted verification](../concepts/prompts/#assemble-the-prompt-for-a-step) can evaluate a candidate against completion criteria during a Studio run. |
+| Users (draft) | [Workspace membership](../concepts/workspaces/) and [resource binding](../concepts/resource-binding/) determine which people and agents can act on local resources. |
+| Runtime, packaging, and distribution | [Runtime](../concepts/runtime/), [packaging and installation](../concepts/packaging/), and [marketplace](../concepts/marketplace/) |
+
+These are conceptual mappings. Using a Standard Agents package in a Gabriel harness would require an adapter for execution, state, and workspace bindings.
