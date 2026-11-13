@@ -470,6 +470,24 @@
 
 .hs-modalities svg { width: 85%; height: 85%; }
 
+.hs-piece:is([data-hs-piece='persona'], [data-hs-piece='personaB']) > .hs-piece-title {
+  flex-wrap: nowrap;
+  font-size: clamp(12px, calc(var(--hs-piece-width) * 0.0625), 16px);
+}
+
+.hs-piece:is([data-hs-piece='persona'], [data-hs-piece='personaB']) .hs-modalities {
+  flex: 0 1 auto;
+  min-width: 0;
+  gap: clamp(2px, calc(var(--hs-piece-width) * 0.01), 3px);
+  padding-inline-start: 6px;
+}
+
+.hs-piece:is([data-hs-piece='persona'], [data-hs-piece='personaB']) .hs-modalities > span {
+  min-width: 0;
+  height: auto;
+  aspect-ratio: 1;
+}
+
 .hs-piece:is([data-hs-piece='researchPersona'], [data-hs-piece='briefingPersona']) > .hs-piece-title {
   font-size: 14px;
 }
