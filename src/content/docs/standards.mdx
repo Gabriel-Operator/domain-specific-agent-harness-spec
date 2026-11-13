@@ -4,16 +4,26 @@ description: How personas, runtimes, and agent harnesses fit together, and how t
 template: splash
 ---
 
+import ImagePreview from '../../components/ImagePreview.astro';
+
 A **persona** is the versioned definition of a domain, its teams, and the playbooks they use. A **runtime** imports it and coordinates work. An **agent harness** runs the model and tool loop for an agent. These terms describe responsibilities that an implementation can put in the same process or in separate services.
 
 ## Manifesto
 
-<figure>
-  <a href="../persona-manifesto.webp" aria-label="Open the Domain-Specific Harness Manifesto poster at full size">
-    <img src="../persona-manifesto.webp" alt="The Domain-Specific Harness Manifesto, credited to Gabriel Operator and Vipin Tanna. Its principles are described below." width="1536" height="1024" decoding="async" />
-  </a>
-  <figcaption>A domain-specific harness applies deterministic playbook rules to non-deterministic model outputs in pursuit of a team goal.</figcaption>
-</figure>
+<div className="manifesto-layout">
+  <ImagePreview
+    id="manifesto"
+    file="persona-manifesto.webp"
+    alt="The Domain-Specific Harness Manifesto, credited to Gabriel Operator and Vipin Tanna. Its principles are described alongside the poster."
+    width={1536}
+    height={1024}
+    title="Domain-Specific Harness Manifesto"
+    action="Enlarge poster"
+    fitImage
+  />
+  <div className="manifesto-copy">
+
+A domain-specific harness applies deterministic playbook rules to non-deterministic model outputs in pursuit of a team goal.
 
 - **Persona.** The harness takes its domain and team definitions from the persona.
 - **Team.** The harness runs each goal within its team’s scope, using the playbooks that team makes available.
@@ -23,6 +33,9 @@ A **persona** is the versioned definition of a domain, its teams, and the playbo
 Playbooks should be **vendor-agnostic**, **domain-specific**, **multi-model bound**, **composable**, and **portable**. Declared inputs and outputs let teams compose playbooks, and versioned packages let workspaces reuse those definitions with compatible bindings.
 
 Adapted from the [Standard Agent Specification’s core principles](https://standardagentspec.org/#core-principles).
+
+  </div>
+</div>
 
 ### Guide the harness by text or speech
 
