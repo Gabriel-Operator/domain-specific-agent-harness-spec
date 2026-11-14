@@ -20,6 +20,7 @@ export default defineConfig({
 	integrations: [
 		starlight({
 			title: NAME,
+			favicon: '/harness-mark.svg',
 			description: 'An open specification for defining a domain, turning team goals into playbooks, and running them with an agent harness.',
 			social: [{ icon: 'github', label: 'GitHub', href: REPOSITORY }],
 			editLink: { baseUrl: `${REPOSITORY}/edit/main/` },

@@ -3,10 +3,7 @@ const { siteTitle, siteTitleHref } = Astro.locals.starlightRoute;
 ---
 
 <a href={siteTitleHref} class="ap-brand" translate="no" aria-label={siteTitle}>
-  <svg class="ap-brand-mark" width="26" height="26" viewBox="0 0 36 36" aria-hidden="true">
-    <rect width="36" height="36" rx="9" fill="currentColor" />
-    <path d="m8 13 10-5 10 5-10 5-10-5Zm0 5 10 5 10-5M8 23l10 5 10-5" fill="none" stroke="var(--sl-color-bg)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-  </svg>
+  <img class="ap-brand-mark" src={siteTitleHref + 'harness-mark.svg'} width="26" height="26" alt="" />
   <span class="ap-brand-full" aria-hidden="true">{siteTitle}</span>
   <span class="ap-brand-short" aria-hidden="true">Agent Harness Spec</span>
 </a>
