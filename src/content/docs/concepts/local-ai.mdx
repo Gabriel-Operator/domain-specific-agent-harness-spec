@@ -1,0 +1,89 @@
+---
+title: Local AI
+description: Connect the harness to a model on a Mac mini, DGX Spark, or another private inference host.
+template: doc
+concept:
+  category: infrastructure
+  order: 5
+---
+
+import LocalAiDiagram from '../../../components/LocalAiDiagram.astro';
+
+A harness can use a model served on hardware you operate. Install the inference server and model on that hardware, then register the endpoint as a [workspace model binding](../resource-binding/). The playbook declares the capability it needs, so different teams can run the same playbook against models that meet that requirement.
+
+## How the harness talks to a local model
+
+<LocalAiDiagram />
+
+The harness sends the authorized context and permitted tool definitions through a [provider adapter](../model-providers/). The runtime retains the goal, run state, credentials, approval decisions, and execution receipts. Model weights, server addresses, and access credentials belong to the deployment.
+
+## Serve a model on your hardware
+
+### Mac mini with Ollama
+
+On an Apple silicon Mac mini, install and open Ollama for macOS, then download a local model. This example uses `qwen3:4b` for a text smoke test. Choose a model that fits the device’s memory and the playbook’s context and concurrency requirements. [Ollama for macOS](https://docs.ollama.com/macos) · [Qwen3 4B](https://ollama.com/library/qwen3:4b)
+
+```sh
+ollama pull qwen3:4b
+curl -fsS http://127.0.0.1:11434/v1/models
+```
+
+Use `http://127.0.0.1:11434/v1` as the adapter base URL when the harness runs on the Mac itself. To restrict Ollama to local models, disable its cloud features in the server configuration. [Ollama API compatibility](https://docs.ollama.com/api/openai-compatibility) · [Ollama local-only configuration](https://docs.ollama.com/faq#how-do-i-disable-ollamas-cloud-features)
+
+### DGX Spark with vLLM
+
+On the Spark, follow NVIDIA’s single-device recipe for your hardware, memory, and chosen model. The recipe specifies the compatible container and model checkpoint. Start vLLM, then use the model ID reported by the server in the harness binding. The served ID can differ from the checkpoint name. [NVIDIA’s single-device vLLM instructions](https://build.nvidia.com/spark/vllm/advanced)
+
+```sh
+curl -fsS http://127.0.0.1:8000/health
+curl -fsS http://127.0.0.1:8000/v1/models
+```
+
+An operator running the harness on another machine can forward the endpoint over SSH. Replace `dgx-spark` with the SSH host for the device. Keep the tunnel open while the harness uses `http://127.0.0.1:8000/v1` on that machine. [NVIDIA’s SSH connection example](https://build.nvidia.com/spark/vllm/advanced)
+
+```sh
+ssh -N -L 127.0.0.1:8000:127.0.0.1:8000 dgx-spark
+```
+
+### Reach the endpoint from the harness
+
+Run the model probe from the network namespace that will execute the playbook. In a container, `127.0.0.1` refers to the container. A shared or remotely hosted harness needs a private route or a worker on the inference host. For a shared service, restrict access to authorized clients and use an authenticated endpoint over TLS.
+
+## Bind the model in the workspace
+
+### Map one requirement to one endpoint
+
+Select an adapter that supports the serving API and the playbook’s operations. The YAML below illustrates workspace configuration. Each implementation defines its own configuration format.
+
+```yaml
+# Playbook requirement
+requirement:
+  name: meeting-summary
+  input: text
+  output: text
+
+# Destination workspace
+binding:
+  requirement: meeting-summary
+  protocol: openai-compatible-chat
+  baseUrl: http://127.0.0.1:11434/v1
+  model: "qwen3:4b"
+```
+
+On Spark, use the reachable vLLM base URL and its served model ID for the same logical requirement. Reference any service credential from workspace secret storage. A team can bind other playbook steps to separate local models for vision, embeddings, or speech when the selected server and adapter support those operations.
+
+### Verify the playbook’s capabilities
+
+A model list establishes reachability. Test inference with the chosen model, then evaluate it using the playbook’s actual context size, output contract, and declared tools. For the Ollama example, a first text probe is:
+
+```sh
+curl -fsS http://127.0.0.1:11434/v1/chat/completions \
+  -H 'Content-Type: application/json' \
+  -d '{"model":"qwen3:4b","messages":[{"role":"user","content":"Summarize in one sentence: The team moved its review to Friday."}]}'
+```
+
+Verify structured output, tool calls, or other modalities separately when required. Inspect the locally run playbook’s [evals](../evals/) and record the actual model and binding used. A separate approval still governs any protected action the model proposes. [Governed execution](../governed-execution/)
+
+### Keep local execution within policy
+
+Hold the affected step when the local endpoint is unavailable or lacks a required capability. A cloud fallback requires its own authorized binding, capability check, and permission to send the step’s data there. If the goal requires data to stay on private infrastructure, check tool endpoints, telemetry, and run storage as well as inference.

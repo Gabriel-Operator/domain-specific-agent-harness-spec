@@ -1,6 +1,6 @@
 ---
-title: Resource binding
-description: How a workspace connects logical requirements to its models, accounts, people, and destinations.
+title: Resource binding and keys
+description: How portable definitions identify resources and how a workspace supplies the models, accounts, people, and destinations needed to run them.
 template: doc
 concept:
   category: infrastructure
@@ -8,6 +8,27 @@ concept:
 ---
 
 **Binding** connects a portable requirement to a resource available in an installation. A definition can request structured model output, a calendar read, or an approver role. The workspace supplies a compatible model, an authorized calendar account, or the person assigned to review.
+
+A **resource key** gives a portable definition a stable identity across revisions. The [registry](../registry/) resolves that identity to reviewed definition content. Binding supplies the resource to use at execution in a particular workspace.
+
+## Identify a definition across installations
+
+### Syntax and references
+
+A portable key is lowercase, dot-separated, and starts with the resource kind. For example, a pipeline can reference the meeting list by its key.
+
+```json
+{
+  "kind": "list",
+  "resourceKey": "list.example.meetings"
+}
+```
+
+The same list can have a different local record ID in each workspace. Use the portable key in definitions so they can move between installations. [Resource-key rules](../../specification/#4-resource-keys-)
+
+### Studio references
+
+In the Gabriel implementation, a team resource can use a `key` scoped to its team. A placement identifies its playbook by `playbookId` and `sourceFingerprint`. Use the profile’s typed resource reference when a team resource refers to an inherited portable definition. [Studio definitions](../../specification/#63-studio-definitions)
 
 ## Resolve a portable requirement
 
@@ -30,6 +51,14 @@ workspace binding     authorized calendar for the acting member
 runtime mapping       permitted provider operation → meetings result
 next step input       meetings
 ```
+
+To use a model served on hardware you manage, bind the same requirement to a [local inference endpoint](../local-ai/#bind-the-model-in-the-workspace).
+
+## Change a definition safely
+
+### Keep identity across revisions
+
+Adding a field to the meeting list can keep its resource key while changing the pinned definition. Allocate a new key for a separate definition and update its consumers explicitly. At import, report unresolved keys and mismatched kinds before activation.
 
 ## Validate again before dispatch
 

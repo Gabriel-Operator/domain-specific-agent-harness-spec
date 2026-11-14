@@ -85,7 +85,7 @@ export default defineConfig({
 							label: 'Infrastructure and distribution',
 							collapsed: true,
 							items: conceptLinks([
-								'runtime', 'agent-harness', 'workspaces', 'resource-binding', 'resource-keys',
+								'runtime', 'agent-harness', 'workspaces', 'resource-binding', 'local-ai',
 								'registry', 'packaging', 'live-sync-and-presence', 'marketplace',
 							]),
 						},

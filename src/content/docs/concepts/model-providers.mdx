@@ -36,4 +36,6 @@ Failure: if schema-constrained output is unavailable, hold the step for setup
 
 Resolve provider bindings again before a new attempt. Record the binding used for the actual attempt so cost and behavior can be explained. If the configured account is revoked while work is waiting, recheck it before use. An alternate provider may have different tool or output support and should be checked against the same requirements.
 
-See [models](../models/), [resource binding](../resource-binding/), and [the proposed binding rules](../../specification/#72-binding-).
+A workspace can also bind to a model server it operates on the same machine or a private network. The adapter still needs to verify the model and API capabilities for the step. [Local AI](../local-ai/)
+
+See [models](../models/), [resource binding and keys](../resource-binding/), and [the proposed binding rules](../../specification/#72-binding-).
