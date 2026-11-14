@@ -12,6 +12,7 @@
 <p align="center">
   <a href="https://gabriel-operator.github.io/domain-specific-agent-harness-spec/">Docs</a> ·
   <a href="#quickstart">Quickstart</a> ·
+  <a href="https://gabriel-operator.github.io/domain-specific-agent-harness-spec/concepts/portable-playbooks/">Portable playbooks</a> ·
   <a href="https://gabriel-operator.github.io/domain-specific-agent-harness-spec/specification/">Specification</a> ·
   <a href="https://gabriel-operator.github.io/domain-specific-agent-harness-spec/examples/">Examples</a> ·
   <a href="https://gabriel-operator.github.io/domain-specific-agent-harness-spec/llms.txt">llms.txt</a>
@@ -28,6 +29,10 @@ A **persona** is a versioned Git definition of a domain, its teams, and the play
 1. **Inspect an example persona.** Meeting desk includes an ontology, a Studio team, a calendar connector requirement, and playbooks for drafting and publishing a meeting summary. [Meeting desk files](public/examples/meeting-desk)
 2. **Follow a team goal.** Load the persona, bind a workspace calendar, then review and publish a summary through the team’s playbooks. [Implementation walkthrough](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/implementation/#bind-and-run-a-team-goal)
 3. **Check the rules.** Use the specification for the folder layout, resource keys, registry pins, and runtime requirements. [Specification](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/specification/)
+
+## Portable playbooks
+
+Author one versioned playbook as JSON or YAML. Add an owned skill or pinned external skills, configure the destination workspace, and run the playbook from a team goal. The runtime compatibility guide shows each provider’s capabilities and setup requirements. [Portable playbook quickstart](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/concepts/portable-playbooks/#from-a-blank-canvas-to-a-governed-run) · [JSON and YAML examples](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/concepts/portable-playbooks/#the-playbook-definition)
 
 ## Architecture
 

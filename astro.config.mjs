@@ -60,7 +60,7 @@ export default defineConfig({
 							label: 'Core definitions',
 							collapsed: true,
 							items: conceptLinks([
-								'persona', 'ontology', 'teams', 'agents', 'goals', 'playbooks', 'skills',
+								'persona', 'ontology', 'teams', 'agents', 'goals', 'playbooks', 'portable-playbooks', 'skills',
 								'model-providers', 'models', 'prompts', 'tools', 'delegation',
 							]),
 						},

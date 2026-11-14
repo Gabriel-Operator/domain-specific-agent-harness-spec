@@ -1,0 +1,149 @@
+---
+title: Portable playbooks
+description: Author, package, and run a versioned playbook from a team in Gabriel Studio.
+template: doc
+concept:
+  category: definitions
+  order: 47
+---
+
+A persona defines the domain and its teams. A goal belongs to one team and invokes the playbooks available to that team. A portable playbook declares the workflow, its skill dependencies, and the runtime capabilities it needs. The destination workspace supplies the actual accounts, connector bindings, compute, and permissions.
+
+## The playbook definition
+
+Studio accepts JSON and YAML. Both normalize to the same definition before fingerprinting, saving, or packaging. Keep `playbook.json` at the archive root and use `schemaVersion: 2` on that entry. The nested `definition` contains the existing structured or goal workflow and its `runtime` block. The package manifest uses `runtime.contract: gabriel-studio-v2`. Existing team and persona manifests can pin a playbook release of either version.
+
+- [Playbook schema](../../examples/portable-playbooks/playbook.schema.json)
+- [Example JSON](../../examples/portable-playbooks/playbook.json)
+- [Equivalent YAML](../../examples/portable-playbooks/playbook.yaml)
+- [Package manifest schema](../../examples/gabriel-packages/gabriel-package.schema.json)
+
+```text
+package.json
+gabriel-package.json
+playbook.json
+skills/verify-signals/
+  SKILL.md
+  references/evidence.md
+  assets/result-template.json
+  scripts/check-result.py
+  evals/evals.json
+```
+
+The `agent` block declares instructions, role, and target-specific model identifiers. Runtime tool references use logical requirement and operation identifiers. The package carries playbook dependencies by registry, scoped package name, exact version, and SHA-512 digest. External skill pins also record a digest of the resolved skill files. Keep secrets and local connection IDs in workspace configuration.
+
+### Legacy playbooks
+
+A structured or goal playbook can be reviewed in the Skill Editor’s **Runtime** view before creating a portable revision. Review the migrated contract and move any lifecycle hooks into its declared scripts. Studio graphs and command playbooks use their existing execution paths. New installations remain subject to their destination setup and grants.
+
+## External skills
+
+The playbook’s own `SKILL.md` is its instructions. Add an owned skill from a folder or ZIP, or review a pinned external skill under **Runtime**. External dependencies use a GitHub repository, full commit, and skill directory, or an npm registry, exact package version, archive integrity, and optional skill directory. Review the publisher, license, files, and compatibility requirements, then preview the playbook with its resolved pins. The editor shows a dependency’s files read-only. Keep public packages usable by publishing or referencing public dependencies. [Agent Skills specification](https://agentskills.io/specification)
+
+```json
+{
+  "kind": "github",
+  "owner": "example-org",
+  "repository": "approved-skills",
+  "commit": "0123456789abcdef0123456789abcdef01234567",
+  "path": "skills/verify-signals"
+}
+```
+
+The source above illustrates the required fields. Studio fills the content digest from the actual reviewed files. A published playbook must use an accessible source and its real digest.
+
+### References and assets
+
+Use `references/` for supporting instructions and `assets/` for templates, sample data, and schemas. A run can request files from its pinned skill by path. Connector data and live records belong in the workspace, where grants govern access. The owned skill also supports eval fixtures for checking expected results.
+
+### Review and run scripts
+
+Declare each executable script in `runtime.scripts` with an ID, path, interpreter, event, input schema, and output schema. `BeforeTask` and `AfterTask` validate the declared run boundary. A `tool` script runs only when invoked by the playbook. Scripts use JSON on standard input and return one bounded JSON object. A verified Studio computer supplies Node 22 or Python 3.12 and any reviewed preinstalled dependencies. An isolated invocation has no outbound network or connector credentials. An uncertain attempt needs review before retry. [Code execution](../code-execution/) · [Lifecycle hooks](../hooks/)
+
+## From a blank Canvas to a governed run
+
+1. Create an empty team. On its Canvas, use **Add manually**, open **Add bot**, and choose **Author a portable playbook**. Paste the JSON or YAML definition, add a skill, and preview it before saving.
+2. Open **Runtime** in the Skill Editor and select a runtime for new runs. Configure the actor’s verified connection, the model, connector bindings, and isolated compute as required. The compatibility report explains which profiles need setup.
+3. Use the marketplace’s export or publish flow to package the saved revision. Install it from **Add bot** on another team. Supply destination bindings there, then create a goal inside that team.
+4. Review any protected operation in **Approvals**. Studio resolves the destination, validates the mapped arguments against the connector tool schema, and rehearses the request offline. Review the proposed operation in Approvals. Gabriel checks the binding and mapped argument digest before dispatch, then records the connector receipt in Work.
+
+## Runtime compatibility
+
+The table describes the Studio implementation and its remaining integration work. Live provider account conformance is separate from local fixture coverage.
+
+| Target | Execution path | Settings to review |
+| --- | --- | --- |
+| Gabriel | Native Studio workflow and tool broker | Workspace model, connector grants, and compute |
+| OpenAI Agents SDK | TypeScript agent submitting decisions to Studio | Model and verified API connection |
+| OpenAI hosted Agents API | Hosted session with a restricted environment and reviewed skill content | Verified API connection and environment capabilities |
+| Claude Managed Agents | Versioned agent, pinned uploads, and custom tool events | Verified Claude cloud environment with limited networking and a session budget |
+| Google ADK | TypeScript runner submitting decisions to Studio | Verified Gemini API connection |
+
+The portable text and tool execution paths require provider account conformance testing. Native voice, longer-lived conversation sessions, conversational handoffs, and the OpenAI SDK workspace profile require additional runtime integration. Studio reports these capabilities as unavailable when required by a playbook. [OpenAI Agents SDK](https://github.com/openai/openai-agents-js) · [Claude agent setup](https://platform.claude.com/docs/en/managed-agents/agent-setup) · [Google ADK Runner](https://adk.dev/api-reference/typescript/classes/Runner.html)
+
+### OpenAI hosted session order
+
+The hosted adapter builds the session request from the reviewed runtime profile. The portable playbook stays the source for the team’s workflow. An OpenAI session handles one bounded decision with a dedicated environment and an explicitly allowed function. The following request shape omits the function parameter schema for brevity.
+
+```json
+{
+  "agent": {
+    "model": "gpt-5.4",
+    "instructions": "Prepare one decision for Gabriel to validate.",
+    "multi_agent": { "enabled": false },
+    "tools": [{ "type": "function", "name": "submit_studio_decision" }]
+  },
+  "environment": {
+    "type": "openai_hosted",
+    "network": { "access": "disabled" },
+    "capability_directories": [],
+    "skills": []
+  },
+  "vault_ids": [],
+  "metadata": { "gabriel_portable_step": "studio-decision-id" },
+  "stream": false
+}
+```
+
+1. Create the session without an initial message. Send reviewed skill instructions, references, and assets as inline ZIPs in `environment.skills`. For a pre-provisioned workspace, the API also supports exposing mounted capabilities through `capability_directories`. Studio’s hosted path uses inline skill content.
+2. Persist the session and environment IDs. Retrieve the effective settings and verify the expected model, network policy, skill list, and allowed function before submitting any work.
+3. Submit a single input event with a stable idempotency key. Observe the same session and record its turn and pending function call IDs. If the response is lost, use that checkpoint to discover whether the turn started.
+4. Persist the validated decision. Studio applies playbook guardrails and workspace permissions. Any protected connector effect goes through rehearsal, approval, and the existing write receipt before its result reaches the run.
+
+Studio exposes its run state in Work. The hosted adapter observes provider state using the saved identifiers. The API also supports a live event stream for clients that need to surface activity as it happens. [OpenAI Agents API sessions](https://developers.openai.com/api/docs/guides/agents-api/sessions) · [Session management](https://developers.openai.com/api/docs/guides/agents-api/sessions/manage) · [OpenAI demo](https://www.youtube.com/watch?v=b7l_Dhe1h8M)
+
+### Agents
+
+The agent role and instructions describe how to carry out the work. The selected runtime gets the compatible model and a limited input projection. Check the input and output schemas when a team goal invokes the playbook or uses it as a specialist. [Agent placements](../agents/#studio-placement-contract)
+
+### Sandbox agents
+
+A sandbox limits access to files, network, and credentials. Script execution uses an isolated Studio computer. A provider workspace and a rehearsal of an external operation are separate capabilities. Check the available profile before selecting a target. [Code execution](../code-execution/) · [Sandbox rehearsal](../sandbox-rehearsal/)
+
+### Realtime agents
+
+A realtime profile declares native speech or transcribed speech and whether transcripts may be retained. Studio reports transport availability separately from the agent’s ability to run text turns. [Coach and computer use](../coach-computer-use/)
+
+### Agents as tools and handoffs
+
+A specialist call invokes a declared child playbook and returns its accepted result. Its input projection and permissions remain bounded by the parent. A conversational handoff transfers ownership of the next response and needs an adapter that can project context and preserve the live session. [Delegation](../delegation/)
+
+### Tools
+
+A tool declares input and output schemas and references one operation on a logical connector requirement. The workspace binds that operation to an installation. Gabriel validates the operation and its effect before invoking the connector. [Tools](../tools/)
+
+### Guardrails
+
+Use input checks before a playbook starts, tool checks before dispatch, and output checks before the result is accepted. Data schemas use the supported JSON Schema subset, including local references. Use an eval to check a case involving invalid input or an unauthorized tool. [Evals](../evals/)
+
+### Human in the loop
+
+Authority for a protected action stays with the workspace. Changing the destination, authorization, or arguments requires reviewing the new proposal. Reconcile an uncertain dispatch against its original receipt before retrying. [Governed execution](../governed-execution/) · [Approvals](../approvals/)
+
+### Sessions
+
+Studio tracks a run checkpoint independently of the provider session handle. A checkpoint retains the original revision and pending decisions. Use run scope for portable text execution. A conversation policy requires support for a continued conversation across runs. [Context and conversations](../context-and-conversations/)
+
+### Tracing
+
+Inspect decisions, tool evidence, and receipts under the run’s identity in Work. The connector receipt is the record of an external action. The Runtime activity panel includes provider session and turn identifiers where available. It omits message and tool payloads. [Runs](../runs/) · [Execution receipts](../execution-receipts/)

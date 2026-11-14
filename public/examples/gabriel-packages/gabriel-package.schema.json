@@ -35,7 +35,7 @@
       "properties": {
         "contract": {
           "type": "string",
-          "const": "gabriel-studio-v1"
+          "enum": ["gabriel-studio-v1", "gabriel-studio-v2"]
         },
         "hooks": {
           "type": "boolean"

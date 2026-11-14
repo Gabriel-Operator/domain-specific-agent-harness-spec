@@ -1,0 +1,901 @@
+{
+  "$ref": "#/definitions/PortablePlaybook",
+  "definitions": {
+    "PortablePlaybook": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "type": "number",
+          "const": 2
+        },
+        "definition": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "teamId": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160,
+                  "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]*$"
+                },
+                "schemaVersion": {
+                  "type": "number",
+                  "const": 1
+                },
+                "runtime": {
+                  "type": "object",
+                  "properties": {
+                    "targets": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "gabriel",
+                          "openai-sdk",
+                          "openai-hosted",
+                          "claude-managed",
+                          "google-adk"
+                        ]
+                      },
+                      "minItems": 1,
+                      "maxItems": 5,
+                      "default": [
+                        "gabriel"
+                      ]
+                    },
+                    "agent": {
+                      "type": "object",
+                      "properties": {
+                        "instructions": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 12000
+                        },
+                        "models": {
+                          "type": "object",
+                          "additionalProperties": {
+                            "type": "string",
+                            "maxLength": 160,
+                            "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+                          },
+                          "propertyNames": {
+                            "enum": [
+                              "gabriel",
+                              "openai-sdk",
+                              "openai-hosted",
+                              "claude-managed",
+                              "google-adk"
+                            ]
+                          }
+                        },
+                        "role": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 160
+                        }
+                      },
+                      "required": [
+                        "instructions",
+                        "models",
+                        "role"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "input": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "type": "string",
+                          "const": "object"
+                        }
+                      },
+                      "required": [
+                        "type"
+                      ],
+                      "additionalProperties": true
+                    },
+                    "output": {
+                      "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/input"
+                    },
+                    "skills": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/agent/properties/models/additionalProperties"
+                          },
+                          "source": {
+                            "anyOf": [
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "kind": {
+                                    "type": "string",
+                                    "const": "github"
+                                  },
+                                  "owner": {
+                                    "type": "string",
+                                    "pattern": "^[a-zA-Z0-9-]{1,39}$"
+                                  },
+                                  "repository": {
+                                    "type": "string",
+                                    "pattern": "^[a-zA-Z0-9_][a-zA-Z0-9_.-]{0,99}$"
+                                  },
+                                  "commit": {
+                                    "type": "string",
+                                    "pattern": "^[0-9a-f]{40}$"
+                                  },
+                                  "path": {
+                                    "type": "string",
+                                    "maxLength": 200,
+                                    "pattern": "^[a-zA-Z0-9_][a-zA-Z0-9_.-]*(?:\\/[a-zA-Z0-9_][a-zA-Z0-9_.-]*)*$"
+                                  }
+                                },
+                                "required": [
+                                  "kind",
+                                  "owner",
+                                  "repository",
+                                  "commit",
+                                  "path"
+                                ],
+                                "additionalProperties": false
+                              },
+                              {
+                                "type": "object",
+                                "properties": {
+                                  "kind": {
+                                    "type": "string",
+                                    "const": "npm"
+                                  },
+                                  "package": {
+                                    "type": "object",
+                                    "properties": {
+                                      "registry": {
+                                        "type": "string",
+                                        "maxLength": 300,
+                                        "format": "uri",
+                                        "default": "https://registry.npmjs.org/"
+                                      },
+                                      "name": {
+                                        "type": "string",
+                                        "maxLength": 214,
+                                        "pattern": "^@[a-z0-9][a-z0-9._-]*\\/[a-z0-9][a-z0-9._-]*$"
+                                      },
+                                      "version": {
+                                        "type": "string",
+                                        "maxLength": 100,
+                                        "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z-]+(?:\\.[0-9A-Za-z-]+)*)?$"
+                                      },
+                                      "integrity": {
+                                        "type": "string",
+                                        "pattern": "^sha512-[A-Za-z0-9+/]{86}==$"
+                                      }
+                                    },
+                                    "required": [
+                                      "name",
+                                      "version",
+                                      "integrity"
+                                    ],
+                                    "additionalProperties": false
+                                  },
+                                  "path": {
+                                    "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/skills/items/properties/source/anyOf/0/properties/path"
+                                  }
+                                },
+                                "required": [
+                                  "kind",
+                                  "package"
+                                ],
+                                "additionalProperties": false
+                              }
+                            ]
+                          },
+                          "digest": {
+                            "type": "string",
+                            "pattern": "^[a-f0-9]{64}$"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "source",
+                          "digest"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 8,
+                      "default": []
+                    },
+                    "scripts": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/agent/properties/models/additionalProperties"
+                          },
+                          "skill": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/agent/properties/models/additionalProperties"
+                          },
+                          "path": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/skills/items/properties/source/anyOf/0/properties/path"
+                          },
+                          "interpreter": {
+                            "type": "string",
+                            "enum": [
+                              "node",
+                              "python"
+                            ]
+                          },
+                          "event": {
+                            "type": "string",
+                            "enum": [
+                              "BeforeTask",
+                              "AfterTask",
+                              "tool"
+                            ]
+                          },
+                          "input": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/input"
+                          },
+                          "output": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/input"
+                          },
+                          "timeoutSeconds": {
+                            "type": "integer",
+                            "minimum": 1,
+                            "maximum": 120,
+                            "default": 30
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "path",
+                          "interpreter",
+                          "event",
+                          "input",
+                          "output"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 20,
+                      "default": []
+                    },
+                    "tools": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/agent/properties/models/additionalProperties"
+                          },
+                          "requirement": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/agent/properties/models/additionalProperties"
+                          },
+                          "operation": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/agent/properties/models/additionalProperties"
+                          },
+                          "effect": {
+                            "type": "string",
+                            "enum": [
+                              "read",
+                              "write",
+                              "process"
+                            ]
+                          },
+                          "input": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/input"
+                          },
+                          "output": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/input"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "requirement",
+                          "operation",
+                          "effect",
+                          "input",
+                          "output"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 30,
+                      "default": []
+                    },
+                    "delegation": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/agent/properties/models/additionalProperties"
+                          },
+                          "playbook": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/agent/properties/models/additionalProperties"
+                          },
+                          "mode": {
+                            "type": "string",
+                            "enum": [
+                              "tool",
+                              "handoff"
+                            ]
+                          },
+                          "fields": {
+                            "type": "array",
+                            "items": {
+                              "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/agent/properties/models/additionalProperties"
+                            },
+                            "maxItems": 30,
+                            "default": []
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "playbook",
+                          "mode"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 20,
+                      "default": []
+                    },
+                    "execution": {
+                      "type": "object",
+                      "properties": {
+                        "profile": {
+                          "type": "string",
+                          "enum": [
+                            "text",
+                            "sandbox",
+                            "realtime"
+                          ]
+                        },
+                        "voice": {
+                          "type": "string",
+                          "enum": [
+                            "native",
+                            "transcribed"
+                          ]
+                        },
+                        "retainTranscript": {
+                          "type": "boolean",
+                          "default": false
+                        }
+                      },
+                      "required": [
+                        "profile"
+                      ],
+                      "additionalProperties": false,
+                      "default": {
+                        "profile": "text"
+                      }
+                    },
+                    "guardrails": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "phase": {
+                            "type": "string",
+                            "enum": [
+                              "input",
+                              "beforeTool",
+                              "output"
+                            ]
+                          },
+                          "tool": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/agent/properties/models/additionalProperties"
+                          },
+                          "schema": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime/properties/input"
+                          }
+                        },
+                        "required": [
+                          "phase",
+                          "schema"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 20,
+                      "default": []
+                    },
+                    "approvals": {
+                      "type": "object",
+                      "properties": {
+                        "protectedEffects": {
+                          "type": "string",
+                          "const": "rehearse-and-approve"
+                        }
+                      },
+                      "required": [
+                        "protectedEffects"
+                      ],
+                      "additionalProperties": false,
+                      "default": {
+                        "protectedEffects": "rehearse-and-approve"
+                      }
+                    },
+                    "session": {
+                      "type": "string",
+                      "enum": [
+                        "run",
+                        "conversation"
+                      ],
+                      "default": "run"
+                    },
+                    "tracing": {
+                      "type": "string",
+                      "const": "metadata",
+                      "default": "metadata"
+                    }
+                  },
+                  "required": [
+                    "agent",
+                    "input",
+                    "output"
+                  ],
+                  "additionalProperties": false
+                },
+                "key": {
+                  "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                },
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 160
+                },
+                "revision": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0
+                },
+                "inputs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "key": {
+                        "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                      },
+                      "label": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 160
+                      },
+                      "required": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "key",
+                      "label",
+                      "required"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 50,
+                  "default": []
+                },
+                "requirements": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                      },
+                      "label": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 120
+                      },
+                      "context": {
+                        "type": "string",
+                        "enum": [
+                          "personal",
+                          "app"
+                        ]
+                      },
+                      "providers": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                        },
+                        "minItems": 1,
+                        "maxItems": 100
+                      },
+                      "operations": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                        },
+                        "minItems": 1,
+                        "maxItems": 50
+                      },
+                      "optional": {
+                        "type": "boolean",
+                        "default": false
+                      },
+                      "appId": {
+                        "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "label",
+                      "context",
+                      "providers",
+                      "operations"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "maxItems": 30,
+                  "default": []
+                },
+                "outputFields": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                  },
+                  "maxItems": 100,
+                  "default": []
+                },
+                "kind": {
+                  "type": "string",
+                  "const": "structured"
+                },
+                "steps": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                      },
+                      "title": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 160
+                      },
+                      "instruction": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 12000
+                      },
+                      "dependsOn": {
+                        "type": "array",
+                        "items": {
+                          "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                        },
+                        "maxItems": 32,
+                        "default": []
+                      },
+                      "type": {
+                        "type": "string",
+                        "enum": [
+                          "reason",
+                          "connector_operation",
+                          "playbook",
+                          "wait_until",
+                          "publish_page",
+                          "publish_list"
+                        ]
+                      },
+                      "operation": {
+                        "type": "object",
+                        "properties": {
+                          "requirementId": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                          },
+                          "operationId": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                          },
+                          "values": {
+                            "type": "object",
+                            "additionalProperties": {
+                              "type": "string",
+                              "maxLength": 1000
+                            },
+                            "default": {}
+                          },
+                          "effect": {
+                            "type": "string",
+                            "enum": [
+                              "read",
+                              "write",
+                              "process"
+                            ]
+                          },
+                          "safety": {
+                            "type": "string",
+                            "enum": [
+                              "member_briefing",
+                              "consented_meeting"
+                            ]
+                          },
+                          "remoteId": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/steps/items/properties/operation/properties/values/additionalProperties"
+                          },
+                          "expectedRevision": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/steps/items/properties/operation/properties/values/additionalProperties"
+                          },
+                          "completion": {
+                            "type": "object",
+                            "properties": {
+                              "operationId": {
+                                "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                              },
+                              "values": {
+                                "type": "object",
+                                "additionalProperties": {
+                                  "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/steps/items/properties/operation/properties/values/additionalProperties"
+                                },
+                                "default": {}
+                              },
+                              "statePath": {
+                                "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/steps/items/properties/operation/properties/values/additionalProperties"
+                              },
+                              "success": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "minItems": 1
+                              },
+                              "failure": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                },
+                                "default": []
+                              },
+                              "intervalSeconds": {
+                                "type": "integer",
+                                "minimum": 15,
+                                "maximum": 3600,
+                                "default": 60
+                              },
+                              "deadlineSeconds": {
+                                "type": "integer",
+                                "minimum": 30,
+                                "maximum": 604800
+                              }
+                            },
+                            "required": [
+                              "operationId",
+                              "statePath",
+                              "success",
+                              "deadlineSeconds"
+                            ],
+                            "additionalProperties": false
+                          }
+                        },
+                        "required": [
+                          "requirementId",
+                          "operationId",
+                          "effect"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "playbookKey": {
+                        "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                      },
+                      "inputMappings": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/steps/items/properties/operation/properties/values/additionalProperties"
+                        },
+                        "default": {}
+                      },
+                      "outputFields": {
+                        "type": "object",
+                        "additionalProperties": {
+                          "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/steps/items/properties/operation/properties/values/additionalProperties"
+                        },
+                        "default": {}
+                      },
+                      "waitUntil": {
+                        "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/steps/items/properties/operation/properties/values/additionalProperties"
+                      },
+                      "requiresApproval": {
+                        "type": "boolean",
+                        "default": false
+                      },
+                      "publication": {
+                        "type": "object",
+                        "properties": {
+                          "target": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                          },
+                          "fields": {
+                            "type": "object",
+                            "additionalProperties": {
+                              "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/steps/items/properties/operation/properties/values/additionalProperties"
+                            }
+                          },
+                          "recordId": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/steps/items/properties/operation/properties/values/additionalProperties"
+                          },
+                          "expectedUpdatedAt": {
+                            "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/steps/items/properties/operation/properties/values/additionalProperties"
+                          }
+                        },
+                        "required": [
+                          "target",
+                          "fields"
+                        ],
+                        "additionalProperties": false
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "instruction",
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "minItems": 1,
+                  "maxItems": 32
+                }
+              },
+              "required": [
+                "schemaVersion",
+                "key",
+                "name",
+                "revision",
+                "kind",
+                "steps"
+              ],
+              "additionalProperties": false
+            },
+            {
+              "type": "object",
+              "properties": {
+                "teamId": {
+                  "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                },
+                "schemaVersion": {
+                  "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/schemaVersion"
+                },
+                "runtime": {
+                  "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/runtime"
+                },
+                "key": {
+                  "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                },
+                "name": {
+                  "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/name"
+                },
+                "revision": {
+                  "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/revision"
+                },
+                "inputs": {
+                  "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/inputs"
+                },
+                "requirements": {
+                  "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/requirements"
+                },
+                "outputFields": {
+                  "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/outputFields"
+                },
+                "kind": {
+                  "type": "string",
+                  "const": "goal"
+                },
+                "objective": {
+                  "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/steps/items/properties/instruction"
+                },
+                "completionCriteria": {
+                  "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/steps/items/properties/instruction"
+                },
+                "allowedSkills": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                  },
+                  "maxItems": 30,
+                  "default": []
+                },
+                "limits": {
+                  "type": "object",
+                  "properties": {
+                    "maxDepth": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 3,
+                      "default": 3
+                    },
+                    "maxAgents": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 12,
+                      "default": 12
+                    },
+                    "maxTasks": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 32,
+                      "default": 32
+                    },
+                    "maxConcurrentAgents": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 4,
+                      "default": 4
+                    },
+                    "activeMinutes": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 60,
+                      "default": 60
+                    },
+                    "elapsedDays": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 7,
+                      "default": 7
+                    }
+                  },
+                  "additionalProperties": false,
+                  "default": {}
+                },
+                "allowedPlaybooks": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                  },
+                  "maxItems": 30,
+                  "default": []
+                },
+                "procedureRef": {
+                  "type": "object",
+                  "properties": {
+                    "key": {
+                      "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                    },
+                    "revision": {
+                      "type": "integer",
+                      "exclusiveMinimum": 0
+                    },
+                    "sourceRunId": {
+                      "$ref": "#/definitions/PortablePlaybook/properties/definition/anyOf/0/properties/teamId"
+                    }
+                  },
+                  "required": [
+                    "key",
+                    "revision",
+                    "sourceRunId"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "schemaVersion",
+                "key",
+                "name",
+                "revision",
+                "kind",
+                "objective",
+                "completionCriteria"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "skill": {
+          "type": "string",
+          "maxLength": 71,
+          "pattern": "^skills\\/[a-z0-9]+(?:-[a-z0-9]+)*$"
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "definition"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

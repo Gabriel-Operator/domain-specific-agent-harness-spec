@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 2,
+  "definition": {
+    "schemaVersion": 1,
+    "runtime": {
+      "targets": [
+        "gabriel"
+      ],
+      "agent": {
+        "instructions": "Review public evidence and preserve source links.",
+        "models": {},
+        "role": "Research specialist"
+      },
+      "input": {
+        "type": "object",
+        "properties": {
+          "signal": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "signal"
+        ]
+      },
+      "output": {
+        "type": "object",
+        "properties": {
+          "summary": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "summary"
+        ]
+      },
+      "skills": [],
+      "scripts": [],
+      "tools": [],
+      "delegation": [],
+      "execution": {
+        "profile": "text",
+        "retainTranscript": false
+      },
+      "guardrails": [],
+      "approvals": {
+        "protectedEffects": "rehearse-and-approve"
+      },
+      "session": "run",
+      "tracing": "metadata"
+    },
+    "key": "verify-signals",
+    "name": "Verify public signals",
+    "revision": 1,
+    "inputs": [
+      {
+        "key": "signal",
+        "label": "Public signal",
+        "required": true
+      }
+    ],
+    "requirements": [],
+    "outputFields": [
+      "summary"
+    ],
+    "kind": "structured",
+    "steps": [
+      {
+        "id": "draft",
+        "title": "Summarize the evidence",
+        "instruction": "Return a concise summary with the supplied source URL.",
+        "dependsOn": [],
+        "type": "reason",
+        "inputMappings": {},
+        "outputFields": {},
+        "requiresApproval": true
+      }
+    ]
+  }
+}
