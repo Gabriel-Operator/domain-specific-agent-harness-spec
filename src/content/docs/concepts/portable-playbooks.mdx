@@ -32,6 +32,10 @@ skills/verify-signals/
 
 The `agent` block declares instructions, role, and target-specific model identifiers. Runtime tool references use logical requirement and operation identifiers. The package carries playbook dependencies by registry, scoped package name, exact version, and SHA-512 digest. External skill pins also record a digest of the resolved skill files. Keep secrets and local connection IDs in workspace configuration.
 
+### An exact package pin
+
+The Verify signals fixture uses a version 2 playbook inside the existing npm envelope. The example pin identifies the bytes in the archive below. The sample scope is illustrative. Publish the package in a registry you control and use the resulting identity and digest when your team pins it. [Download the example archive](../../examples/portable-playbooks/verify-signals-portable-2.0.0.tgz) · [View the exact pin](../../examples/portable-playbooks/verify-signals-portable.pin.json)
+
 ### Legacy playbooks
 
 A structured or goal playbook can be reviewed in the Skill Editor’s **Runtime** view before creating a portable revision. Review the migrated contract and move any lifecycle hooks into its declared scripts. Studio graphs and command playbooks use their existing execution paths. New installations remain subject to their destination setup and grants.
