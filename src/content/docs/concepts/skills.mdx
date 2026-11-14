@@ -1,45 +1,29 @@
 ---
-title: Skills
-description: Reusable instructions and supporting files an agent can load for a task.
+title: Playbooks (skills)
+description: The skill folder reference has moved into the playbook guide.
 template: doc
-concept:
-  category: definitions
-  order: 7
+pagefind: false
+prev: false
+next: false
+head:
+  - tag: meta
+    attrs:
+      name: robots
+      content: noindex
 ---
 
-A **skill** is a reusable bundle of instructions and resources. The persona’s root `SKILL.md` uses the Agent Skills format and describes how to work in its domain. Additional skills can live under `skills/`.
+[Open the playbook skill folder reference](../playbooks/#required-and-optional-files).
 
-## Author a skill folder
-
-### Required and optional files
-
-Use `SKILL.md` for the skill’s name, description and instructions. Place background material under `references/`, run assets or schemas under `assets/`, and supported scripts under `scripts/`. Gabriel accepts evals and `gabriel/hooks.json` in a registered playbook’s folder. Hooks are a Gabriel lifecycle extension. The Agent Skills core format defines the folder and instructions.
-
-```text
-skills/verify-signals/
-  SKILL.md
-  references/evidence-rules.md
-  assets/input-schema.json
-  scripts/check-input.cjs
-  gabriel/hooks.json
-  evals/evals.json
-```
-
-### Example skill metadata
-
-```yaml
----
-name: verify-signals
-description: Verify dated public buying signals and return their source links.
----
-```
-
-Use the Skill Editor to review or change the saved source. The Studio schema permits one folder per registered playbook, up to 48 text files, 64 KiB per file, and 256 KiB total. A portable package carries that folder with the corresponding executable and version. A called playbook uses its own skill and authorized context.
-
-## Use files during a run
-
-Reference material can describe how to assess a source, and an asset can give an output shape. A script needs a supported runtime entry point, such as a packaged lifecycle hook. Review the script and its declared data before enabling it. When changing a skill, exercise the affected cases and inspect the new playbook revision before adopting it.
-
-See [Agent Skills](https://agentskills.io/specification), [lifecycle hooks](../hooks/), and [the Skill catalogue](../../skills/).
-
-For reviewed external dependencies and supported scripts, see [portable playbook skills](../portable-playbooks/#external-skills).
+<script is:inline>{`
+  (() => {
+    const oldSection = window.location.hash.slice(1);
+    const sections = {
+      'author-a-skill-folder': 'advanced-skill-editor',
+      'required-and-optional-files': 'required-and-optional-files',
+      'example-skill-metadata': 'example-skill-metadata',
+      'use-files-during-a-run': 'use-files-during-a-run',
+    };
+    const section = Object.hasOwn(sections, oldSection) ? sections[oldSection] : 'from-a-playbook-to-a-reusable-skill';
+    window.location.replace('../playbooks/#' + section);
+  })();
+`}</script>

@@ -38,11 +38,11 @@ The Verify signals fixture uses a version 2 playbook inside the existing npm env
 
 ### Legacy playbooks
 
-A structured or goal playbook can be reviewed in the Skill Editor’s **Runtime** view before creating a portable revision. Review the migrated contract and move any lifecycle hooks into its declared scripts. Studio graphs and command playbooks use their existing execution paths. New installations remain subject to their destination setup and grants.
+Open a structured or goal playbook in the [Advanced Skill Editor](../playbooks/#advanced-skill-editor) and choose **Runtime settings** before creating a portable revision. Review the migrated contract and move any lifecycle hooks into its declared scripts. Studio graphs and command playbooks use their existing execution paths. New installations remain subject to their destination setup and grants.
 
 ## External skills
 
-The playbook’s own `SKILL.md` is its instructions. Add an owned skill from a folder or ZIP, or review a pinned external skill under **Runtime**. External dependencies use a GitHub repository, full commit, and skill directory, or an npm registry, exact package version, archive integrity, and optional skill directory. Review the publisher, license, files, and compatibility requirements, then preview the playbook with its resolved pins. The editor shows a dependency’s files read-only. Keep public packages usable by publishing or referencing public dependencies. [Agent Skills specification](https://agentskills.io/specification)
+The playbook’s own `SKILL.md` is its instructions. Add an owned skill from a folder or ZIP, or review a pinned external skill under **Runtime settings → Edit JSON or YAML → Skill files and external dependencies**. External dependencies use a GitHub repository, full commit, and skill directory, or an npm registry, exact package version, archive integrity, and optional skill directory. Review the publisher, license, files, and compatibility requirements, then preview the playbook with its resolved pins. The editor shows a dependency’s files read-only. Keep public packages usable by publishing or referencing public dependencies. [Agent Skills specification](https://agentskills.io/specification)
 
 ```json
 {
@@ -67,7 +67,7 @@ Declare each executable script in `runtime.scripts` with an ID, path, interprete
 ## From a blank Canvas to a governed run
 
 1. Create an empty team. On its Canvas, use **Add manually**, open **Add bot**, and choose **Author a portable playbook**. Paste the JSON or YAML definition, add a skill, and preview it before saving.
-2. Open **Runtime** in the Skill Editor and select a runtime for new runs. Configure the actor’s verified connection, the model, connector bindings, and isolated compute as required. The compatibility report explains which profiles need setup.
+2. Open **Runtime settings** in the Skill Editor and select a runtime for new runs. Configure the actor’s verified connection, the model, connector bindings, and isolated compute as required. The compatibility report explains which profiles need setup.
 3. Use the marketplace’s export or publish flow to package the saved revision. Install it from **Add bot** on another team. Supply destination bindings there, then create a goal inside that team.
 4. Review any protected operation in **Approvals**. Studio resolves the destination, validates the mapped arguments against the connector tool schema, and rehearses the request offline. Review the proposed operation in Approvals. Gabriel checks the binding and mapped argument digest before dispatch, then records the connector receipt in Work.
 

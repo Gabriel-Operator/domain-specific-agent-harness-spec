@@ -1,13 +1,79 @@
 ---
-title: Playbooks
-description: Reusable work with declared inputs, requirements, outputs, and limits.
+title: Playbooks (skills)
+description: Reusable work a team can invoke, with skill files and runtime settings you can review in Studio’s Advanced Skill Editor.
 template: doc
 concept:
   category: definitions
   order: 6
 ---
 
-A **playbook** describes work a team can invoke again. The generic term is workflow. A Studio playbook declares a stable key, revision, inputs, connector requirements, and named outputs. A team placement can refer to a reviewed revision.
+A **playbook** is a reusable capability a team can invoke. Its executable definition describes what goes in, what happens, and what comes out. Its **skill folder** describes how an agent should do the work and carries the references, assets, and checks it needs. A goal inside the team invokes the playbook. The harness runs the saved revision and enforces its limits, connector grants, and approvals.
+
+## From a playbook to a reusable skill
+
+1. **Define the work.** Start with explicit steps or a reusable goal definition. Give it inputs, completion criteria, outputs, and any connector requirements. Place it on the team’s Canvas.
+2. **Give it skill files.** Write a `SKILL.md` with a name, description, and instructions. Add references, assets, and evals as needed. For an editable registered playbook without a saved skill, Studio can show a starter based on its responsibility and completion criteria. Saving attaches the authored files to the playbook. An existing Agent Skills folder can also supply these instructions.
+3. **Save and reuse it.** Studio pins the skill files with the executable for each run. A supported playbook can be exported as a versioned npm package, installed on another team, and combined with other playbooks. The destination supplies its own accounts, Vault credentials, grants, and approval policies. [Packaging and installation](../packaging/#installable-studio-packages)
+
+For example, a **Verify signals** playbook accepts a company and date range, reads an authorized source, and returns findings with evidence. Its `SKILL.md` explains what counts as a dated signal. A reference specifies which citations to keep, and an eval checks that unsupported findings stay marked as unknown. Another team can use the same skill and workflow with its own verified research connection.
+
+## Advanced Skill Editor
+
+In **Canvas → Add bot**, choose **Open Skill Editor (advanced)** to review a draft’s files. For a saved placement, open its playbook on Canvas and choose **Open in Skill Editor** when the source is available. Use **Apply source changes** and **Save source revision** to commit editable files. The editor displays published and installed source according to its edit permissions.
+
+### Required and optional files
+
+| In the editor | What it does |
+| --- | --- |
+| `SKILL.md` | Starts the playbook’s own Agent Skills folder. Use YAML frontmatter with `name` and `description`, then write the instructions in Markdown. |
+| `references/` and `assets/` | Supporting research rules, templates, examples, and schemas. Keep paths relative to the skill root. |
+| `scripts/` and `runtime/hooks.json` | Reviewed checks and executable helpers. The editor displays a legacy `gabriel/hooks.json` as `runtime/hooks.json`. Version 2 declares Node or Python entry points and lifecycle events in `runtime.scripts`. |
+| `evals/evals.json` | Test cases and expected behavior for the skill. Some graph placements expose bot evals separately as `bot/evals.json`. |
+| `bot/agent.json` and `bot/workflow.json` | The agent placement’s role and completion criteria, plus the workflow or registered playbook reference. |
+| `graph/` | Stages, prompts, schemas, and fixtures when the placement exposes a separate Studio graph. |
+| `playbook.json` | The versioned portable definition. Open **Runtime settings → Edit JSON or YAML** to inspect the portable source where this option is available. YAML normalizes to the same JSON definition for packaging. |
+
+The playbook’s own skill appears at the root of the editor. The exported package keeps it under `skills/<name>/`. Registered Studio skill folders allow up to 48 text files, 64 KiB per file, and 256 KiB total. Review [the Agent Skills format](https://agentskills.io/specification), [lifecycle hooks](../hooks/#declare-a-packaged-lifecycle-hook), and [evals](../evals/#define-what-the-harness-should-verify).
+
+### Example skill metadata
+
+```md
+---
+name: verify-signals
+description: Verify dated public buying signals and return their source links.
+---
+
+Use the reviewed evidence rules in references/evidence-rules.md.
+Record the source and date for every reported signal.
+```
+
+The `name` matches the skill folder name. The description tells an agent when to use it.
+
+### Use files during a run
+
+The agent reads the instructions from the pinned skill. References provide supporting rules and assets provide templates or schemas. The chosen runtime determines how files are loaded and which declared scripts can run. A called playbook uses its own pinned skill and receives the inputs and context the caller is allowed to pass. [References and assets](../portable-playbooks/#references-and-assets) · [Review and run scripts](../portable-playbooks/#review-and-run-scripts)
+
+### Owned files and external skills
+
+Under **Runtime settings → Edit JSON or YAML → Skill files and external dependencies**, import a folder or ZIP as the playbook’s owned skill, or preview an external skill and add its pin. A GitHub pin identifies a commit and skill directory. An npm pin identifies an exact release and archive integrity. Studio records the resolved content digest and shows external files read-only. The playbook declares how it uses the skill, and the workspace grants the tools it may call. [External skills](../portable-playbooks/#external-skills) · [Skill catalogue](../../skills/)
+
+### Runtime settings and review
+
+For supported registered playbooks, open **Runtime settings** to review the saved definition and the connection used for new runs. Use **Set up a portable runtime** or **Edit runtime definition** to choose a supported execution profile, model, and session policy. Review the compatibility report before saving. The nine capabilities in that report connect the editor to the rules used at runtime.
+
+| Capability | What to review |
+| --- | --- |
+| [Agents](../portable-playbooks/#agents) | Instructions, model requirements, and input and output schemas. |
+| [Sandbox agents](../portable-playbooks/#sandbox-agents) | Isolated compute, accessible files, and approved scripts. |
+| [Realtime agents](../portable-playbooks/#realtime-agents) | Speech mode, interruption, and transcript settings. |
+| [Agents as tools and handoffs](../portable-playbooks/#agents-as-tools-and-handoffs) | Child playbooks, input scope, and who returns the result. |
+| [Tools](../portable-playbooks/#tools) | Declared functions, connector operations, and workspace grants. |
+| [Guardrails](../portable-playbooks/#guardrails) | Checks on inputs, tool calls, and outputs. |
+| [Human in the loop](../portable-playbooks/#human-in-the-loop) | Rehearsal evidence and review of the exact proposed action. |
+| [Sessions](../portable-playbooks/#sessions) | Run checkpoints and what accepted context can carry forward. |
+| [Tracing](../portable-playbooks/#tracing) | Provider events, run timeline, and execution receipts. |
+
+Add or reuse a provider account under **Team settings → Connections**, then verify and enable it for the team. In **Runtime settings**, bind a verified connection for the playbook’s runtime. The owner can also choose a **Goal harness** when starting a manual team goal. That choice selects the goal’s coordinator. Each invoked playbook keeps its own runtime binding.
 
 ## Structured definitions
 
@@ -53,7 +119,7 @@ The Meeting desk fixture declares a personal Calendar requirement on `read-meeti
 
 ## Goal definitions and graph packages
 
-A goal playbook gives the harness an objective and allowed playbooks to plan with. A supported Studio command graph has its own graph definition and step lifecycle. A published package declares which executable it carries and can bundle its skill folder with that executable. Use the installed revision when running the playbook. To add access or change behavior, review a new revision and its workspace bindings.
+A saved goal playbook gives the harness an objective and a set of allowed playbooks for planning. A supported Studio command graph declares its own stages, handlers, and review points. The editor can show graph stages and source files. Edit access depends on how the graph was installed or published. Review a new revision and its workspace bindings before adopting a behavior or access change.
 
 See [the complete fixture](../../implementation/#example-files), [goal playbooks](../goals/#saved-goal-playbook), and [package entry files](../packaging/).
 
