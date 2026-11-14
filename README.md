@@ -1,12 +1,33 @@
-# Domain-Specific Agent Harness Spec
+<p align="center">
+  <a href="https://gabriel-operator.github.io/domain-specific-agent-harness-spec/">
+    <img src="public/harness-readme-banner.webp" alt="Domain-Specific Agent Harness Spec" width="800">
+  </a>
+</p>
 
-**A specification for giving an agent harness a domain, a team, and a way to carry out its goals.**
+<p align="center">
+  <strong>An open specification for giving agent harnesses a domain, teams, and playbooks.</strong><br>
+  Versioned personas · Model and tool binding · Human review
+</p>
 
-A **persona** is a versioned Git definition of a domain, its teams, and the playbooks they use. It also carries shared data definitions, rules, and evals. The **runtime** verifies those definitions, binds workspace resources, and coordinates work with an **agent harness**. The harness runs the agent loop and coordinates model calls and tool use.
+<p align="center">
+  <a href="https://gabriel-operator.github.io/domain-specific-agent-harness-spec/">Docs</a> ·
+  <a href="#quickstart">Quickstart</a> ·
+  <a href="https://gabriel-operator.github.io/domain-specific-agent-harness-spec/specification/">Specification</a> ·
+  <a href="https://gabriel-operator.github.io/domain-specific-agent-harness-spec/examples/">Examples</a> ·
+  <a href="https://gabriel-operator.github.io/domain-specific-agent-harness-spec/llms.txt">llms.txt</a>
+</p>
 
-[Read the draft](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/) · [Specification](src/content/docs/specification.mdx) · [Examples](src/content/docs/examples.mdx) · [Terms and standards](src/content/docs/standards.mdx)
+<p align="center"><strong>Draft 0.1</strong> · <a href="LICENSE">Apache 2.0</a></p>
 
-> **Status: draft 0.1.** The format comes from running Gabriel Operator installations and can still change.
+---
+
+A **persona** is a versioned Git definition of a domain, its teams, and the playbooks they use. It also carries shared data definitions, rules, and evals. The **runtime** verifies those definitions and binds workspace resources. The **agent harness** runs the agent loop and coordinates model calls and tool use.
+
+## Quickstart
+
+1. **Inspect an example persona.** Meeting desk includes an ontology, a Studio team, a calendar connector requirement, and playbooks for drafting and publishing a meeting summary. [Meeting desk files](public/examples/meeting-desk)
+2. **Follow a team goal.** Load the persona, bind a workspace calendar, then review and publish a summary through the team’s playbooks. [Implementation walkthrough](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/implementation/#bind-and-run-a-team-goal)
+3. **Check the rules.** Use the specification for the folder layout, resource keys, registry pins, and runtime requirements. [Specification](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/specification/)
 
 ## Architecture
 
@@ -17,8 +38,8 @@ A **persona** is a versioned Git definition of a domain, its teams, and the play
 1. **Map the organization’s apps.** With a domain specialist, inventory the apps people use, which records they own, and how the team can read or update them.
 2. **Define the ontology.** Give those records shared entity names, fields, and relationships. Map data from the source apps to the persona’s versioned definitions.
 3. **Compose teams from playbooks.** Each playbook declares its inputs, outputs, connector operations, and approval rules. Teams group compatible playbooks around the work they do.
-4. **Run a team goal.** The goal selects and invokes the playbooks it needs. The runtime binds workspace resources and the harness runs agents. Connectors use accounts whose credentials are stored in the vault. Custom apps can display mapped data and agent results.
-5. **Rehearse, approve, and execute.** A person resolves decisions that need judgment. For a protected effect, the harness can rehearse the plan in isolation, present the exact action for approval, and record the live receipt after execution. Decisions and outcomes inform reviewed revisions to playbooks, mappings, and evals. [Governed execution](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/concepts/governed-execution/)
+4. **Run a team goal.** The goal selects and invokes the playbooks it needs. The runtime binds workspace resources, and the harness selects compatible models for text, speech, or vision and runs the agents. Connectors use accounts whose credentials are stored in the vault. Custom apps can display mapped data and agent results.
+5. **Rehearse, approve, and execute.** A person resolves decisions that need judgment. For a protected action, the harness can rehearse the playbook’s proposed change in a sandbox. The domain specialist reviews the rehearsal and approves the exact action before it reaches the live connector. The harness records the receipt after execution. Decisions and outcomes inform reviewed revisions to playbooks, mappings, and evals. [Governed execution](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/concepts/governed-execution/)
 6. **Share and recombine.** In the proposed marketplace, teams can mix and match playbook packages to build different personas. Authors can also list complete personas for others to adopt.
 
 [Follow the illustrated walkthrough](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/#why-a-domain-specific-harness).
@@ -94,6 +115,6 @@ npm run dev -- --background
 npm run build
 ```
 
-The site uses Astro and Starlight. Pages live in `src/content/docs/`, diagrams in `src/components/`, and styles in `src/styles/`. The build writes `dist/`; the GitHub Pages workflow sets `SITE_BASE=/domain-specific-agent-harness-spec`. [`public/llms.txt`](public/llms.txt) indexes the source for coding agents.
+The site uses Astro and Starlight. Pages live in `src/content/docs/`, diagrams in `src/components/`, and styles in `src/styles/`. The build writes `dist/`. The GitHub Pages workflow sets `SITE_BASE=/domain-specific-agent-harness-spec`. [`public/llms.txt`](public/llms.txt) indexes the source for coding agents.
 
 See [Contributing](CONTRIBUTING.md) to report an issue or propose a change. Released under the [Apache License 2.0](LICENSE).
