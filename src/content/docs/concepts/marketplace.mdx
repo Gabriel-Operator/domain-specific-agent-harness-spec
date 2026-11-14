@@ -7,7 +7,7 @@ concept:
   order: 9
 ---
 
-The **marketplace** helps Studio users discover and review reusable playbook, team, and persona packages. The installation preview ties a specific release to the workspace where it will run.
+A **marketplace** helps teams discover and review reusable playbook, team, and persona packages. The installation preview ties a specific release to the workspace where it will run.
 
 ## Discover and select a release
 
@@ -19,7 +19,7 @@ The **marketplace** helps Studio users discover and review reusable playbook, te
 | Team | An existing persona workspace | A team with pinned playbooks and handoffs. |
 | Persona | A new private workspace | The persona and its packaged teams. |
 
-From a team’s Canvas, use **Quick Start → Add manually → Add bot → Install from marketplace** to add a playbook. Search public listings and choose a version. An exact registry reference also works for a private release when the workspace has access.
+A listing identifies the package and its available versions. A team selects a specific release for review. Private releases can be resolved by exact registry reference when the destination has access.
 
 ### Example playbook reference
 
@@ -37,10 +37,10 @@ The following exact reference uses the downloadable Accounting example’s illus
 
 ### Install preview
 
-Review the destination, the exact version and digest of each dependency, the Canvas changes, connector operations, output bindings, and executable hooks. A workspace owner applies the reviewed preview. If the destination changed since review, generate a fresh preview.
+The preview identifies the destination, the exact version and digest of each dependency, the affected placements, connector operations, output bindings, and executable hooks. The workspace owner authorizes the reviewed installation. If the destination changed since review, generate a fresh preview.
 
 ### First run and later changes
 
-Complete local setup before starting a team goal. In the **Installed** view, preview updates and removals before applying them. A marketplace lists packages people can discover. The npm-compatible registry supplies the archive and its release metadata.
+A team goal can invoke an installed playbook after the workspace binds its required resources. Updates and removals should be reviewed against the installed revisions and their dependents. A marketplace lists packages people can discover. The npm-compatible registry supplies the archive and its release metadata.
 
-See [archive contents and pins](../packaging/) and [publishing from Studio](../../implementation/#build-and-install-from-a-blank-canvas).
+See [archive contents and pins](../packaging/) and [package composition and installation](../../implementation/#compose-and-install-a-package).

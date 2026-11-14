@@ -32,7 +32,7 @@ A **persona** is a versioned Git definition of a domain, its teams, and the play
 
 ## Portable playbooks
 
-Author one versioned playbook as JSON or YAML. Add an owned skill or pinned external skills, configure the destination workspace, and run the playbook from a team goal. The runtime compatibility guide shows each provider’s capabilities and setup requirements. [Portable playbook quickstart](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/concepts/portable-playbooks/#from-a-blank-canvas-to-a-governed-run) · [JSON and YAML examples](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/concepts/portable-playbooks/#the-playbook-definition)
+A portable playbook declares a versioned workflow, its skills, and the capabilities it needs. A compatible harness verifies the package, resolves the destination’s bindings and permissions, and executes it when invoked by a team goal. [Portable playbook contract](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/concepts/portable-playbooks/) · [JSON and YAML examples](https://gabriel-operator.github.io/domain-specific-agent-harness-spec/concepts/portable-playbooks/#the-playbook-definition)
 
 ## Architecture
 
@@ -98,7 +98,7 @@ The draft marks features **Extracted** (used in Gabriel today), **Proposed** (ne
 | [Implementation guide](src/content/docs/implementation.mdx) | Architecture-to-file map, example JSON, and runtime binding |
 | [Apps and connectors](src/content/docs/apps.mdx) | Connector operations, shared records, app packages, and live sync |
 | [Concept reference](src/content/docs/concepts/index.mdx) | Personas, teams, goals, connectors, apps, and runtime behavior |
-| [Playbooks (skills)](src/content/docs/concepts/playbooks.mdx) | Author playbooks and skill files in the Advanced Skill Editor, configure a runtime, and package a revision for reuse |
+| [Playbooks (skills)](src/content/docs/concepts/playbooks.mdx) | Executable definitions, reusable skill files, and requirements for running them in a team |
 | [Skill catalogue](src/content/docs/skills.mdx) | Gabriel Operator authoring skills and individual action, node, and component references |
 | [Examples](src/content/docs/examples.mdx) | The Lane Studio tour and 17 persona architectures |
 | [Terms and standards](src/content/docs/standards.mdx) | Vocabulary and how Agent Skills, MCP, A2A, and Standard Agents fit |

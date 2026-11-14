@@ -54,7 +54,7 @@ Publish under your own scope, starting with the playbook. When you publish the t
 
 `SKILL.md`, references, assets, and bundled scripts follow the Agent Skills folder format. Gabriel adds eval files and supports `BeforeTask` and `AfterTask` in `gabriel/hooks.json`. In installed packages, those hooks invoke bundled Node scripts on a verified E2B Studio computer with Node.js 22 or newer and outbound networking disabled. They receive declared input or output fields and can stop the run. Connector credentials and approval authority stay in the destination workspace. Persona resource references are setup requirements. The installer records them in `assets/package-resource-requirements.json` so the destination owner can connect the appropriate resources. [Agent Skills specification](https://agentskills.io/specification)
 
-Follow the [blank Canvas walkthrough](../../implementation/#build-and-install-from-a-blank-canvas).
+Follow the [package composition example](../../implementation/#compose-and-install-a-package).
 
 ## Resolve the package graph
 
@@ -87,6 +87,6 @@ Publish the child first and preview the new version of the package that uses it.
 
 Inspect the installed package and the definitions that still use it. A team placement or another package’s dependency can block removal. Historical runs and their receipts remain available for auditing the revision that ran.
 
-See [marketplace discovery and installation](../marketplace/) and the [blank Canvas walkthrough](../../implementation/#build-and-install-from-a-blank-canvas).
+See [marketplace discovery and installation](../marketplace/) and the [package composition example](../../implementation/#compose-and-install-a-package).
 
 Portable playbook archives declare `gabriel-studio-v2` and use a version 2 `playbook.json` entry. See [portable playbooks](../portable-playbooks/#the-playbook-definition) for the schema, package files, and runtime bindings.

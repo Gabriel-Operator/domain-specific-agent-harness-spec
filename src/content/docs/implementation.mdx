@@ -35,7 +35,7 @@ These files illustrate the definition profile. Gabriel’s authoring tools gener
 
 ## Bind and run a team goal
 
-1. **Load the persona and verify pins.** Read the root revision and each linked definition from its published revision. Compare fingerprints and reject unresolved or mismatched references. In Studio, export the current team definition and preview a change before committing it against the expected Git head and workspace revision.
+1. **Load the persona and verify pins.** Read the root revision and each linked definition from its published revision. Compare fingerprints and reject unresolved or mismatched references. Preview and validate definition changes against the expected source and workspace revisions before adopting them.
 2. **Resolve the execution environment.** Select a harness with the capabilities the work needs and report unsupported steps. Gabriel’s native goal and connector playbooks use its native runtime. Other runtimes report their supported actions and account availability.
 3. **Bind the example’s calendar.** Use a member-authorized calendar connection and bind the logical `calendar:upcoming` operation. Map its result to the example’s `meetings` field. Configure a team budget and give the run `from` and `until` inputs. The goal playbook declares the same connector authority as the child it can invoke.
 4. **Start the goal.** A run captures the selected playbook and its permitted child definitions, with limits on delegation, time, model calls, and credits. Recheck membership and grants before dispatch. A missing account holds the step. A repeated start with the same request identifier must refer to the same inputs.
@@ -66,11 +66,17 @@ Commit linked resources first, then publish the persona root with their Git link
 
 For Studio packages, publish each playbook before the team that uses it and publish the team before the persona. Review each exact version and map the required operations and outputs in the destination workspace. [Package and manifest reference](../concepts/packaging/)
 
-## Build and install from a blank Canvas
+<span id="build-and-install-from-a-blank-canvas"></span>
 
-1. In Playbook Studio, create an empty **Accountants** team. Use **Add playbook** to author **Verify public signals**, import an existing skill folder, or choose **Install from marketplace**. Set its input and output fields, then use the Skill Editor to write instructions and add a reference, an input schema, or an eval.
-2. Add a second playbook if the goal needs a handoff. Configure the needed connectors in the team, then create a goal inside **Accountants**. Review the plan before the team runs and review any governed operation when prompted.
-3. In **Marketplace → Export or publish**, select **Playbook** and the saved definition. Enter your registry, scoped name, and version. Preview the files and hook commands. Download the archive or save a scoped registry token and publish the reviewed release.
-4. Publish **Accountants** as a **Team** after its playbooks have versions. Publish the persona after its teams have versions. Studio writes those dependency pins into the parent package.
-5. From another Studio workspace, find the release in **Marketplace** or enter its exact package reference. A playbook uses the currently selected team. A team creates a new Canvas in the workspace. A persona creates a new private persona and workspace.
-6. Review the destination and the required operations, then install. In the destination, set up accounts, grants, publishing destinations, a spending limit, and an E2B Studio computer for any declared hooks. Create a goal in the installed team to invoke its playbooks.
+## Compose and install a package
+
+1. **Define a capability.** For an Accountants team, define a playbook that verifies public signals. Give it an input and output contract and a skill with the evidence rules. Add another playbook if the outcome requires a separate review or handoff.
+2. **Compose a team.** Reference the playbooks by exact revision and declare the handoffs and resource requirements. Bind the connectors and test a goal scoped to the team. Exercise any required review before dispatching a protected action.
+3. **Publish the dependency graph.** Publish playbooks before the team that pins them, and teams before the persona that pins them. Include the executable and skill files in each playbook release. The published name, version, and digest identify that release.
+4. **Review installation and bind local resources.** Resolve the selected release and its dependencies for the intended destination. Review its placements, operations, output bindings, and scripts before adoption. Supply the destination’s accounts, grants, budget, and compute before running a goal in the installed team. [Portable playbook lifecycle](../concepts/portable-playbooks/#installation-and-execution-lifecycle)
+
+## Gabriel reference implementation
+
+Gabriel uses the versioned package profile and retains provider session or interaction IDs when it runs a bounded decision through a hosted adapter. It validates that decision and applies workspace tool grants and approval checks before any protected effect. The OpenAI SDK sandbox profile uses isolated compute. The OpenAI Realtime and Gemini Live profiles use native speech.
+
+In Lane Pilot Research, the Google ADK and Gemini Agents API runs each recorded one live research read and cited the retrieved evidence. Separate checks exercised live Gemini speech and the isolated workspace for the OpenAI SDK. Live OpenAI and Claude model execution still require provider verification.
