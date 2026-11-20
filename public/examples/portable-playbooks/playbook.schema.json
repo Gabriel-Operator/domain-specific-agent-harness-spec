@@ -29,11 +29,12 @@
                           "openai-sdk",
                           "openai-hosted",
                           "claude-managed",
-                          "google-adk"
+                          "google-adk",
+                          "gemini-hosted"
                         ]
                       },
                       "minItems": 1,
-                      "maxItems": 5,
+                      "maxItems": 6,
                       "default": [
                         "gabriel"
                       ]
@@ -59,7 +60,8 @@
                               "openai-sdk",
                               "openai-hosted",
                               "claude-managed",
-                              "google-adk"
+                              "google-adk",
+                              "gemini-hosted"
                             ]
                           }
                         },
@@ -898,11 +900,12 @@
                           "openai-sdk",
                           "openai-hosted",
                           "claude-managed",
-                          "google-adk"
+                          "google-adk",
+                          "gemini-hosted"
                         ]
                       },
                       "minItems": 1,
-                      "maxItems": 5,
+                      "maxItems": 6,
                       "default": [
                         "gabriel"
                       ]
@@ -928,7 +931,8 @@
                               "openai-sdk",
                               "openai-hosted",
                               "claude-managed",
-                              "google-adk"
+                              "google-adk",
+                              "gemini-hosted"
                             ]
                           }
                         },
