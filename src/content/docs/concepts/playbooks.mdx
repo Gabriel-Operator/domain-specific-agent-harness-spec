@@ -34,8 +34,8 @@ The executable definition and skill contents are identified by the package profi
 | `playbook.json` | Versioned executable definition and runtime requirements. Equivalent YAML may be accepted as authoring input. |
 | `SKILL.md` | Agent Skills instructions in Markdown with `name` and `description` in YAML frontmatter. |
 | `AGENTS.md` and `CLAUDE.md` | Standalone CLI guidance that points to the skill and can document client-specific behavior. |
-| `agent/agent-info.json` | Agent name, objective and completion criteria. |
-| `agent/agent-workflow.json` | Reference to the package’s executable entry. |
+| `metadata/agent-info.json` | Agent name, objective and completion criteria. |
+| `metadata/agent-workflow.json` | Reference to the package’s executable entry. |
 | `references/` | Supporting instructions or reference data the agent can load when needed. |
 | `assets/` | Templates, examples, and other resources addressed relative to the skill root. |
 | `scripts/` and `runtime.scripts` | Script files and explicit declarations of when and how the harness may invoke them. |

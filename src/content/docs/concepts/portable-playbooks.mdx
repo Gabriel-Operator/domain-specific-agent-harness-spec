@@ -41,7 +41,7 @@ This profile uses an npm archive and the `gabriel-package.json` manifest. Its `r
   SKILL.md
   AGENTS.md
   CLAUDE.md
-  agent/
+  metadata/
     agent-info.json
     agent-workflow.json
   assets/
@@ -52,7 +52,7 @@ This profile uses an npm archive and the `gabriel-package.json` manifest. Its `r
     fixtures/
 ```
 
-A single-playbook export includes at most one owned Agent Skill. Its files are siblings of `playbook.json`. External skills named in `runtime.skills` resolve separately from their pins. `agent/agent-info.json` describes the agent’s name, objective, and completion criteria. `agent/agent-workflow.json` is a versioned reference with `{"schemaVersion":1,"entry":"playbook.json"}`. The entry resolves from the package root. The harness executes the definition in `playbook.json`. A supported version 1 graph can also carry its executable graph assets under `graph/`.
+A single-playbook export includes at most one owned Agent Skill. Its files are siblings of `playbook.json`. External skills named in `runtime.skills` resolve separately from their pins. `metadata/agent-info.json` describes the agent’s name, objective, and completion criteria. `metadata/agent-workflow.json` is a versioned reference with `{"schemaVersion":1,"entry":"playbook.json"}`. The entry resolves from the package root. The harness executes the definition in `playbook.json`. A supported version 1 graph can also carry its executable graph assets under `graph/`.
 
 ### Use as a standalone Agent Skill
 
