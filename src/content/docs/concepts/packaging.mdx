@@ -25,7 +25,7 @@ Gabriel distributes three package types as npm archives. The public marketplace 
 | Team | Purpose, Canvas placements, handoffs, portable team resources, and exact playbook pins. | A new team in an existing persona workspace. |
 | Persona | A persona profile, optional ontology, logical resource requirements, and exact team pins. | A new private persona and workspace. |
 
-An archive contains `package.json`, `gabriel-package.json`, and the manifest's entry file. The playbook entry is `playbook.json`. A graph entry includes its authored files under `graph/`. The team entry is `team.json`. The persona entry is `persona.json`. A skill folder belongs to its playbook and lives under `skills/<name>/`. Package versions are independent of Studio's local revision numbers.
+An archive contains `package.json`, `gabriel-package.json`, and the manifest's entry file. The playbook entry is `playbook.json`. A graph entry includes its authored files under `graph/`. The team entry is `team.json`. The persona entry is `persona.json`. In a new single-playbook export the owned skill, when present, lives beside `playbook.json`. Its entry declares `"skill": "."`. Readers also accept published archives that point to `skills/<name>/`. See the [single-playbook layout](../portable-playbooks/#package-layout) for the two agent files and the CLI guides. Package versions are independent of Studio's local revision numbers.
 
 ### Manifest fields
 

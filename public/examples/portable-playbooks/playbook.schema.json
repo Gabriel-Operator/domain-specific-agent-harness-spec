@@ -1603,7 +1603,7 @@
         "skill": {
           "type": "string",
           "maxLength": 71,
-          "pattern": "^skills\\/[a-z0-9]+(?:-[a-z0-9]+)*$"
+          "pattern": "^(?:\\.|skills\\/[a-z0-9]+(?:-[a-z0-9]+)*)$"
         }
       },
       "required": [

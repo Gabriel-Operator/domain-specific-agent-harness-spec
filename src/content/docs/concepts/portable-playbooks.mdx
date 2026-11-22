@@ -13,7 +13,7 @@ This draft specifies behavior a harness can implement and a versioned package pr
 
 ## The playbook definition
 
-The version 2 package profile uses `playbook.json` as its entry and sets the entry’s `schemaVersion` to `2`. The nested `definition` contains the structured or goal workflow and its `runtime` block. The entry can also point to the playbook’s included skill directory. A harness that accepts YAML authoring input must normalize equivalent JSON and YAML to the same definition before fingerprinting. The profile rejects duplicate mapping keys, YAML aliases and tags, and remote schema references.
+The version 2 package profile uses `playbook.json` as its entry and sets the entry’s `schemaVersion` to `2`. The nested `definition` contains the structured or goal workflow and its `runtime` block. Set the entry’s `skill` to `"."` when the package root is also the playbook’s owned skill directory. A harness that accepts YAML authoring input must normalize equivalent JSON and YAML to the same definition before fingerprinting. The profile rejects duplicate mapping keys, YAML aliases and tags, and remote schema references.
 
 | Declaration | What the harness resolves or enforces |
 | --- | --- |
@@ -31,25 +31,40 @@ Model identifiers in the profile describe what a target should run. Connector re
 
 ### Package layout
 
-This profile uses an npm archive and the `gabriel-package.json` manifest. Its `runtime.contract` value is `gabriel-studio-v2`. The manifest identifies the entry and any pinned playbook dependencies. These names identify the exchange format. An independent harness can implement the same format with its own runtime services.
+This profile uses an npm archive and the `gabriel-package.json` manifest. Its `runtime.contract` value is `gabriel-studio-v2`. The manifest identifies the executable entry and pins any child playbooks. The npm tarball’s `package/` prefix is the transport envelope. The tree below starts inside that envelope.
 
 ```text
-package.json
-gabriel-package.json
-playbook.json
-skills/verify-signals/
+<skill-name>/
+  package.json
+  gabriel-package.json
+  playbook.json
   SKILL.md
+  AGENTS.md
+  CLAUDE.md
+  agent/
+    agent-info.json
+    agent-workflow.json
+  assets/
+  references/
+  scripts/
+  evals/
+    evals.json
+    fixtures/
 ```
 
-This tree shows the downloadable fixture. An included skill can also carry references, assets, declared scripts, and evals. [Package manifest schema](../../examples/gabriel-packages/gabriel-package.schema.json) · [Skill files](../playbooks/#required-and-optional-files)
+A single-playbook export includes at most one owned Agent Skill. Its files are siblings of `playbook.json`. External skills named in `runtime.skills` resolve separately from their pins. `agent/agent-info.json` describes the agent’s name, objective, and completion criteria. `agent/agent-workflow.json` is a versioned reference with `{"schemaVersion":1,"entry":"playbook.json"}`. The entry resolves from the package root. The harness executes the definition in `playbook.json`. A supported version 1 graph can also carry its executable graph assets under `graph/`.
+
+### Use as a standalone Agent Skill
+
+Place the extracted folder in the CLI’s skill directory and name it for the `name` in `SKILL.md`. Keep its relative resources together. `SKILL.md` supplies the discovery metadata and instructions for an Agent Skills client. `AGENTS.md` gives Codex and compatible CLI agents project guidance, and `CLAUDE.md` gives Claude Code its entry point when used as a project directory. Gabriel exports preserve authored guides and supply a short guide pointing to `SKILL.md` when either guide is missing. The standalone path uses the client’s available tools and the review steps in the skill instructions. A compatible harness supplies automated workflow orchestration, guards, and approval tracking when it runs `playbook.json`. [Agent Skills specification](https://agentskills.io/specification)
 
 ### An exact package pin
 
-A dependency pin identifies a registry, scoped package name, exact version, and SHA-512 archive integrity. A harness verifies each dependency against its pin before accepting the package. The Verify signals pin has an illustrative package name and describes the bytes of the downloadable fixture. An actual registry release needs its own resolvable identity and digest. [Example archive](../../examples/portable-playbooks/verify-signals-portable-2.0.0.tgz) · [Exact pin](../../examples/portable-playbooks/verify-signals-portable.pin.json)
+A dependency pin identifies a registry, scoped package name, exact version, and SHA-512 archive integrity. A harness verifies each dependency against its pin before accepting the package. The Verify signals pin has an illustrative package name and describes the bytes of the downloadable fixture. This historical fixture uses the wrapped `skills/verify-signals/` layout and keeps its original bytes. An actual registry release needs its own resolvable identity and digest. [Example archive](../../examples/portable-playbooks/verify-signals-portable-2.0.0.tgz) · [Exact pin](../../examples/portable-playbooks/verify-signals-portable.pin.json)
 
 ### Legacy playbooks
 
-A team can pin a version 1 or version 2 release when the destination supports its declared contract. Adopting a different profile requires a new reviewed revision. Review the executable, skill files, requirements, and lifecycle hooks as part of migration. Existing runs retain the revision and bindings recorded for them. Graphs or commands with different execution semantics require a compatible runtime or an explicit conversion.
+A reader also accepts entries that name a legacy `skills/<name>` folder. The workflow and owned skill resolve from the pinned release in either layout. Eval fixture files use `evals/fixtures/` in new skills. Gabriel also loads legacy `evals/files/` paths while replaying saved cases. A team can pin a version 1 or version 2 release when the destination supports its declared contract. Adopting a different profile requires a new reviewed revision. Review the executable, skill files, requirements, and lifecycle hooks as part of migration. Existing runs retain the revision and bindings recorded for them. Graphs or commands with different execution semantics require a compatible runtime or an explicit conversion.
 
 ## External skills
 
@@ -88,6 +103,18 @@ Execute only reviewed entry points. Isolate each invocation with the required in
 3. **Start a team-scoped run.** When a goal invokes the playbook, record the definition and skill revisions, selected target and model, and workspace binding identifiers. Evaluate the run against that snapshot and current permissions.
 4. **Govern external effects.** Derive the operation, arguments, destination, and acting account from the bound request. Rehearse when required, obtain the applicable human approval, and recheck the reviewed proposal and current grants before live dispatch.
 5. **Record and reconcile.** Preserve the decision, outcome, and receipt under the run’s identity. Use the original invocation identity to resolve an uncertain dispatch before any retry. [Governed execution](../governed-execution/) · [Execution receipts](../execution-receipts/)
+
+### Reference lifecycle
+
+Archer’s **Brand identity** uses one public website URL to produce an approved brand identity and a reusable creative brief. Its native playbook illustrates where the package’s files come into use.
+
+| Run boundary | Files and behavior |
+| --- | --- |
+| Resolve and validate input | `playbook.json` declares the URL input, data schema and runtime requirements. `SKILL.md` tells the standalone agent to ask for a missing URL. |
+| Read evidence | The declared read script in `scripts/` records website evidence. `references/` tells the agent how to interpret it. |
+| Draft, check and review | The workflow maps evidence into the brand and brief steps. `assets/` supplies their schemas and template. `references/guardrails.json` supplies live checks in Gabriel, and the step definitions gate the brief and final rendering on the two human approvals. |
+| Deliver and record | The final step renders the approved brief. The workflow maps the brand, brief and Markdown report to its final outputs. The harness records the run separately from the package. |
+| Replay and revise | `evals/evals.json` exercises the workflow with synthetic copies of website evidence under `evals/fixtures/`. A failed case can become a regression test. Review the fix and publish a new package revision so the next run can use it. |
 
 ## Runtime compatibility
 

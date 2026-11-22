@@ -27,16 +27,19 @@ An authoring tool can present the executable definition and the playbook’s own
 
 ### Required and optional files
 
-The executable definition and skill contents are identified by the package profile. In the version 2 profile, `playbook.json` is the entry. An included Agent Skill has its own root containing `SKILL.md`. The other files below are optional and are loaded or invoked according to the definition.
+The executable definition and skill contents are identified by the package profile. In the version 2 profile, `playbook.json` is the entry. An included Agent Skill has its own root containing `SKILL.md`. The owned skill files sit at the package root in the flat profile. References, assets, scripts and evals depend on the work the playbook performs.
 
 | Path or declaration | Purpose |
 | --- | --- |
 | `playbook.json` | Versioned executable definition and runtime requirements. Equivalent YAML may be accepted as authoring input. |
 | `SKILL.md` | Agent Skills instructions in Markdown with `name` and `description` in YAML frontmatter. |
+| `AGENTS.md` and `CLAUDE.md` | Standalone CLI guidance that points to the skill and can document client-specific behavior. |
+| `agent/agent-info.json` | Agent name, objective and completion criteria. |
+| `agent/agent-workflow.json` | Reference to the package’s executable entry. |
 | `references/` | Supporting instructions or reference data the agent can load when needed. |
 | `assets/` | Templates, examples, and other resources addressed relative to the skill root. |
 | `scripts/` and `runtime.scripts` | Script files and explicit declarations of when and how the harness may invoke them. |
-| `evals/evals.json` | One convention for recording test inputs and expected behavior. |
+| `evals/evals.json` and `evals/fixtures/` | Test inputs, expected behavior and the data used to replay cases. |
 
 The [Agent Skills specification](https://agentskills.io/specification) defines the skill folder. The playbook profile defines how the harness binds that folder to the executable and governs scripts. [Portable playbook definition](../portable-playbooks/#the-playbook-definition) · [Evals](../evals/)
 
