@@ -13,6 +13,9 @@
             {
               "type": "object",
               "properties": {
+                "runEvaluation": {
+                  "$ref": "#/definitions/PlaybookRunEvaluation"
+                },
                 "schemaVersion": {
                   "type": "number",
                   "const": 1
@@ -856,6 +859,19 @@
                           "fields"
                         ],
                         "additionalProperties": false
+                      },
+                      "revisionTarget": {
+                        "anyOf": [
+                          {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 160,
+                            "pattern": "^[a-zA-Z0-9][a-zA-Z0-9._:-]*$"
+                          },
+                          {
+                            "const": "$inputs"
+                          }
+                        ]
                       }
                     },
                     "required": [
@@ -868,6 +884,14 @@
                   },
                   "minItems": 1,
                   "maxItems": 32
+                },
+                "finalOutputMappings": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string",
+                    "maxLength": 1000,
+                    "pattern": "^(?:/|$)"
+                  }
                 }
               },
               "required": [
@@ -884,6 +908,9 @@
             {
               "type": "object",
               "properties": {
+                "runEvaluation": {
+                  "$ref": "#/definitions/PlaybookRunEvaluation"
+                },
                 "schemaVersion": {
                   "type": "number",
                   "const": 1
@@ -1609,6 +1636,109 @@
       "required": [
         "schemaVersion",
         "definition"
+      ],
+      "additionalProperties": false
+    },
+    "PlaybookRunEvaluation": {
+      "type": "object",
+      "properties": {
+        "checks": {
+          "type": "array",
+          "description": "Each check has a unique ID within the playbook.",
+          "minItems": 1,
+          "maxItems": 24,
+          "items": {
+            "oneOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80
+                  },
+                  "required": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "type": {
+                    "const": "output_contains"
+                  },
+                  "value": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 500
+                  }
+                },
+                "required": [
+                  "id",
+                  "type",
+                  "value"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80
+                  },
+                  "required": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "type": {
+                    "const": "output_present"
+                  },
+                  "field": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 500
+                  }
+                },
+                "required": [
+                  "id",
+                  "type",
+                  "field"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 80
+                  },
+                  "required": {
+                    "type": "boolean",
+                    "default": true
+                  },
+                  "type": {
+                    "const": "artifact_exists"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 500
+                  }
+                },
+                "required": [
+                  "id",
+                  "type",
+                  "kind"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          }
+        }
+      },
+      "required": [
+        "checks"
       ],
       "additionalProperties": false
     }
